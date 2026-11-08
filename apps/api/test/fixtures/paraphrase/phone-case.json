@@ -1,0 +1,40 @@
+{
+  "id": "PX4PHONECASE0001",
+  "status": "APPROVED",
+  "intent": "AUTHORIZE",
+  "purchase_units": [
+    {
+      "reference_id": "default",
+      "custom_id": "bazaar:orbitek",
+      "soft_descriptor": "Orbitek",
+      "description": "Orbitek",
+      "amount": {
+        "currency_code": "USD",
+        "value": "26.99",
+        "breakdown": {
+          "item_total": {
+            "currency_code": "USD",
+            "value": "24.99"
+          },
+          "tax_total": {
+            "currency_code": "USD",
+            "value": "2.00"
+          }
+        }
+      },
+      "items": [
+        {
+          "name": "Orbitek MagSafe Phone Case with USB-C cable",
+          "description": "Slim protective case for iPhone 16 with a braided USB-C cable.",
+          "sku": "OB-CASE",
+          "unit_amount": {
+            "currency_code": "USD",
+            "value": "24.99"
+          },
+          "quantity": "1",
+          "category": "PHYSICAL_GOODS"
+        }
+      ]
+    }
+  ]
+}

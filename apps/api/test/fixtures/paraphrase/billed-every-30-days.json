@@ -1,0 +1,40 @@
+{
+  "id": "PX1BILLED0000001",
+  "status": "APPROVED",
+  "intent": "AUTHORIZE",
+  "purchase_units": [
+    {
+      "reference_id": "default",
+      "custom_id": "bazaar:nexhub",
+      "soft_descriptor": "Nexhub Store",
+      "description": "Nexhub Store",
+      "amount": {
+        "currency_code": "USD",
+        "value": "37.79",
+        "breakdown": {
+          "item_total": {
+            "currency_code": "USD",
+            "value": "34.99"
+          },
+          "tax_total": {
+            "currency_code": "USD",
+            "value": "2.80"
+          }
+        }
+      },
+      "items": [
+        {
+          "name": "Nexhub USB-C Hub, 4K HDMI + Priority Support",
+          "description": "Support access is charged again automatically each 30 days until you cancel.",
+          "sku": "NX-HUB-PS",
+          "unit_amount": {
+            "currency_code": "USD",
+            "value": "34.99"
+          },
+          "quantity": "1",
+          "category": "PHYSICAL_GOODS"
+        }
+      ]
+    }
+  ]
+}

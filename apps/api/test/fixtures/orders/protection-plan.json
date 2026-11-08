@@ -1,0 +1,60 @@
+{
+  "id": "FX3PROTECTION01A",
+  "status": "APPROVED",
+  "intent": "AUTHORIZE",
+  "purchase_units": [
+    {
+      "reference_id": "default",
+      "custom_id": "bazaar:brightdock",
+      "soft_descriptor": "Brightdock",
+      "description": "Brightdock",
+      "amount": {
+        "currency_code": "USD",
+        "value": "36.70",
+        "breakdown": {
+          "item_total": {
+            "currency_code": "USD",
+            "value": "33.98"
+          },
+          "tax_total": {
+            "currency_code": "USD",
+            "value": "2.72"
+          }
+        }
+      },
+      "items": [
+        {
+          "name": "Brightdock USB-C Hub, 4K HDMI",
+          "sku": "BD-HUB4K",
+          "unit_amount": {
+            "currency_code": "USD",
+            "value": "27.99"
+          },
+          "quantity": "1",
+          "category": "PHYSICAL_GOODS"
+        },
+        {
+          "name": "2-Year Accident Protection Plan",
+          "sku": "BD-PROTECT2",
+          "unit_amount": {
+            "currency_code": "USD",
+            "value": "5.99"
+          },
+          "quantity": "1",
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "payee": {
+        "merchant_id": "POIBAZAARSANDBOX",
+        "email_address": "bazaar@example.com"
+      }
+    }
+  ],
+  "links": [
+    {
+      "href": "https://api-m.sandbox.paypal.com/v2/checkout/orders/FX3PROTECTION01A",
+      "rel": "self",
+      "method": "GET"
+    }
+  ]
+}

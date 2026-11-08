@@ -69,7 +69,7 @@ export const NormalizedOrder = z.object({
   status: z.string(),                           // CREATED | APPROVED | COMPLETED ...
   intent: z.enum(["CAPTURE", "AUTHORIZE"]),
   merchantId: z.string(),                       // from purchase_units[0].custom_id "bazaar:<id>"
-  merchantDisplayName: z.string(),              // from purchase_units[0].soft_descriptor / description
+  merchantDisplayName: z.string(),              // from purchase_units[0].description (fallback soft_descriptor)
   lines: z.array(NormalizedLine),
   breakdown: z.object({
     itemTotal: Money, shipping: Money.optional(), handling: Money.optional(),
@@ -166,6 +166,8 @@ Request/response schemas for every endpoint below are exported with the names in
 - Any **deterministic** `fail` -> VOID.
 - Any `fail` with severity `high` from any stage -> VOID.
 - Any `fail` with severity `medium`, any `warn` with severity `high`, or a `shadow` signal on its own -> ASK_HUMAN.
+  A shadow signal is a shadow-stage `fail`, or a `warn` of severity medium or high. A `warn` `low` means
+  "inconclusive" (timeout, no API key for the agent model) and never blocks on its own.
 - Everything else -> CAPTURE.
 - **Rule:** LLM stages can only push the verdict up, never down. A semantic `pass` cannot rescue a
   deterministic `fail`. This is what stops an injected page from talking the judge into approving.
@@ -192,6 +194,29 @@ Request/response schemas for every endpoint below are exported with the names in
 Errors always return `{ error: { code, message } }` with a proper HTTP status.
 
 A typed client for every endpoint is exported as `createPoiClient({ baseUrl })` from `@poi/shared`.
+
+### 3.1 Behaviour of the real API (beyond the table)
+
+No shapes changed; these are the details a client can rely on.
+
+- Status codes: `POST /intents` answers **201**, `POST /orders/:id/verify` **202**, everything else 200.
+- `POST /intents` refuses a spec whose `maxTotal` is 0 (**422 `INTENT_INCOMPLETE`**). The compiler
+  sets 0 when the user gave no budget, so the UI must get an answer to the `maxTotal` question first.
+- `POST /orders/:id/attach`: 404 `INTENT_NOT_FOUND`, 409 `ORDER_ALREADY_ATTACHED` (other intent),
+  409 `ORDER_ALREADY_VERIFIED`. Re-attaching to the same intent before verification updates the trace.
+- `POST /orders/:id/authorize`: 404 `ORDER_NOT_ATTACHED`, 409 `ORDER_IS_DRY_RUN`, 503
+  `PAYPAL_NOT_CONFIGURED`. Idempotent: calling it again returns the same ids.
+- `GET /verifications/:id`: `status: "ERROR"` after 3 failed attempts; `summary` then starts with
+  "Verification failed:". A live ERROR leaves the PayPal hold in place (never captures).
+- `POST /verifications/:id/decision`: allowed when `settlement.action` is `PENDING_HUMAN`, or for a
+  live verification in `ERROR` with a hold; otherwise 409 `NOT_AWAITING_DECISION`.
+- `summary` templates: `Captured: ...` / `Voided: ...` / `Needs your OK: ...` in live mode,
+  `Would capture: ...` / `Would void: ...` in dry-run.
+- `GET /ledger`: `cursor` is opaque; pass back `nextCursor` as-is.
+- `GET /verify/:orderId`: `chainValid` covers the hash chain up to this order's latest record;
+  `signatureValid` covers the intent JWS and that record's JWS.
+- JWKS is served at both `/.well-known/jwks.json` and `/api/.well-known/jwks.json`.
+- Events: `verify:started` fires once per attempt (a retried job sends it again).
 
 ## 4. Bazaar API (`apps/bazaar`, port 4100)
 
@@ -246,6 +271,11 @@ Server-Sent Events), not through POI.
 
 Built in task P2. Models: `Intent`, `OrderRecord` (id = PayPal order id), `Verification`, `EvidenceRecord`
 (hash chain, `seq` autoincrement), `Merchant`, `TermsChunk` (`embedding vector(1536)`).
+
+Additions beyond the plan's 4.7 (internal to the API, no client impact): `Verification` has
+`settlement`, `paypalStatus`, `error` and `mode` (a dry-run of a live order never settles);
+`EvidenceRecord.verificationId` is no longer unique (a human decision appends a second record);
+`ProcessedWebhookEvent` stores handled PayPal event ids.
 
 Benchmark results do **not** go in the database. The runner writes `bench/results/<batchId>.jsonl` and
 `bench/results/summary.json`, which are committed, so the scorecard works for judges with no database.

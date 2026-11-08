@@ -1,0 +1,141 @@
+// POI database. Contract: docs/CONTRACTS.md section 7 (plan section 4.7).
+// Prisma 7: the connection URL lives in prisma.config.ts and the client talks to Postgres
+// through the pg driver adapter (apps/api/src/lib/prisma.ts).
+
+generator client {
+  provider        = "prisma-client"
+  output          = "../apps/api/src/generated/prisma"
+  moduleFormat    = "esm"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  extensions = [vector]
+}
+
+enum IntentStatus {
+  SIGNED
+  REVOKED
+}
+
+enum RunMode {
+  LIVE
+  DRY_RUN
+}
+
+enum VerificationStatus {
+  QUEUED
+  RUNNING
+  DONE
+  ERROR
+}
+
+enum Verdict {
+  CAPTURE
+  ASK_HUMAN
+  VOID
+}
+
+// Added beyond the plan's 4.7 so settlement survives restarts (VerificationResult.settlement).
+enum SettlementAction {
+  CAPTURED
+  VOIDED
+  PENDING_HUMAN
+  NONE
+}
+
+model Intent {
+  id        String        @id @default(cuid())
+  rawText   String
+  spec      Json
+  specHash  String
+  jws       String
+  mandate   Json
+  status    IntentStatus  @default(SIGNED)
+  createdAt DateTime      @default(now())
+  orders    OrderRecord[]
+}
+
+model OrderRecord {
+  id              String         @id // PayPal order id
+  intentId        String
+  intent          Intent         @relation(fields: [intentId], references: [id])
+  merchantId      String
+  mode            RunMode
+  paypalStatus    String
+  authorizationId String?
+  captureId       String?
+  rawOrder        Json?
+  normalized      Json?
+  agentTrace      Json
+  runTag          String? // benchmark batch id
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  verifications   Verification[]
+
+  @@index([runTag])
+  @@index([intentId])
+  @@index([createdAt])
+}
+
+model Verification {
+  id            String             @id @default(cuid())
+  orderId       String
+  order         OrderRecord        @relation(fields: [orderId], references: [id])
+  config        Json
+  status        VerificationStatus @default(QUEUED)
+  verdict       Verdict?
+  checks        Json               @default("[]")
+  summary       String?
+  latencyMs     Int?
+  humanDecision Verdict?
+  // Added beyond 4.7: settlement outcome and a failure reason for status ERROR.
+  settlement    SettlementAction?
+  paypalStatus  String?
+  error         String?
+  // Added beyond 4.7: a dry-run verification of a live order must never settle.
+  mode          RunMode            @default(LIVE)
+  createdAt     DateTime           @default(now())
+  // One record for the verdict, one more per human decision (append-only chain).
+  evidence      EvidenceRecord[]
+
+  @@index([orderId, createdAt])
+}
+
+model EvidenceRecord {
+  seq            Int          @id @default(autoincrement())
+  verificationId String
+  verification   Verification @relation(fields: [verificationId], references: [id])
+  prevHash       String
+  hash           String       @unique
+  payload        Json
+  jws            String
+  createdAt      DateTime     @default(now())
+
+  @@index([verificationId])
+}
+
+model Merchant {
+  id          String       @id // "voltra-official"
+  displayName String
+  verified    Boolean      @default(false)
+  chunks      TermsChunk[]
+}
+
+model TermsChunk {
+  id         String                       @id @default(cuid())
+  merchantId String
+  merchant   Merchant                     @relation(fields: [merchantId], references: [id])
+  text       String
+  embedding  Unsupported("vector(1536)")?
+
+  @@index([merchantId])
+}
+
+// PayPal webhook ids already handled, so redelivered events are no-ops (P10).
+model ProcessedWebhookEvent {
+  id        String   @id // PayPal event id
+  type      String
+  createdAt DateTime @default(now())
+}

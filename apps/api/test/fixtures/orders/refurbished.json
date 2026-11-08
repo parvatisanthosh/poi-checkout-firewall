@@ -1,0 +1,51 @@
+{
+  "id": "FX2REFURBISHD01A",
+  "status": "APPROVED",
+  "intent": "AUTHORIZE",
+  "purchase_units": [
+    {
+      "reference_id": "default",
+      "custom_id": "bazaar:voltra-official",
+      "soft_descriptor": "Voltra Official",
+      "description": "Voltra Official",
+      "amount": {
+        "currency_code": "USD",
+        "value": "26.99",
+        "breakdown": {
+          "item_total": {
+            "currency_code": "USD",
+            "value": "24.99"
+          },
+          "tax_total": {
+            "currency_code": "USD",
+            "value": "2.00"
+          }
+        }
+      },
+      "items": [
+        {
+          "name": "Voltra USB-C Hub 7-in-1, 4K HDMI (Renewed)",
+          "description": "Grade A refurbished, tested and cleaned.",
+          "sku": "HUB-RENEWED",
+          "unit_amount": {
+            "currency_code": "USD",
+            "value": "24.99"
+          },
+          "quantity": "1",
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "payee": {
+        "merchant_id": "POIBAZAARSANDBOX",
+        "email_address": "bazaar@example.com"
+      }
+    }
+  ],
+  "links": [
+    {
+      "href": "https://api-m.sandbox.paypal.com/v2/checkout/orders/FX2REFURBISHD01A",
+      "rel": "self",
+      "method": "GET"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "version": "poi.intent/1",
+  "rawText": "USB-C hub under $40 with 4K HDMI, one-time purchase, new only",
+  "category": "usb-c hub",
+  "mustHave": ["4K HDMI"],
+  "niceToHave": [],
+  "quantity": 1,
+  "maxTotal": {
+    "currency": "USD",
+    "value": "40.00"
+  },
+  "oneTimeOnly": true,
+  "allowedConditions": ["new"],
+  "allowAddOns": false,
+  "blockedMerchants": [],
+  "humanPresent": true,
+  "ambiguities": []
+}

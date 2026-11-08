@@ -5,3 +5,5 @@ dist
 pnpm-lock.yaml
 bench/results
 *.md
+apps/api/src/generated
+prisma/migrations

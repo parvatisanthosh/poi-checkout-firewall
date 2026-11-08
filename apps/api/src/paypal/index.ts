@@ -3,12 +3,14 @@ import { createTokenProvider } from "./auth";
 import { createPayPalHttp } from "./http";
 import { createOrdersApi } from "./orders";
 import { createPaymentsApi } from "./payments";
+import { createWebhooksApi } from "./webhooks";
 
 export { PayPalError } from "./errors";
 export { paypalRequestId, type PayPalAction } from "./idempotency";
 export { approvalLink, type AuthorizeResult } from "./orders";
 export { createToolkitReader, type ToolkitReader } from "./toolkit";
 export * from "./schemas";
+export { WEBHOOK_HEADERS } from "./webhooks";
 
 export interface PayPalConfig {
   clientId: string;
@@ -25,7 +27,12 @@ export interface PayPalConfig {
 export function createPayPal(config: PayPalConfig) {
   const tokens = createTokenProvider(config);
   const http = createPayPalHttp({ ...config, tokens });
-  return { tokens, ...createOrdersApi(http), ...createPaymentsApi(http) };
+  return {
+    tokens,
+    ...createOrdersApi(http),
+    ...createPaymentsApi(http),
+    ...createWebhooksApi(http),
+  };
 }
 
 export type PayPal = ReturnType<typeof createPayPal>;

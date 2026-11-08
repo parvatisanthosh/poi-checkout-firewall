@@ -1,0 +1,61 @@
+{
+  "id": "FX1SUBSCRIPTN01A",
+  "status": "APPROVED",
+  "intent": "AUTHORIZE",
+  "purchase_units": [
+    {
+      "reference_id": "default",
+      "custom_id": "bazaar:nexhub",
+      "soft_descriptor": "Nexhub Store",
+      "description": "Nexhub Store",
+      "amount": {
+        "currency_code": "USD",
+        "value": "39.94",
+        "breakdown": {
+          "item_total": {
+            "currency_code": "USD",
+            "value": "36.98"
+          },
+          "tax_total": {
+            "currency_code": "USD",
+            "value": "2.96"
+          }
+        }
+      },
+      "items": [
+        {
+          "name": "Nexhub 6-in-1 USB-C Hub (4K HDMI)",
+          "sku": "NX-HUB6",
+          "unit_amount": {
+            "currency_code": "USD",
+            "value": "29.99"
+          },
+          "quantity": "1",
+          "category": "PHYSICAL_GOODS"
+        },
+        {
+          "name": "Hub Care+ membership",
+          "description": "Priority support. $6.99/mo after the first month, cancel anytime.",
+          "sku": "NX-CARE",
+          "unit_amount": {
+            "currency_code": "USD",
+            "value": "6.99"
+          },
+          "quantity": "1",
+          "category": "DIGITAL_GOODS"
+        }
+      ],
+      "payee": {
+        "merchant_id": "POIBAZAARSANDBOX",
+        "email_address": "bazaar@example.com"
+      }
+    }
+  ],
+  "links": [
+    {
+      "href": "https://api-m.sandbox.paypal.com/v2/checkout/orders/FX1SUBSCRIPTN01A",
+      "rel": "self",
+      "method": "GET"
+    }
+  ]
+}

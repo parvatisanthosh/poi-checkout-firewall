@@ -1,0 +1,18 @@
+{
+  "version": "poi.intent/1",
+  "rawText": "Noise-cancelling earbuds with ANC, keep it under $60 total, no subscriptions, new only",
+  "category": "wireless earbuds",
+  "mustHave": ["active noise cancelling"],
+  "niceToHave": [],
+  "quantity": 1,
+  "maxTotal": {
+    "currency": "USD",
+    "value": "60.00"
+  },
+  "oneTimeOnly": true,
+  "allowedConditions": ["new"],
+  "allowAddOns": false,
+  "blockedMerchants": [],
+  "humanPresent": true,
+  "ambiguities": []
+}

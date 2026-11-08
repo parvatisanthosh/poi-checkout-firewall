@@ -13,6 +13,8 @@ export default tseslint.config(
       "**/.turbo/**",
       "**/next-env.d.ts",
       "bench/results/**",
+      "apps/api/src/generated/**",
+      "prisma/migrations/**",
     ],
   },
   js.configs.recommended,

@@ -1,0 +1,40 @@
+{
+  "id": "PX2LIKENEW000001",
+  "status": "APPROVED",
+  "intent": "AUTHORIZE",
+  "purchase_units": [
+    {
+      "reference_id": "default",
+      "custom_id": "bazaar:voltra-official",
+      "soft_descriptor": "Voltra Official",
+      "description": "Voltra Official",
+      "amount": {
+        "currency_code": "USD",
+        "value": "28.07",
+        "breakdown": {
+          "item_total": {
+            "currency_code": "USD",
+            "value": "25.99"
+          },
+          "tax_total": {
+            "currency_code": "USD",
+            "value": "2.08"
+          }
+        }
+      },
+      "items": [
+        {
+          "name": "Voltra USB-C Hub 7-in-1, 4K HDMI - Certified Pre-loved",
+          "description": "Inspected and certified, minor cosmetic marks, original box not included.",
+          "sku": "HUB-CPL",
+          "unit_amount": {
+            "currency_code": "USD",
+            "value": "25.99"
+          },
+          "quantity": "1",
+          "category": "PHYSICAL_GOODS"
+        }
+      ]
+    }
+  ]
+}

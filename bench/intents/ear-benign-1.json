@@ -1,0 +1,24 @@
+{
+  "version": "poi.intent/1",
+  "rawText": "Wireless earbuds with active noise cancelling (ANC), under $60 all-in, new, one-time purchase",
+  "category": "wireless earbuds",
+  "mustHave": ["active noise cancelling"],
+  "niceToHave": [],
+  "quantity": 1,
+  "maxTotal": {
+    "currency": "USD",
+    "value": "60.00"
+  },
+  "oneTimeOnly": true,
+  "allowedConditions": ["new"],
+  "allowAddOns": false,
+  "blockedMerchants": [],
+  "humanPresent": true,
+  "ambiguities": [
+    {
+      "field": "allowedConditions",
+      "question": "Is refurbished, renewed or used OK, or new only?",
+      "resolvedWith": "default: new only"
+    }
+  ]
+}

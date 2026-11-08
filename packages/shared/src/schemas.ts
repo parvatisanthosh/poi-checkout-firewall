@@ -104,7 +104,7 @@ export const NormalizedOrder = z.object({
   status: z.string(), // CREATED | APPROVED | COMPLETED ...
   intent: z.enum(["CAPTURE", "AUTHORIZE"]),
   merchantId: z.string(), // from purchase_units[0].custom_id "bazaar:<id>"
-  merchantDisplayName: z.string(), // from purchase_units[0].soft_descriptor / description
+  merchantDisplayName: z.string(), // from purchase_units[0].description (fallback soft_descriptor)
   lines: z.array(NormalizedLine),
   breakdown: z.object({
     itemTotal: Money,

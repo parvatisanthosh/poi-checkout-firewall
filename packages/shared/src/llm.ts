@@ -63,3 +63,20 @@ export function parseModelList(list: string | undefined): string[] {
       return id;
     });
 }
+
+/** Dimensions of TermsChunk.embedding (vector(1536)). */
+export const EMBEDDING_DIMS = 1536;
+
+/**
+ * Resolve "provider:model" to an embedding model. Only OpenAI's 1536-dim models fit the
+ * TermsChunk column today (text-embedding-3-small).
+ */
+export function getEmbeddingModel(id: string) {
+  const { provider, model } = parseModelId(id);
+  if (provider !== "openai") {
+    throw new Error(
+      `Embeddings need a ${EMBEDDING_DIMS}-dim model; use openai:text-embedding-3-small (got "${id}")`,
+    );
+  }
+  return openai.embeddingModel(model);
+}

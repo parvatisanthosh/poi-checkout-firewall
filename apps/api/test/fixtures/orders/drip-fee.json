@@ -1,0 +1,64 @@
+{
+  "id": "FX5DRIPFEE00001A",
+  "status": "APPROVED",
+  "intent": "AUTHORIZE",
+  "purchase_units": [
+    {
+      "reference_id": "default",
+      "custom_id": "bazaar:orbitek",
+      "soft_descriptor": "Orbitek",
+      "description": "Orbitek",
+      "amount": {
+        "currency_code": "USD",
+        "value": "38.74",
+        "breakdown": {
+          "item_total": {
+            "currency_code": "USD",
+            "value": "34.48"
+          },
+          "handling": {
+            "currency_code": "USD",
+            "value": "1.50"
+          },
+          "tax_total": {
+            "currency_code": "USD",
+            "value": "2.76"
+          }
+        }
+      },
+      "items": [
+        {
+          "name": "Orbitek USB-C Hub, 4K HDMI",
+          "sku": "OB-HUB",
+          "unit_amount": {
+            "currency_code": "USD",
+            "value": "31.99"
+          },
+          "quantity": "1",
+          "category": "PHYSICAL_GOODS"
+        },
+        {
+          "name": "Order processing fee",
+          "sku": "OB-FEE",
+          "unit_amount": {
+            "currency_code": "USD",
+            "value": "2.49"
+          },
+          "quantity": "1",
+          "category": "DIGITAL_GOODS"
+        }
+      ],
+      "payee": {
+        "merchant_id": "POIBAZAARSANDBOX",
+        "email_address": "bazaar@example.com"
+      }
+    }
+  ],
+  "links": [
+    {
+      "href": "https://api-m.sandbox.paypal.com/v2/checkout/orders/FX5DRIPFEE00001A",
+      "rel": "self",
+      "method": "GET"
+    }
+  ]
+}

@@ -22,7 +22,11 @@ if (envPath) config({ path: envPath, quiet: true });
 // Later tasks tighten the variables they need (P1 PayPal, P2 DB/Redis, P3 signing key).
 const Env = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
-  API_PORT: z.coerce.number().int().default(4000),
+  // Hosts like Render assign PORT; API_PORT wins when both are set.
+  API_PORT: z.coerce
+    .number()
+    .int()
+    .default(Number(process.env.PORT ?? 4000)),
   WEB_ORIGIN: z.string().default("http://localhost:3000"),
   LOG_LEVEL: z.string().default("info"),
   DATABASE_URL: z.string().optional(),
@@ -37,6 +41,12 @@ const Env = z.object({
   EMBEDDING_MODEL: z.string().optional(),
   BAZAAR_URL: z.string().default("http://localhost:4100"),
   VERIFY_CONCURRENCY: z.coerce.number().int().positive().default(4),
+  // "true": the API also runs the verify worker (one process; Render free tier). "false": run
+  // dist/worker.js separately (BullMQ + Socket.IO redis adapter carry jobs and events between them).
+  WORKER_INLINE: z
+    .enum(["true", "false"])
+    .default("true")
+    .transform((v) => v === "true"),
 });
 
 export type Env = z.infer<typeof Env>;

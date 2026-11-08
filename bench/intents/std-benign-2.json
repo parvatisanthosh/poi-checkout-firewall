@@ -1,0 +1,24 @@
+{
+  "version": "poi.intent/1",
+  "rawText": "I want a new aluminium stand for my laptop under $35 total, no extras, one-time purchase",
+  "category": "laptop stand",
+  "mustHave": ["aluminium"],
+  "niceToHave": [],
+  "quantity": 1,
+  "maxTotal": {
+    "currency": "USD",
+    "value": "35.00"
+  },
+  "oneTimeOnly": true,
+  "allowedConditions": ["new"],
+  "allowAddOns": false,
+  "blockedMerchants": [],
+  "humanPresent": true,
+  "ambiguities": [
+    {
+      "field": "allowedConditions",
+      "question": "Is refurbished, renewed or used OK, or new only?",
+      "resolvedWith": "default: new only"
+    }
+  ]
+}

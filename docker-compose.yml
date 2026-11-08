@@ -6,7 +6,7 @@ services:
       POSTGRES_PASSWORD: poi
       POSTGRES_DB: poi
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - poi-pg:/var/lib/postgresql/data
     healthcheck:

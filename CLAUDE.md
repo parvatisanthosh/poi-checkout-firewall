@@ -23,3 +23,8 @@ It re-reads the order from PayPal, checks it against the user's signed IntentSpe
 - `pnpm mock:api` serves a fake POI API + Socket.IO on :4000 from packages/shared/mocks (fixtures in
   packages/shared/src/fixtures.ts). Don't run it at the same time as apps/api (same port).
 - `pnpm keys:gen` writes POI_SIGNING_JWK into .env (only if missing; `--force` to rotate).
+- Prisma 7: client is generated into apps/api/src/generated (gitignored) by `pnpm install`
+  (postinstall) and `pnpm db:migrate`. Local Postgres may be on 5433 (POSTGRES_PORT) if 5432 is taken.
+- `WORKER_INLINE=true` (default) runs the BullMQ verify worker inside the API; `false` means run
+  apps/api/dist/worker.js separately (events reach browsers via the Socket.IO Redis adapter).
+- DB-backed tests run with `RUN_DB_TESTS=1`; real-LLM tests with `RUN_LLM_TESTS=1` plus keys.

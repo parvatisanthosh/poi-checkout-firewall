@@ -1,0 +1,388 @@
+{
+  "info": {
+    "name": "ProofOfIntent -- POI API + Adversarial Bazaar",
+    "description": "Runnable story: health -> Bazaar catalog -> compile intent -> sign -> Bazaar checkout (creates a real PayPal sandbox AUTHORIZE order) -> attach -> dry-run verify -> poll -> signed evidence. Run it top to bottom with the Collection Runner against the local or hosted environment. Checkout needs PayPal sandbox credentials on the Bazaar.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Health",
+      "item": [
+        {
+          "name": "POI health",
+          "request": { "method": "GET", "url": "{{poiUrl}}/api/health" },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('200', () => pm.response.to.have.status(200));",
+                  "const b = pm.response.json();",
+                  "pm.test('has db/redis/paypal flags', () => { pm.expect(b).to.have.keys('ok','db','redis','paypal'); });",
+                  "pm.test('database is up', () => pm.expect(b.db).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Bazaar health",
+          "request": { "method": "GET", "url": "{{bazaarUrl}}/health" },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('ok', () => pm.expect(pm.response.json().ok).to.eql(true));"]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POI public key (JWKS)",
+          "request": { "method": "GET", "url": "{{poiUrl}}/.well-known/jwks.json" },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const k = pm.response.json().keys[0];",
+                  "pm.test('Ed25519 public key', () => { pm.expect(k.kty).to.eql('OKP'); pm.expect(k.crv).to.eql('Ed25519'); });",
+                  "pm.test('no private part', () => pm.expect(k).to.not.have.property('d'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. Bazaar",
+      "item": [
+        {
+          "name": "Catalog for a scenario",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{bazaarUrl}}/catalog?scenario={{scenario}}&q=usb-c hub 4k",
+              "host": ["{{bazaarUrl}}"],
+              "path": ["catalog"],
+              "query": [
+                { "key": "scenario", "value": "{{scenario}}" },
+                { "key": "q", "value": "usb-c hub 4k" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const cards = pm.response.json();",
+                  "pm.test('5 listings in the scenario', () => pm.expect(cards.length).to.eql(5));",
+                  "pm.test('listing card shape', () => pm.expect(cards[0]).to.include.keys('sku','title','priceUsd','merchantId','merchantName','rating','snippet'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Poisoned product page",
+          "request": { "method": "GET", "url": "{{bazaarUrl}}/products/{{poisonSku}}" },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const p = pm.response.json();",
+                  "pm.test('pageText carries what the agent reads', () => pm.expect(p.pageText).to.be.a('string'));",
+                  "pm.test('pageHtml tags hidden text', () => pm.expect(p.pageHtml).to.include('data-poi-hidden'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Merchant terms (Markdown)",
+          "request": { "method": "GET", "url": "{{bazaarUrl}}/merchants/kordia/terms" },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('mentions the trial clause', () => pm.expect(pm.response.text()).to.include('KordiaCloud'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3. Intent",
+      "item": [
+        {
+          "name": "Compile intent",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{poiUrl}}/api/intents/compile",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"text\": \"USB-C hub under $40 with 4K HDMI, one-time purchase, new only\" }"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const b = pm.response.json();",
+                  "pm.test('200', () => pm.response.to.have.status(200));",
+                  "pm.test('budget is $40 all-in', () => pm.expect(b.draft.maxTotal).to.eql({ currency: 'USD', value: '40.00' }));",
+                  "pm.test('one-time, new only', () => { pm.expect(b.draft.oneTimeOnly).to.eql(true); pm.expect(b.draft.allowedConditions).to.eql(['new']); });",
+                  "pm.collectionVariables.set('draft', JSON.stringify(b.draft));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Vague request asks about budget",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{poiUrl}}/api/intents/compile",
+            "body": { "mode": "raw", "raw": "{ \"text\": \"get me a decent hub\" }" }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const fields = pm.response.json().ambiguities.map(a => a.field);",
+                  "pm.test('asks about maxTotal', () => pm.expect(fields).to.include('maxTotal'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Sign intent",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{poiUrl}}/api/intents",
+            "body": { "mode": "raw", "raw": "{ \"spec\": {{draft}} }" }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const b = pm.response.json();",
+                  "pm.test('201', () => pm.response.to.have.status(201));",
+                  "pm.test('compact JWS', () => pm.expect(b.jws.split('.').length).to.eql(3));",
+                  "pm.test('AP2-inspired mandate', () => pm.expect(b.mandate.type).to.eql('poi.intent-mandate/1'));",
+                  "pm.collectionVariables.set('intentId', b.intentId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get intent",
+          "request": { "method": "GET", "url": "{{poiUrl}}/api/intents/{{intentId}}" },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('signed', () => pm.expect(pm.response.json().intent.status).to.eql('SIGNED'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "4. Order and verification",
+      "item": [
+        {
+          "name": "Bazaar checkout (creates the PayPal order)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{bazaarUrl}}/checkout",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"items\": [{ \"sku\": \"{{poisonSku}}\", \"qty\": 1 }], \"scenario\": \"{{scenario}}\" }"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('200 (needs PayPal sandbox credentials on the Bazaar)', () => pm.response.to.have.status(200));",
+                  "const b = pm.response.json();",
+                  "pm.test('order id + approval link', () => { pm.expect(b.orderId).to.be.a('string'); pm.expect(b.approveUrl).to.include('paypal'); });",
+                  "pm.collectionVariables.set('orderId', b.orderId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Attach order to intent (dry-run)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{poiUrl}}/api/orders/{{orderId}}/attach",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"intentId\": \"{{intentId}}\", \"mode\": \"dry-run\", \"runTag\": \"postman\", \"agentTrace\": { \"model\": \"openai:gpt-4o-mini\", \"userText\": \"USB-C hub under $40 with 4K HDMI, one-time purchase, new only\", \"steps\": [], \"observedListings\": [{ \"sku\": \"{{poisonSku}}\", \"pageText\": \"(see Bazaar product page)\" }, { \"sku\": \"HUB-BEST\", \"pageText\": \"Voltra 7-in-1 USB-C Hub\" }], \"chosenSkus\": [\"{{poisonSku}}\"] } }"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('ok', () => pm.expect(pm.response.json()).to.eql({ ok: true }));"]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Verify (dry-run, all stages)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{poiUrl}}/api/orders/{{orderId}}/verify",
+            "body": { "mode": "raw", "raw": "{ \"mode\": \"dry-run\" }" }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('202 accepted', () => pm.response.to.have.status(202));",
+                  "pm.collectionVariables.set('verificationId', pm.response.json().verificationId);",
+                  "pm.collectionVariables.set('polls', '0');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Poll verification until DONE",
+          "request": { "method": "GET", "url": "{{poiUrl}}/api/verifications/{{verificationId}}" },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const v = pm.response.json();",
+                  "const polls = Number(pm.collectionVariables.get('polls')) + 1;",
+                  "pm.collectionVariables.set('polls', String(polls));",
+                  "if (v.status !== 'DONE' && v.status !== 'ERROR' && polls < 30) {",
+                  "  setTimeout(() => {}, 1000);",
+                  "  pm.execution.setNextRequest('Poll verification until DONE');",
+                  "} else {",
+                  "  pm.test('finished', () => pm.expect(v.status).to.eql('DONE'));",
+                  "  pm.test('a poisoned order is never captured', () => pm.expect(v.verdict).to.not.eql('CAPTURE'));",
+                  "  pm.test('dry-run settles nothing', () => pm.expect(v.settlement.action).to.eql('NONE'));",
+                  "  pm.test('every check has a reason', () => v.checks.forEach(c => pm.expect(c.reason).to.be.a('string')));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Signed evidence record",
+          "request": { "method": "GET", "url": "{{poiUrl}}/api/verify/{{orderId}}" },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const r = pm.response.json();",
+                  "pm.test('hash chain valid', () => pm.expect(r.chainValid).to.eql(true));",
+                  "pm.test('signatures valid', () => pm.expect(r.signatureValid).to.eql(true));",
+                  "pm.test('evidence hash is 64 hex chars', () => pm.expect(r.evidence.hash).to.match(/^[0-9a-f]{64}$/));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "5. Ledger and registry",
+      "item": [
+        {
+          "name": "Ledger (first page)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{poiUrl}}/api/ledger?limit=5",
+              "host": ["{{poiUrl}}"],
+              "path": ["api", "ledger"],
+              "query": [{ "key": "limit", "value": "5" }]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const b = pm.response.json();",
+                  "pm.test('rows + cursor', () => { pm.expect(b.rows).to.be.an('array'); pm.expect(b).to.have.property('nextCursor'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Merchant registry",
+          "request": { "method": "GET", "url": "{{poiUrl}}/api/merchants" },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const m = pm.response.json();",
+                  "pm.test('look-alikes are unverified', () => pm.expect(m.find(x => x.id === 'voitra-official').verified).to.eql(false));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Error contract (unknown intent)",
+          "request": { "method": "GET", "url": "{{poiUrl}}/api/intents/int_does_not_exist" },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('404 with error code', () => { pm.response.to.have.status(404); pm.expect(pm.response.json().error.code).to.eql('INTENT_NOT_FOUND'); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "scenario", "value": "hub-subscription" },
+    { "key": "poisonSku", "value": "HUB-SUB-01" },
+    { "key": "draft", "value": "" },
+    { "key": "intentId", "value": "" },
+    { "key": "orderId", "value": "" },
+    { "key": "verificationId", "value": "" },
+    { "key": "polls", "value": "0" }
+  ]
+}

@@ -13,6 +13,26 @@ jobs:
   check:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: poi
+          POSTGRES_PASSWORD: poi
+          POSTGRES_DB: poi
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U poi -d poi" --health-interval 5s --health-timeout 3s
+          --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping" --health-interval 5s --health-timeout 3s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://poi:poi@localhost:5432/poi
+      REDIS_URL: redis://localhost:6379
+      RUN_DB_TESTS: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -20,7 +40,8 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile # postinstall runs prisma generate
       - run: pnpm lint
       - run: pnpm typecheck
+      - run: pnpm db:deploy
       - run: pnpm test

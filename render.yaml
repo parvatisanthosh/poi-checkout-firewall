@@ -1,0 +1,138 @@
+# Render Blueprint (P12). One blueprint for the whole demo.
+# Secrets are `sync: false`: Render asks for them on first deploy (Dashboard > Blueprint).
+# Free instances sleep after inactivity: open the URLs ~2 minutes before recording/judging.
+services:
+  # --- POI API (+ in-process verify worker, WORKER_INLINE=true) -------------------------
+  - type: web
+    name: poi-api
+    runtime: node
+    plan: free
+    region: oregon
+    # --prod=false: prisma/tsx are devDependencies and NODE_ENV=production would skip them.
+    buildCommand: >-
+      corepack enable && pnpm install --frozen-lockfile --prod=false &&
+      pnpm --filter @poi/api build && pnpm db:deploy && pnpm db:seed &&
+      pnpm --filter @poi/api terms:ingest
+    startCommand: node apps/api/dist/server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: poi-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: poi-redis
+          property: connectionString
+      - key: WORKER_INLINE
+        value: "true"
+      - key: VERIFY_CONCURRENCY
+        value: "4"
+      - key: LOG_LEVEL
+        value: info
+      - key: PAYPAL_BASE_URL
+        value: https://api-m.sandbox.paypal.com
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      - key: PAYPAL_WEBHOOK_ID
+        sync: false
+      - key: POI_SIGNING_JWK
+        sync: false
+      - key: WEB_ORIGIN
+        sync: false # e.g. https://poi-web.onrender.com
+      - key: BAZAAR_URL
+        sync: false # e.g. https://poi-bazaar.onrender.com
+      - key: COMPILER_MODEL
+        value: openai:gpt-4o-mini
+      - key: JUDGE_MODEL
+        sync: false
+      - key: EMBEDDING_MODEL
+        value: openai:text-embedding-3-small
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: GOOGLE_GENERATIVE_AI_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+
+  # --- Optional separate worker (background workers are a paid Render plan). To use it, set
+  # WORKER_INLINE=false on poi-api and uncomment. Both share Redis: jobs via BullMQ, events via
+  # the Socket.IO redis adapter.
+  # - type: worker
+  #   name: poi-worker
+  #   runtime: node
+  #   plan: starter
+  #   buildCommand: corepack enable && pnpm install --frozen-lockfile --prod=false && pnpm --filter @poi/api build
+  #   startCommand: node apps/api/dist/worker.js
+  #   envVars:
+  #     - fromGroup: poi-shared   # or copy poi-api's env vars
+
+  - type: keyvalue
+    name: poi-redis
+    plan: free
+    maxmemoryPolicy: noeviction # BullMQ requires noeviction
+    ipAllowList: [] # internal connections only
+
+  # --- Teammate's services (placeholders; commands are owned by apps/bazaar and apps/web) ---
+  - type: web
+    name: poi-bazaar
+    runtime: node
+    plan: free
+    buildCommand: corepack enable && pnpm install --frozen-lockfile --prod=false && pnpm --filter @poi/bazaar build
+    startCommand: node apps/bazaar/dist/server.js # listens on Render's PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      - key: PAYPAL_BASE_URL
+        value: https://api-m.sandbox.paypal.com
+      - key: WEB_ORIGIN
+        sync: false
+
+  - type: web
+    name: poi-web
+    runtime: node
+    plan: free
+    buildCommand: corepack enable && pnpm install --frozen-lockfile --prod=false && pnpm --filter @poi/web build
+    startCommand: pnpm --filter @poi/web start # next start honours Render's PORT
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      # NEXT_PUBLIC_* are inlined at build time: redeploy after changing them.
+      - key: NEXT_PUBLIC_POI_API_URL
+        sync: false # https://poi-api.onrender.com
+      - key: NEXT_PUBLIC_BAZAAR_URL
+        sync: false # https://poi-bazaar.onrender.com
+      - key: NEXT_PUBLIC_PAYPAL_CLIENT_ID
+        sync: false # same sandbox client id as the API (public)
+      - key: BAZAAR_URL
+        sync: false # server-side, for the agent route
+      # The shopping agent runs in the web app's /api/agent/run route.
+      - key: AGENT_MODELS
+        value: openai:gpt-4o-mini,google:gemini-2.0-flash,groq:llama-3.3-70b-versatile
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: GOOGLE_GENERATIVE_AI_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+
+databases:
+  - name: poi-db
+    plan: free
+    databaseName: poi
+    user: poi
+    # pgvector: the first migration runs CREATE EXTENSION vector (Render Postgres ships it).

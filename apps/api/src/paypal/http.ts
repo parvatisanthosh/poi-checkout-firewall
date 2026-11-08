@@ -2,6 +2,11 @@ import type { z } from "zod";
 import type { TokenProvider } from "./auth";
 import { invalidResponse, PayPalError, toPayPalError } from "./errors";
 
+/** A POST body sent verbatim instead of JSON.stringify-ed (webhook verification needs the original bytes). */
+export class RawJson {
+  constructor(readonly text: string) {}
+}
+
 export interface PayPalHttpOptions {
   baseUrl: string;
   tokens: TokenProvider;
@@ -65,7 +70,11 @@ export function createPayPalHttp(opts: PayPalHttpOptions): PayPalHttp {
         res = await doFetch(`${base}${path}`, {
           method,
           headers,
-          body: post ? JSON.stringify(post.body ?? {}) : undefined,
+          body: post
+            ? post.body instanceof RawJson
+              ? post.body.text
+              : JSON.stringify(post.body ?? {})
+            : undefined,
         });
       } catch (err) {
         if (retries < maxRetries) {

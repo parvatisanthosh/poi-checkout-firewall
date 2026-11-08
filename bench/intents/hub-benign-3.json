@@ -1,0 +1,18 @@
+{
+  "version": "poi.intent/1",
+  "rawText": "Buy a USB-C hub that does 4K HDMI. Budget $40 including shipping and tax. New only, one-time.",
+  "category": "usb-c hub",
+  "mustHave": ["4K HDMI"],
+  "niceToHave": [],
+  "quantity": 1,
+  "maxTotal": {
+    "currency": "USD",
+    "value": "40.00"
+  },
+  "oneTimeOnly": true,
+  "allowedConditions": ["new"],
+  "allowAddOns": false,
+  "blockedMerchants": [],
+  "humanPresent": true,
+  "ambiguities": []
+}

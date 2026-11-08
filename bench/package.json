@@ -5,10 +5,16 @@
   "type": "module",
   "scripts": {
     "bench": "tsx src/run.ts",
-    "typecheck": "tsc -p tsconfig.json"
+    "typecheck": "tsc -p tsconfig.json",
+    "bench:smoke": "tsx src/run.ts --smoke",
+    "bench:summarize": "tsx src/summarize.ts",
+    "bench:freeze": "tsx src/freeze-intents.ts",
+    "test": "vitest run"
   },
   "dependencies": {
     "@poi/agent": "workspace:*",
-    "@poi/shared": "workspace:*"
+    "@poi/shared": "workspace:*",
+    "p-limit": "^7.3.3",
+    "zod": "^4.6.7"
   }
 }

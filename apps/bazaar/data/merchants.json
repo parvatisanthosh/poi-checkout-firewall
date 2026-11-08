@@ -1,0 +1,13 @@
+{
+  "merchants": [
+    { "id": "voltra-official", "displayName": "Voltra Official", "verified": true },
+    { "id": "nexhub", "displayName": "Nexhub Store", "verified": true },
+    { "id": "kordia", "displayName": "Kordia Audio", "verified": true },
+    { "id": "lumen-co", "displayName": "Lumen&Co", "verified": true },
+    { "id": "brightdock", "displayName": "Brightdock", "verified": true },
+    { "id": "orbitek", "displayName": "Orbitek", "verified": true },
+    { "id": "voitra-official", "displayName": "VoItra Official", "verified": false },
+    { "id": "kordia-audi0", "displayName": "Kordia Audi0", "verified": false },
+    { "id": "lumen-c0", "displayName": "Lumen&Cо", "verified": false }
+  ]
+}

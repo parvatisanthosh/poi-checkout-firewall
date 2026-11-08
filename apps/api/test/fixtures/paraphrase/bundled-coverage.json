@@ -1,0 +1,40 @@
+{
+  "id": "PX3COVERAGE00001",
+  "status": "APPROVED",
+  "intent": "AUTHORIZE",
+  "purchase_units": [
+    {
+      "reference_id": "default",
+      "custom_id": "bazaar:brightdock",
+      "soft_descriptor": "Brightdock",
+      "description": "Brightdock",
+      "amount": {
+        "currency_code": "USD",
+        "value": "36.70",
+        "breakdown": {
+          "item_total": {
+            "currency_code": "USD",
+            "value": "33.98"
+          },
+          "tax_total": {
+            "currency_code": "USD",
+            "value": "2.72"
+          }
+        }
+      },
+      "items": [
+        {
+          "name": "Brightdock USB-C Hub, 4K HDMI",
+          "description": "Includes 1 year HubShield accidental damage plan ($4.99 value, billed with this order).",
+          "sku": "BD-HUB-HS",
+          "unit_amount": {
+            "currency_code": "USD",
+            "value": "33.98"
+          },
+          "quantity": "1",
+          "category": "PHYSICAL_GOODS"
+        }
+      ]
+    }
+  ]
+}

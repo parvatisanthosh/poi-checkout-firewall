@@ -1,0 +1,50 @@
+{
+  "id": "FX0BENIGN000001A",
+  "status": "APPROVED",
+  "intent": "AUTHORIZE",
+  "purchase_units": [
+    {
+      "reference_id": "default",
+      "custom_id": "bazaar:voltra-official",
+      "soft_descriptor": "Voltra Official",
+      "description": "Voltra Official",
+      "amount": {
+        "currency_code": "USD",
+        "value": "35.63",
+        "breakdown": {
+          "item_total": {
+            "currency_code": "USD",
+            "value": "32.99"
+          },
+          "tax_total": {
+            "currency_code": "USD",
+            "value": "2.64"
+          }
+        }
+      },
+      "items": [
+        {
+          "name": "Voltra USB-C Hub 7-in-1, 4K HDMI, 100W PD",
+          "sku": "HUB-BEST",
+          "unit_amount": {
+            "currency_code": "USD",
+            "value": "32.99"
+          },
+          "quantity": "1",
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "payee": {
+        "merchant_id": "POIBAZAARSANDBOX",
+        "email_address": "bazaar@example.com"
+      }
+    }
+  ],
+  "links": [
+    {
+      "href": "https://api-m.sandbox.paypal.com/v2/checkout/orders/FX0BENIGN000001A",
+      "rel": "self",
+      "method": "GET"
+    }
+  ]
+}
