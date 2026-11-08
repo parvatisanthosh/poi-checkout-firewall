@@ -19,6 +19,7 @@
     "format": "prettier --write .",
     "mock:api": "pnpm --filter @poi/shared mock",
     "keys:gen": "node scripts/keys-gen.mjs",
+    "paypal:smoke": "pnpm --filter @poi/api paypal:smoke",
     "db:up": "docker compose up -d"
   },
   "devDependencies": {

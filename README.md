@@ -53,6 +53,7 @@ Contracts between the halves: [docs/CONTRACTS.md](docs/CONTRACTS.md).
 | `pnpm test`       | Run all tests (vitest)                               |
 | `pnpm lint`       | ESLint + Prettier check                              |
 | `pnpm keys:gen`   | Generate the Ed25519 signing key into `.env`         |
+| `pnpm paypal:smoke` | Sandbox order -> approve -> authorize -> void (`-- --capture` to capture) |
 
 ## Real vs simulated
 

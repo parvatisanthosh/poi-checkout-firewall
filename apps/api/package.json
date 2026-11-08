@@ -10,9 +10,11 @@
     "start": "node dist/server.js",
     "start:worker": "node dist/worker.js",
     "typecheck": "tsc -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "paypal:smoke": "tsx scripts/paypal-smoke.ts"
   },
   "dependencies": {
+    "@paypal/agent-toolkit": "1.11.0",
     "@poi/shared": "workspace:*",
     "dotenv": "^18.0.9",
     "express": "^5.3.0",
