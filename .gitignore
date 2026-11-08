@@ -1,0 +1,33 @@
+# deps
+node_modules/
+
+# builds
+dist/
+.next/
+out/
+.turbo/
+*.tsbuildinfo
+next-env.d.ts
+
+# env -- never commit secrets
+.env
+.env.*
+!.env.example
+
+# logs / os
+*.log
+npm-debug.log*
+pnpm-debug.log*
+.DS_Store
+Thumbs.db
+
+# editors
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# test
+coverage/
+
+# bench: raw run logs are committed; scratch output is not
+bench/results/tmp/

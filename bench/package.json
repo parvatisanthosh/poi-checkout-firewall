@@ -1,0 +1,14 @@
+{
+  "name": "@poi/bench",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bench": "tsx src/run.ts",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@poi/agent": "workspace:*",
+    "@poi/shared": "workspace:*"
+  }
+}

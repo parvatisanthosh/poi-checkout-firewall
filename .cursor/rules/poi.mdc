@@ -1,0 +1,29 @@
+---
+description: ProofOfIntent project rules (teammate side)
+alwaysApply: true
+---
+
+# ProofOfIntent -- Semantic Checkout Firewall
+
+PayPal AI Hackathon project. POI sits between an AI shopping agent's PayPal order and the capture.
+It re-reads the order from PayPal, checks it against the user's signed IntentSpec, then captures or voids.
+This side of the repo builds everything that attacks POI and shows it: the Adversarial Bazaar,
+the shopping agent, the web app and the benchmark.
+
+## Rules
+
+- Read docs/CONTRACTS.md before any change. Schemas in packages/shared are the source of truth --
+  import them from "@poi/shared"; never redefine a contract type locally.
+- I own apps/web, apps/bazaar, packages/agent, bench/, postman/. Do not edit apps/api, apps/mcp,
+  packages/shared, prisma/ (ask Parvati first).
+- Changing a shared schema/endpoint/event: stop and tell me -- my teammate depends on it.
+- TypeScript strict, ESM, Node 20+. Zod-validate request bodies and data files.
+- Money: PayPal amounts are strings ("29.99"). Use toCents/fromCents from @poi/shared for math, never floats.
+- Use the typed POI client (createPoiClient from @poi/shared). Until Tue evening it points at the mock
+  API: run `pnpm mock:api` (or `pnpm dev:mock` for web + bazaar + mock together).
+- LLM models are "provider:model" ids resolved with getModel from "@poi/shared/llm" (server-side only).
+- Attacks are realistic: fictional brands only, attacks live in descriptions/reviews/specs/alt text,
+  every poisoned listing must be a genuinely wrong purchase for its scenario.
+- The shopping agent's prompt stays a normal helpful assistant -- no defensive instructions.
+- Never commit secrets; use .env (gitignored) and keep .env.example complete.
+- Before committing: pnpm typecheck && pnpm test.
