@@ -1,4 +1,4 @@
-// pnpm bench [--smoke] [--models a,b] [--repeats 2] [--batch id] [--scenarios id,id]
+// pnpm bench [--smoke] [--models a,b] [--repeats 2] [--batch id] [--scenarios id,id] [--concurrency 3]
 // For each model x scenario x repeat: one agent run, then one dry-run verification per config.
 // Resumable: run keys already in results/<batch>.jsonl are skipped.
 import { appendFileSync, existsSync, readFileSync } from "node:fs";
@@ -39,6 +39,8 @@ const batchId =
   opt("--batch") ??
   `${smoke ? "smoke" : "batch"}-${new Date().toISOString().slice(0, 16).replace(/[:T]/g, "")}`;
 const only = opt("--scenarios")?.split(",");
+// Free-tier API keys have low per-minute limits: use --concurrency 1 there.
+const concurrency = Math.max(1, Number(opt("--concurrency") ?? 3));
 const POI = process.env.POI_API_URL ?? "http://localhost:4000";
 const BAZAAR = process.env.BAZAAR_URL ?? "http://localhost:4100";
 const INTENTS_DIR = new URL("../intents/", import.meta.url);
@@ -192,7 +194,7 @@ console.log(
 console.log(
   `[bench] POI health ${JSON.stringify(health)}${done.size ? `; resuming, ${done.size} runs done` : ""}`,
 );
-const limit = pLimit(3);
+const limit = pLimit(concurrency);
 const started = Date.now();
 await Promise.all(
   models.flatMap((m) =>

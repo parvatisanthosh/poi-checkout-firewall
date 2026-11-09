@@ -14,6 +14,10 @@ the shopping agent, the web app and the benchmark.
 
 - Read docs/CONTRACTS.md before any change. Schemas in packages/shared are the source of truth --
   import them from "@poi/shared"; never redefine a contract type locally.
+- Layer 2 (Immune): read docs/CONTRACTS-L2.md first. I also own packages/arena, apps/bazaar/src/arena,
+  apps/web/app/{arena,immune,calibration} and bench/evolved. Implement packages/arena to the
+  `ArenaEngine` interface in @poi/shared (l2.ts) exactly; build pages against `pnpm mock:api`
+  (fixtures in @poi/shared/fixtures-l2, a fake attacker in @poi/shared/arena-fake).
 - I own apps/web, apps/bazaar, packages/agent, bench/, postman/. Do not edit apps/api, apps/mcp,
   packages/shared, prisma/ (ask Parvati first).
 - Changing a shared schema/endpoint/event: stop and tell me -- my teammate depends on it.

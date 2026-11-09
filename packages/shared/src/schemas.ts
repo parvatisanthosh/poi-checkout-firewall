@@ -136,6 +136,9 @@ export const CheckId = z.enum([
   "semantic",
   "shadow",
   "injection",
+  // Layer 2 (CONTRACTS-L2): antibody match and merchant repeat-offender risk
+  "immune",
+  "risk",
 ]);
 export type CheckId = z.infer<typeof CheckId>;
 
@@ -165,6 +168,11 @@ export const VerifierConfig = z.object({
   semantic: z.boolean().default(true),
   terms: z.boolean().default(true),
   shadow: z.boolean().default(true),
+  // Layer 2 (VerifierConfigL2 in CONTRACTS-L2). Defaults keep Layer 1 behaviour.
+  immune: z.boolean().default(false),
+  conformal: z.boolean().default(false),
+  /** Pin antibodies + calibration to this defender version (frozen held-out evals). */
+  defenderVersion: z.number().int().optional(),
 });
 export type VerifierConfig = z.infer<typeof VerifierConfig>;
 export type VerifierConfigInput = z.input<typeof VerifierConfig>;

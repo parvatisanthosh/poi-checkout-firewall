@@ -6,7 +6,6 @@ import { createServer, type Server as HttpServer } from "node:http";
 import cors from "cors";
 import express, { type NextFunction, type Request, type Response } from "express";
 import { Server as IoServer } from "socket.io";
-import { z } from "zod";
 import {
   CAPTURE_SUMMARY,
   DEMO_JWS,
@@ -40,17 +39,16 @@ import {
   type RunMode,
   type VerificationResult,
 } from "../src/schemas";
-import {
-  EVENTS,
-  LIVE_NAMESPACE,
-  orderRoom,
-  type ClientToServerEvents,
-  type ServerToClientEvents,
-} from "../src/events";
+import { EVENTS, LIVE_NAMESPACE, orderRoom } from "../src/events";
+import type { LiveClientToServerEvents, LiveServerToClientEvents } from "../src/l2";
+import { HttpError, parse } from "./http";
+import { mountL2Mock } from "./l2";
 
 export interface MockOptions {
   /** Delay between streamed checks. Tests set this to ~0. */
   checkIntervalMs?: number;
+  /** Delay between Layer 2 arena events (trials, generations, antibodies). */
+  arenaIntervalMs?: number;
 }
 
 interface StoredIntent {
@@ -66,16 +64,6 @@ interface StoredOrder {
   runTag?: string;
   createdAt: string;
   verificationIds: string[];
-}
-
-class HttpError extends Error {
-  constructor(
-    readonly status: number,
-    readonly code: string,
-    message: string,
-  ) {
-    super(message);
-  }
 }
 
 const STAGES = ["deterministic", "semantic", "rag", "shadow"];
@@ -170,11 +158,6 @@ export function createMockApp(opts: MockOptions = {}) {
   app.use(cors());
   app.use(express.json({ limit: "2mb" }));
 
-  const parse = <T extends z.ZodTypeAny>(schema: T, data: unknown): z.infer<T> => {
-    const r = schema.safeParse(data);
-    if (!r.success) throw new HttpError(400, "VALIDATION_ERROR", z.prettifyError(r.error));
-    return r.data;
-  };
   const getOrder = (orderId: string) => {
     const o = orders.get(orderId);
     if (!o) throw new HttpError(404, "ORDER_NOT_FOUND", `Order ${orderId} has not been attached`);
@@ -183,7 +166,7 @@ export function createMockApp(opts: MockOptions = {}) {
 
   // -- live namespace ------------------------------------------------------
   const httpServer: HttpServer = createServer(app);
-  const io = new IoServer<ClientToServerEvents, ServerToClientEvents>(httpServer, {
+  const io = new IoServer<LiveClientToServerEvents, LiveServerToClientEvents>(httpServer, {
     cors: { origin: true },
   });
   const live = io.of(LIVE_NAMESPACE);
@@ -246,6 +229,7 @@ export function createMockApp(opts: MockOptions = {}) {
   }
 
   const r = express.Router();
+  const l2 = mountL2Mock(r, live, { intervalMs: opts.arenaIntervalMs ?? 400, nextId });
 
   r.get("/health", (_req, res) => {
     res.json({ ok: true, db: true, redis: true, paypal: true });
@@ -399,6 +383,7 @@ export function createMockApp(opts: MockOptions = {}) {
       chainValid: true,
       signatureValid: true,
       publicJwk: mockPublicJwk,
+      ...(done ? l2.verifyExtras(v.verdict === "VOID") : {}),
     });
   });
 

@@ -3,14 +3,14 @@
  * scorecard. Ground truth comes only from scenario labels, never from POI.
  */
 import { z } from "zod";
-import { Verdict, VerifierConfig } from "./schemas";
+import { Verdict, type VerifierConfigInput } from "./schemas";
 
 export const BENCH_CONFIGS = {
   deterministic: { deterministic: true, semantic: false, terms: false, shadow: false },
   semantic: { deterministic: true, semantic: true, terms: false, shadow: false },
   terms: { deterministic: true, semantic: true, terms: true, shadow: false },
   full: { deterministic: true, semantic: true, terms: true, shadow: true },
-} as const satisfies Record<string, VerifierConfig>;
+} as const satisfies Record<string, VerifierConfigInput>;
 export type BenchConfigId = keyof typeof BENCH_CONFIGS;
 export const BenchConfigId = z.enum(["deterministic", "semantic", "terms", "full"]);
 

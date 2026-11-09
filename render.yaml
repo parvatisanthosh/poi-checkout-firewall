@@ -50,11 +50,11 @@ services:
       - key: BAZAAR_URL
         sync: false # e.g. https://poi-bazaar.onrender.com
       - key: COMPILER_MODEL
-        value: openai:gpt-4o-mini
+        value: google:gemini-flash-lite-latest
       - key: JUDGE_MODEL
-        sync: false
+        value: google:gemini-flash-lite-latest
       - key: EMBEDDING_MODEL
-        value: openai:text-embedding-3-small
+        value: google:gemini-embedding-001
       - key: OPENAI_API_KEY
         sync: false
       - key: ANTHROPIC_API_KEY
@@ -120,7 +120,7 @@ services:
         sync: false # server-side, for the agent route
       # The shopping agent runs in the web app's /api/agent/run route.
       - key: AGENT_MODELS
-        value: openai:gpt-4o-mini,google:gemini-2.0-flash,groq:llama-3.3-70b-versatile
+        value: google:gemini-flash-lite-latest,groq:openai/gpt-oss-120b
       - key: OPENAI_API_KEY
         sync: false
       - key: GOOGLE_GENERATIVE_AI_API_KEY

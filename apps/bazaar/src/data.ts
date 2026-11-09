@@ -4,86 +4,25 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
+import {
+  BazaarProduct,
+  Merchant,
+  ProductCategory,
+  ProductFamily,
+  Scenario,
+  type Merchant as MerchantT,
+} from "@poi/shared";
 
-const Usd = z
-  .number()
-  .nonnegative()
-  .refine((n) => Math.abs(Math.round(n * 100) - n * 100) < 1e-6, "at most 2 decimals");
-
-export const Category = z.enum(["usb-c hub", "wireless earbuds", "laptop stand"]);
-export const Family = z.enum([
-  "benign",
-  "injection",
-  "subscription",
-  "variant",
-  "addon",
-  "lookalike",
-  "darkpattern",
-]);
-export type Family = z.infer<typeof Family>;
-
-export const Product = z.object({
-  sku: z.string().regex(/^[A-Z0-9-]+$/),
-  title: z.string().min(5),
-  category: Category,
-  merchantId: z.string(),
-  priceUsd: Usd,
-  shippingUsd: Usd,
-  condition: z.enum(["new", "renewed", "used"]),
-  rating: z.number().min(0).max(5),
-  reviews: z.number().int().nonnegative(),
-  badge: z.string().optional(),
-  /** Urgency banner (dark patterns). */
-  banner: z.string().optional(),
-  bullets: z.array(z.string()).min(1),
-  description: z.string(),
-  specs: z.record(z.string(), z.string()),
-  imageAlt: z.string(),
-  topReviews: z
-    .array(
-      z.object({ author: z.string(), stars: z.number().int().min(1).max(5), text: z.string() }),
-    )
-    .length(3),
-  hidden: z
-    .object({ text: z.string(), placement: z.enum(["description", "review", "spec", "alt"]) })
-    .optional(),
-  family: Family,
-  /** PayPal item name when it differs from the title (e.g. a bundled trial). */
-  lineName: z.string().optional(),
-  checkoutExtras: z
-    .object({
-      lines: z.array(
-        z.object({
-          name: z.string(),
-          description: z.string().optional(),
-          unitUsd: Usd,
-          category: z.enum(["PHYSICAL_GOODS", "DIGITAL_GOODS"]),
-        }),
-      ),
-      feesUsd: z.object({ handling: Usd.optional(), insurance: Usd.optional() }).optional(),
-    })
-    .optional(),
-  scenarios: z.array(z.string()),
-});
-export type Product = z.infer<typeof Product>;
-
-export const MerchantRecord = z.object({
-  id: z.string(),
-  displayName: z.string(),
-  verified: z.boolean(),
-});
-export type MerchantRecord = z.infer<typeof MerchantRecord>;
-
-export const Scenario = z.object({
-  id: z.string(),
-  category: Category,
-  family: Family,
-  userText: z.string(),
-  catalog: z.array(z.string()).min(2),
-  acceptableSkus: z.array(z.string()).min(1),
-  poisonSku: z.string().optional(),
-});
-export type Scenario = z.infer<typeof Scenario>;
+// The schemas live in @poi/shared (Layer 2 genomes carry a full listing); these aliases keep the
+// Bazaar's own names so the rest of apps/bazaar is unchanged.
+export const Category = ProductCategory;
+export const Family = ProductFamily;
+export type Family = ProductFamily;
+export const Product = BazaarProduct;
+export type Product = BazaarProduct;
+export const MerchantRecord = Merchant;
+export type MerchantRecord = MerchantT;
+export { Scenario };
 
 export interface BazaarData {
   products: Product[];

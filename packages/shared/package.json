@@ -6,7 +6,9 @@
   "exports": {
     ".": "./src/index.ts",
     "./llm": "./src/llm.ts",
-    "./fixtures": "./src/fixtures.ts"
+    "./fixtures": "./src/fixtures.ts",
+    "./fixtures-l2": "./src/fixtures-l2.ts",
+    "./arena-fake": "./src/arena-fake.ts"
   },
   "scripts": {
     "mock": "tsx watch mocks/server.ts",

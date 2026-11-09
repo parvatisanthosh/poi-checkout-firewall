@@ -15,13 +15,33 @@ import {
   SignIntentResponse,
   VerificationResult,
   VerifyOrderResponse,
-  VerifyRecordResponse,
   type AttachOrderRequest,
   type DecisionRequest,
   type IntentSpecInput,
   type LedgerQuery,
   type VerifyOrderRequest,
 } from "./schemas";
+import {
+  AntibodyDetail,
+  AntibodyList,
+  AntibodySummary,
+  ArenaRunDetail,
+  ArenaRunList,
+  CalibrationCurve,
+  CalibrationResult,
+  DefenderInfo,
+  GenomeLineage,
+  GenomeRows,
+  ImmuneReportResponse,
+  MerchantRiskList,
+  StartArenaRunResponse,
+  VerifyRecordResponseL2,
+  type AntibodyStatus,
+  type ArenaRunConfigInput,
+  type CalibrationRunRequest,
+  type GenomesQuery,
+  type ImmuneReportRequest,
+} from "./l2";
 
 export class PoiApiError extends Error {
   constructor(
@@ -110,10 +130,42 @@ export function createPoiClient(opts: PoiClientOptions) {
       const suffix = qs.size ? `?${qs.toString()}` : "";
       return request("GET", `/ledger${suffix}`, LedgerResponse);
     },
+    /** Layer 1 record plus the optional Layer 2 fields (immuneMatches, calibration, ...). */
     getVerifyRecord: (orderId: string) =>
-      request("GET", `/verify/${enc(orderId)}`, VerifyRecordResponse),
+      request("GET", `/verify/${enc(orderId)}`, VerifyRecordResponseL2),
     getMerchants: () => request("GET", "/merchants", MerchantsResponse),
     health: () => request("GET", "/health", HealthResponse),
+
+    // --- Layer 2 (docs/CONTRACTS-L2.md 4.4) ---------------------------------------------
+    startArenaRun: (config: ArenaRunConfigInput) =>
+      request("POST", "/arena/runs", StartArenaRunResponse, config),
+    listArenaRuns: () => request("GET", "/arena/runs", ArenaRunList),
+    getArenaRun: (runId: string) => request("GET", `/arena/runs/${enc(runId)}`, ArenaRunDetail),
+    getArenaGenomes: (runId: string, query: GenomesQuery = {}) => {
+      const qs = new URLSearchParams();
+      if (query.gen !== undefined) qs.set("gen", String(query.gen));
+      if (query.family) qs.set("family", query.family);
+      const suffix = qs.size ? `?${qs.toString()}` : "";
+      return request("GET", `/arena/runs/${enc(runId)}/genomes${suffix}`, GenomeRows);
+    },
+    getGenome: (genomeId: string) =>
+      request("GET", `/arena/genomes/${enc(genomeId)}`, GenomeLineage),
+    stopArenaRun: (runId: string) =>
+      request("POST", `/arena/runs/${enc(runId)}/stop`, OkResponse, {}),
+    listAntibodies: (state?: AntibodyStatus) =>
+      request("GET", `/immune/antibodies${state ? `?state=${state}` : ""}`, AntibodyList),
+    getAntibody: (antibodyId: string) =>
+      request("GET", `/immune/antibodies/${enc(antibodyId)}`, AntibodyDetail),
+    retireAntibody: (antibodyId: string) =>
+      request("POST", `/immune/antibodies/${enc(antibodyId)}/retire`, AntibodySummary, {}),
+    reportOrder: (body: ImmuneReportRequest) =>
+      request("POST", "/immune/report", ImmuneReportResponse, body),
+    getMerchantRisks: () => request("GET", "/immune/merchants", MerchantRiskList),
+    runCalibration: (body: CalibrationRunRequest) =>
+      request("POST", "/calibration/run", CalibrationResult, body),
+    getLatestCalibration: () => request("GET", "/calibration/latest", CalibrationResult),
+    getCalibrationCurve: () => request("GET", "/calibration/curve", CalibrationCurve),
+    getDefender: () => request("GET", "/defender", DefenderInfo),
 
     /** Poll a verification until it is DONE or ERROR (bench, mcp). */
     async waitForVerification(

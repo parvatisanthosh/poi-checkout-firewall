@@ -2,18 +2,9 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
-import { BenchFamily } from "@poi/shared";
+import { Scenario } from "@poi/shared";
 
-export const Scenario = z.object({
-  id: z.string(),
-  category: z.string(),
-  family: BenchFamily,
-  userText: z.string(),
-  catalog: z.array(z.string()),
-  acceptableSkus: z.array(z.string()),
-  poisonSku: z.string().optional(),
-});
-export type Scenario = z.infer<typeof Scenario>;
+export { Scenario };
 
 export const SCENARIOS_PATH = fileURLToPath(
   new URL("../../apps/bazaar/data/scenarios.json", import.meta.url),

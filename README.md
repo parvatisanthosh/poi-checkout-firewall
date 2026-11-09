@@ -154,8 +154,7 @@ Set these on `poi-api` in the dashboard (the rest come from the blueprint):
 | `POI_SIGNING_JWK` | output of `pnpm keys:gen -- --print` (keep it stable: rotating breaks old signatures) |
 | `WEB_ORIGIN` | `https://<poi-web>.onrender.com` (comma-separate several) |
 | `BAZAAR_URL` | `https://<poi-bazaar>.onrender.com` |
-| `JUDGE_MODEL` | e.g. `anthropic:claude-haiku-5-5` |
-| `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` / `GOOGLE_GENERATIVE_AI_API_KEY` / `GROQ_API_KEY` | whichever providers `COMPILER_MODEL`, `JUDGE_MODEL`, `EMBEDDING_MODEL` and the agent models use |
+| `GOOGLE_GENERATIVE_AI_API_KEY`, `GROQ_API_KEY` | both free (aistudio.google.com/apikey, console.groq.com/keys); the default models need only these two. OpenAI/Anthropic keys are optional |
 
 Free instances sleep after inactivity: open the URLs about 2 minutes before a demo.
 
@@ -196,6 +195,7 @@ labels. Each agent run is verified under four configs (rules, + judge, + terms, 
 pnpm bench:freeze      # compile each scenario's intent once (review bench/intents/*.json)
 pnpm bench:smoke       # 1 model, 6 scenarios, 1 repeat
 pnpm bench             # AGENT_MODELS x 26 scenarios x 2 repeats, resumable
+                       # free-tier keys: pnpm bench -- --concurrency 1 --repeats 1
 pnpm bench:summarize   # -> bench/results/summary.json (read by /bench and the landing page)
 ```
 

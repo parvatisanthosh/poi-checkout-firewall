@@ -5,7 +5,8 @@ It re-reads the order from PayPal, checks it against the user's signed IntentSpe
 
 ## Rules
 
-- Read docs/CONTRACTS.md before any change. Schemas in packages/shared are the source of truth.
+- Read docs/CONTRACTS.md before any change, and docs/CONTRACTS-L2.md before any Layer 2 change.
+  Schemas in packages/shared are the source of truth (Layer 2: packages/shared/src/l2.ts).
 - I own apps/api, apps/mcp, packages/shared, prisma/. Do not edit apps/web, apps/bazaar, packages/agent, bench/, postman/.
 - Changing a shared schema/endpoint/event: stop and tell me -- my teammate depends on it.
 - TypeScript strict, ESM, Node 20+. Zod-validate every request body and every PayPal response we read.

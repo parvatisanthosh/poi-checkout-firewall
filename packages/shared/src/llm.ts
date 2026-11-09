@@ -6,6 +6,7 @@ import { anthropic } from "@ai-sdk/anthropic";
 import { google } from "@ai-sdk/google";
 import { groq } from "@ai-sdk/groq";
 import { openai } from "@ai-sdk/openai";
+import { defaultEmbeddingSettingsMiddleware, wrapEmbeddingModel } from "ai";
 
 export const PROVIDERS = ["openai", "anthropic", "google", "groq"] as const;
 export type Provider = (typeof PROVIDERS)[number];
@@ -68,15 +69,23 @@ export function parseModelList(list: string | undefined): string[] {
 export const EMBEDDING_DIMS = 1536;
 
 /**
- * Resolve "provider:model" to an embedding model. Only OpenAI's 1536-dim models fit the
- * TermsChunk column today (text-embedding-3-small).
+ * Resolve "provider:model" to an embedding model that returns EMBEDDING_DIMS-long vectors,
+ * the size of TermsChunk.embedding:
+ *   - openai:text-embedding-3-small (1536 natively)
+ *   - google:gemini-embedding-001 (free tier; asked for 1536 via outputDimensionality)
  */
 export function getEmbeddingModel(id: string) {
   const { provider, model } = parseModelId(id);
-  if (provider !== "openai") {
-    throw new Error(
-      `Embeddings need a ${EMBEDDING_DIMS}-dim model; use openai:text-embedding-3-small (got "${id}")`,
-    );
+  if (provider === "openai") return openai.embeddingModel(model);
+  if (provider === "google") {
+    return wrapEmbeddingModel({
+      model: google.embeddingModel(model),
+      middleware: defaultEmbeddingSettingsMiddleware({
+        settings: { providerOptions: { google: { outputDimensionality: EMBEDDING_DIMS } } },
+      }),
+    });
   }
-  return openai.embeddingModel(model);
+  throw new Error(
+    `Embeddings need a ${EMBEDDING_DIMS}-dim model: use google:gemini-embedding-001 or openai:text-embedding-3-small (got "${id}")`,
+  );
 }
