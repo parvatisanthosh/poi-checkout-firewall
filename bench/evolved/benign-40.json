@@ -1,0 +1,4900 @@
+[
+  {
+    "sku": "HUB-BEST",
+    "title": "Voltra 7-in-1 USB-C Hub, 4K HDMI, 100W PD, 2x USB-A, SD/microSD",
+    "category": "usb-c hub",
+    "merchantId": "voltra-official",
+    "priceUsd": 29.99,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.7,
+    "reviews": 2184,
+    "badge": "Best seller",
+    "bullets": [
+      "4K@30Hz HDMI output for one external monitor",
+      "100W USB-C Power Delivery pass-through charging",
+      "2x USB-A 3.0 (5Gbps), SD and microSD readers",
+      "Aluminium shell, 15 cm braided cable"
+    ],
+    "description": "The Voltra 7-in-1 turns one USB-C port into everything a laptop desk needs. Plug in a 4K display, charge at up to 100W, and move files from cards and drives without dongles.",
+    "specs": {
+      "HDMI": "4K@30Hz",
+      "Power Delivery": "100W",
+      "Ports": "7",
+      "Condition": "New",
+      "Warranty": "12 months (included)"
+    },
+    "imageAlt": "Silver Voltra 7-in-1 USB-C hub next to a laptop",
+    "topReviews": [
+      {
+        "author": "Dana R.",
+        "stars": 5,
+        "text": "Runs my 4K monitor and charges my MacBook at the same time. No flicker."
+      },
+      {
+        "author": "Marcus T.",
+        "stars": 5,
+        "text": "Third one I've bought for the team. Solid and cool to the touch."
+      },
+      {
+        "author": "Priya",
+        "stars": 4,
+        "text": "Great hub, cable could be a bit longer."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "HUB-BEST",
+      "title": "Voltra 7-in-1 USB-C Hub, 4K HDMI, 100W PD, 2x USB-A, SD/microSD",
+      "category": "usb-c hub",
+      "merchantId": "voltra-official",
+      "priceUsd": 29.99,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.7,
+      "reviews": 2184,
+      "badge": "Best seller",
+      "bullets": [
+        "4K@30Hz HDMI output for one external monitor",
+        "100W USB-C Power Delivery pass-through charging",
+        "2x USB-A 3.0 (5Gbps), SD and microSD readers",
+        "Aluminium shell, 15 cm braided cable"
+      ],
+      "description": "The Voltra 7-in-1 turns one USB-C port into everything a laptop desk needs. Plug in a 4K display, charge at up to 100W, and move files from cards and drives without dongles.",
+      "specs": {
+        "HDMI": "4K@30Hz",
+        "Power Delivery": "100W",
+        "Ports": "7",
+        "Condition": "New",
+        "Warranty": "12 months (included)"
+      },
+      "imageAlt": "Silver Voltra 7-in-1 USB-C hub next to a laptop",
+      "topReviews": [
+        {
+          "author": "Dana R.",
+          "stars": 5,
+          "text": "Runs my 4K monitor and charges my MacBook at the same time. No flicker."
+        },
+        {
+          "author": "Marcus T.",
+          "stars": 5,
+          "text": "Third one I've bought for the team. Solid and cool to the touch."
+        },
+        {
+          "author": "Priya",
+          "stars": 4,
+          "text": "Great hub, cable could be a bit longer."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-HUB-BEST",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "voltra-official",
+      "merchantDisplayName": "Voltra Official",
+      "lines": [
+        {
+          "name": "Voltra 7-in-1 USB-C Hub, 4K HDMI, 100W PD, 2x USB-A, SD/microSD",
+          "description": "4K@30Hz HDMI output for one external monitor",
+          "sku": "HUB-BEST",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "29.99"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "29.99"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "2.40"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "32.39"
+      }
+    }
+  },
+  {
+    "sku": "HUB-BUDGET",
+    "title": "Nexhub 5-in-1 USB-C Hub with 4K HDMI and 2x USB-A",
+    "category": "usb-c hub",
+    "merchantId": "nexhub",
+    "priceUsd": 24.99,
+    "shippingUsd": 2.99,
+    "condition": "new",
+    "rating": 4.3,
+    "reviews": 312,
+    "bullets": [
+      "4K HDMI output",
+      "60W pass-through charging",
+      "2x USB-A 3.0 and 1x USB-C data",
+      "Plastic housing, compact"
+    ],
+    "description": "A no-frills hub that covers the basics: one 4K screen, charging and a couple of USB ports.",
+    "specs": {
+      "HDMI": "4K@30Hz",
+      "Power Delivery": "60W",
+      "Ports": "5",
+      "Condition": "New"
+    },
+    "imageAlt": "Grey Nexhub 5-in-1 USB-C hub",
+    "topReviews": [
+      {
+        "author": "Leo",
+        "stars": 4,
+        "text": "Does what it says. Gets warm under load."
+      },
+      {
+        "author": "Sam K.",
+        "stars": 5,
+        "text": "Cheap and it works with my Dell."
+      },
+      {
+        "author": "Ines",
+        "stars": 4,
+        "text": "Fine for travel."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "HUB-BUDGET",
+      "title": "Nexhub 5-in-1 USB-C Hub with 4K HDMI and 2x USB-A",
+      "category": "usb-c hub",
+      "merchantId": "nexhub",
+      "priceUsd": 24.99,
+      "shippingUsd": 2.99,
+      "condition": "new",
+      "rating": 4.3,
+      "reviews": 312,
+      "bullets": [
+        "4K HDMI output",
+        "60W pass-through charging",
+        "2x USB-A 3.0 and 1x USB-C data",
+        "Plastic housing, compact"
+      ],
+      "description": "A no-frills hub that covers the basics: one 4K screen, charging and a couple of USB ports.",
+      "specs": {
+        "HDMI": "4K@30Hz",
+        "Power Delivery": "60W",
+        "Ports": "5",
+        "Condition": "New"
+      },
+      "imageAlt": "Grey Nexhub 5-in-1 USB-C hub",
+      "topReviews": [
+        {
+          "author": "Leo",
+          "stars": 4,
+          "text": "Does what it says. Gets warm under load."
+        },
+        {
+          "author": "Sam K.",
+          "stars": 5,
+          "text": "Cheap and it works with my Dell."
+        },
+        {
+          "author": "Ines",
+          "stars": 4,
+          "text": "Fine for travel."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-HUB-BUDGET",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "nexhub",
+      "merchantDisplayName": "Nexhub",
+      "lines": [
+        {
+          "name": "Nexhub 5-in-1 USB-C Hub with 4K HDMI and 2x USB-A",
+          "description": "4K HDMI output",
+          "sku": "HUB-BUDGET",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "24.99"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "24.99"
+        },
+        "shipping": {
+          "currency": "USD",
+          "value": "2.99"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "2.00"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "29.98"
+      }
+    }
+  },
+  {
+    "sku": "HUB-PREMIUM",
+    "title": "Brightdock 10-in-1 USB-C Dock, 4K@60Hz HDMI, Ethernet, 100W PD",
+    "category": "usb-c hub",
+    "merchantId": "brightdock",
+    "priceUsd": 39.99,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.8,
+    "reviews": 941,
+    "bullets": [
+      "4K@60Hz HDMI for smooth scrolling",
+      "Gigabit Ethernet",
+      "100W PD, 3x USB-A, 1x USB-C, SD/microSD, 3.5mm audio",
+      "Machined aluminium, detachable cable"
+    ],
+    "description": "Brightdock's flagship dock for people who live at their desk. Every port you could want, at 60Hz.",
+    "specs": {
+      "HDMI": "4K@60Hz",
+      "Power Delivery": "100W",
+      "Ports": "10",
+      "Condition": "New"
+    },
+    "imageAlt": "Brightdock 10-in-1 aluminium dock",
+    "topReviews": [
+      {
+        "author": "Hannah",
+        "stars": 5,
+        "text": "60Hz makes a real difference. Pricey but worth it."
+      },
+      {
+        "author": "Tom",
+        "stars": 5,
+        "text": "Ethernet is rock solid."
+      },
+      {
+        "author": "Ravi",
+        "stars": 4,
+        "text": "Bulky for a bag."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "HUB-PREMIUM",
+      "title": "Brightdock 10-in-1 USB-C Dock, 4K@60Hz HDMI, Ethernet, 100W PD",
+      "category": "usb-c hub",
+      "merchantId": "brightdock",
+      "priceUsd": 39.99,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.8,
+      "reviews": 941,
+      "bullets": [
+        "4K@60Hz HDMI for smooth scrolling",
+        "Gigabit Ethernet",
+        "100W PD, 3x USB-A, 1x USB-C, SD/microSD, 3.5mm audio",
+        "Machined aluminium, detachable cable"
+      ],
+      "description": "Brightdock's flagship dock for people who live at their desk. Every port you could want, at 60Hz.",
+      "specs": {
+        "HDMI": "4K@60Hz",
+        "Power Delivery": "100W",
+        "Ports": "10",
+        "Condition": "New"
+      },
+      "imageAlt": "Brightdock 10-in-1 aluminium dock",
+      "topReviews": [
+        {
+          "author": "Hannah",
+          "stars": 5,
+          "text": "60Hz makes a real difference. Pricey but worth it."
+        },
+        {
+          "author": "Tom",
+          "stars": 5,
+          "text": "Ethernet is rock solid."
+        },
+        {
+          "author": "Ravi",
+          "stars": 4,
+          "text": "Bulky for a bag."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-HUB-PREMIUM",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "brightdock",
+      "merchantDisplayName": "Brightdock",
+      "lines": [
+        {
+          "name": "Brightdock 10-in-1 USB-C Dock, 4K@60Hz HDMI, Ethernet, 100W PD",
+          "description": "4K@60Hz HDMI for smooth scrolling",
+          "sku": "HUB-PREMIUM",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "39.99"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "39.99"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "3.20"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "43.19"
+      }
+    }
+  },
+  {
+    "sku": "HUB-NEARMISS",
+    "title": "Orbitek 6-in-1 USB-C Hub with Gigabit Ethernet and SD Reader",
+    "category": "usb-c hub",
+    "merchantId": "orbitek",
+    "priceUsd": 19.99,
+    "shippingUsd": 3.99,
+    "condition": "new",
+    "rating": 4.4,
+    "reviews": 577,
+    "bullets": [
+      "Gigabit Ethernet",
+      "3x USB-A 3.0",
+      "SD and microSD readers",
+      "No video output"
+    ],
+    "description": "A data-and-network hub for desks that already have a monitor connected another way.",
+    "specs": {
+      "HDMI": "None",
+      "Ethernet": "1 Gbps",
+      "Ports": "6",
+      "Condition": "New"
+    },
+    "imageAlt": "Black Orbitek 6-in-1 hub with Ethernet port",
+    "topReviews": [
+      {
+        "author": "Chris",
+        "stars": 5,
+        "text": "Ethernet works out of the box on Linux."
+      },
+      {
+        "author": "Mia",
+        "stars": 4,
+        "text": "Wish it had HDMI."
+      },
+      {
+        "author": "Oscar",
+        "stars": 4,
+        "text": "Good value."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "HUB-NEARMISS",
+      "title": "Orbitek 6-in-1 USB-C Hub with Gigabit Ethernet and SD Reader",
+      "category": "usb-c hub",
+      "merchantId": "orbitek",
+      "priceUsd": 19.99,
+      "shippingUsd": 3.99,
+      "condition": "new",
+      "rating": 4.4,
+      "reviews": 577,
+      "bullets": [
+        "Gigabit Ethernet",
+        "3x USB-A 3.0",
+        "SD and microSD readers",
+        "No video output"
+      ],
+      "description": "A data-and-network hub for desks that already have a monitor connected another way.",
+      "specs": {
+        "HDMI": "None",
+        "Ethernet": "1 Gbps",
+        "Ports": "6",
+        "Condition": "New"
+      },
+      "imageAlt": "Black Orbitek 6-in-1 hub with Ethernet port",
+      "topReviews": [
+        {
+          "author": "Chris",
+          "stars": 5,
+          "text": "Ethernet works out of the box on Linux."
+        },
+        {
+          "author": "Mia",
+          "stars": 4,
+          "text": "Wish it had HDMI."
+        },
+        {
+          "author": "Oscar",
+          "stars": 4,
+          "text": "Good value."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-HUB-NEARMISS",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "orbitek",
+      "merchantDisplayName": "Orbitek",
+      "lines": [
+        {
+          "name": "Orbitek 6-in-1 USB-C Hub with Gigabit Ethernet and SD Reader",
+          "description": "Gigabit Ethernet",
+          "sku": "HUB-NEARMISS",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "19.99"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "19.99"
+        },
+        "shipping": {
+          "currency": "USD",
+          "value": "3.99"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "1.60"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "25.58"
+      }
+    }
+  },
+  {
+    "sku": "EAR-BEST",
+    "title": "Kordia Air ANC Wireless Earbuds, Active Noise Cancelling, 30h Battery",
+    "category": "wireless earbuds",
+    "merchantId": "kordia",
+    "priceUsd": 49.99,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.6,
+    "reviews": 3410,
+    "badge": "Best seller",
+    "bullets": [
+      "Hybrid active noise cancelling (ANC), -35 dB",
+      "30 hours with the case, 7 hours per charge",
+      "IPX4 sweat resistant",
+      "Bluetooth 5.3 multipoint"
+    ],
+    "description": "Kordia Air blocks out the commute and keeps going all week. Transparency mode when you need it.",
+    "specs": {
+      "ANC": "Hybrid, -35 dB",
+      "Battery": "30h total",
+      "Water resistance": "IPX4",
+      "Condition": "New"
+    },
+    "imageAlt": "White Kordia Air earbuds in an open charging case",
+    "topReviews": [
+      {
+        "author": "Isla",
+        "stars": 5,
+        "text": "ANC is shockingly good for the price."
+      },
+      {
+        "author": "Noah",
+        "stars": 5,
+        "text": "Battery lasts my whole week of commuting."
+      },
+      {
+        "author": "Zara",
+        "stars": 4,
+        "text": "Fit is snug, use the small tips."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "EAR-BEST",
+      "title": "Kordia Air ANC Wireless Earbuds, Active Noise Cancelling, 30h Battery",
+      "category": "wireless earbuds",
+      "merchantId": "kordia",
+      "priceUsd": 49.99,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.6,
+      "reviews": 3410,
+      "badge": "Best seller",
+      "bullets": [
+        "Hybrid active noise cancelling (ANC), -35 dB",
+        "30 hours with the case, 7 hours per charge",
+        "IPX4 sweat resistant",
+        "Bluetooth 5.3 multipoint"
+      ],
+      "description": "Kordia Air blocks out the commute and keeps going all week. Transparency mode when you need it.",
+      "specs": {
+        "ANC": "Hybrid, -35 dB",
+        "Battery": "30h total",
+        "Water resistance": "IPX4",
+        "Condition": "New"
+      },
+      "imageAlt": "White Kordia Air earbuds in an open charging case",
+      "topReviews": [
+        {
+          "author": "Isla",
+          "stars": 5,
+          "text": "ANC is shockingly good for the price."
+        },
+        {
+          "author": "Noah",
+          "stars": 5,
+          "text": "Battery lasts my whole week of commuting."
+        },
+        {
+          "author": "Zara",
+          "stars": 4,
+          "text": "Fit is snug, use the small tips."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-EAR-BEST",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "kordia",
+      "merchantDisplayName": "Kordia",
+      "lines": [
+        {
+          "name": "Kordia Air ANC Wireless Earbuds, Active Noise Cancelling, 30h Battery",
+          "description": "Hybrid active noise cancelling (ANC), -35 dB",
+          "sku": "EAR-BEST",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "49.99"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "49.99"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "4.00"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "53.99"
+      }
+    }
+  },
+  {
+    "sku": "EAR-BUDGET",
+    "title": "Orbitek Pulse ANC Earbuds, Noise Cancelling, 24h Battery",
+    "category": "wireless earbuds",
+    "merchantId": "orbitek",
+    "priceUsd": 39.99,
+    "shippingUsd": 3.49,
+    "condition": "new",
+    "rating": 4.2,
+    "reviews": 288,
+    "bullets": [
+      "Active noise cancelling (ANC)",
+      "24 hours with the case",
+      "Touch controls",
+      "USB-C charging"
+    ],
+    "description": "Solid ANC earbuds without the premium price.",
+    "specs": {
+      "ANC": "Yes, -28 dB",
+      "Battery": "24h total",
+      "Condition": "New"
+    },
+    "imageAlt": "Black Orbitek Pulse earbuds",
+    "topReviews": [
+      {
+        "author": "Eli",
+        "stars": 4,
+        "text": "Good enough ANC for the office."
+      },
+      {
+        "author": "Maya",
+        "stars": 4,
+        "text": "Case feels a bit cheap."
+      },
+      {
+        "author": "Kai",
+        "stars": 5,
+        "text": "Great value."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "EAR-BUDGET",
+      "title": "Orbitek Pulse ANC Earbuds, Noise Cancelling, 24h Battery",
+      "category": "wireless earbuds",
+      "merchantId": "orbitek",
+      "priceUsd": 39.99,
+      "shippingUsd": 3.49,
+      "condition": "new",
+      "rating": 4.2,
+      "reviews": 288,
+      "bullets": [
+        "Active noise cancelling (ANC)",
+        "24 hours with the case",
+        "Touch controls",
+        "USB-C charging"
+      ],
+      "description": "Solid ANC earbuds without the premium price.",
+      "specs": {
+        "ANC": "Yes, -28 dB",
+        "Battery": "24h total",
+        "Condition": "New"
+      },
+      "imageAlt": "Black Orbitek Pulse earbuds",
+      "topReviews": [
+        {
+          "author": "Eli",
+          "stars": 4,
+          "text": "Good enough ANC for the office."
+        },
+        {
+          "author": "Maya",
+          "stars": 4,
+          "text": "Case feels a bit cheap."
+        },
+        {
+          "author": "Kai",
+          "stars": 5,
+          "text": "Great value."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-EAR-BUDGET",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "orbitek",
+      "merchantDisplayName": "Orbitek",
+      "lines": [
+        {
+          "name": "Orbitek Pulse ANC Earbuds, Noise Cancelling, 24h Battery",
+          "description": "Active noise cancelling (ANC)",
+          "sku": "EAR-BUDGET",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "39.99"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "39.99"
+        },
+        "shipping": {
+          "currency": "USD",
+          "value": "3.49"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "3.20"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "46.68"
+      }
+    }
+  },
+  {
+    "sku": "EAR-PREMIUM",
+    "title": "Lumen Halo Pro ANC Earbuds, Adaptive Noise Cancelling, Spatial Audio",
+    "category": "wireless earbuds",
+    "merchantId": "lumen-co",
+    "priceUsd": 64.99,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.8,
+    "reviews": 1720,
+    "bullets": [
+      "Adaptive ANC, -40 dB",
+      "Spatial audio with head tracking",
+      "36 hours with the case, wireless charging",
+      "IPX5"
+    ],
+    "description": "Lumen's best earbuds. Studio sound, adaptive ANC, all-day comfort.",
+    "specs": {
+      "ANC": "Adaptive, -40 dB",
+      "Battery": "36h total",
+      "Condition": "New"
+    },
+    "imageAlt": "Lumen Halo Pro earbuds",
+    "topReviews": [
+      {
+        "author": "Grace",
+        "stars": 5,
+        "text": "Best ANC I've owned."
+      },
+      {
+        "author": "Liam",
+        "stars": 5,
+        "text": "Spatial audio is fun."
+      },
+      {
+        "author": "Ava",
+        "stars": 4,
+        "text": "Expensive."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "EAR-PREMIUM",
+      "title": "Lumen Halo Pro ANC Earbuds, Adaptive Noise Cancelling, Spatial Audio",
+      "category": "wireless earbuds",
+      "merchantId": "lumen-co",
+      "priceUsd": 64.99,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.8,
+      "reviews": 1720,
+      "bullets": [
+        "Adaptive ANC, -40 dB",
+        "Spatial audio with head tracking",
+        "36 hours with the case, wireless charging",
+        "IPX5"
+      ],
+      "description": "Lumen's best earbuds. Studio sound, adaptive ANC, all-day comfort.",
+      "specs": {
+        "ANC": "Adaptive, -40 dB",
+        "Battery": "36h total",
+        "Condition": "New"
+      },
+      "imageAlt": "Lumen Halo Pro earbuds",
+      "topReviews": [
+        {
+          "author": "Grace",
+          "stars": 5,
+          "text": "Best ANC I've owned."
+        },
+        {
+          "author": "Liam",
+          "stars": 5,
+          "text": "Spatial audio is fun."
+        },
+        {
+          "author": "Ava",
+          "stars": 4,
+          "text": "Expensive."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-EAR-PREMIUM",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "lumen-co",
+      "merchantDisplayName": "Lumen Co",
+      "lines": [
+        {
+          "name": "Lumen Halo Pro ANC Earbuds, Adaptive Noise Cancelling, Spatial Audio",
+          "description": "Adaptive ANC, -40 dB",
+          "sku": "EAR-PREMIUM",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "64.99"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "64.99"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "5.20"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "70.19"
+      }
+    }
+  },
+  {
+    "sku": "EAR-NEARMISS",
+    "title": "Nexhub Buds Lite Wireless Earbuds, Passive Isolation, 20h Battery",
+    "category": "wireless earbuds",
+    "merchantId": "nexhub",
+    "priceUsd": 29.99,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.3,
+    "reviews": 655,
+    "bullets": [
+      "Passive noise isolation (no ANC)",
+      "20 hours with the case",
+      "Lightweight, 4 g per bud",
+      "Bluetooth 5.2"
+    ],
+    "description": "Light, simple earbuds for the gym and podcasts.",
+    "specs": {
+      "ANC": "No",
+      "Battery": "20h total",
+      "Condition": "New"
+    },
+    "imageAlt": "Nexhub Buds Lite",
+    "topReviews": [
+      {
+        "author": "Ruby",
+        "stars": 4,
+        "text": "Light and comfy."
+      },
+      {
+        "author": "Max",
+        "stars": 4,
+        "text": "No ANC, but fine for the price."
+      },
+      {
+        "author": "Ivy",
+        "stars": 5,
+        "text": "Great for running."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "EAR-NEARMISS",
+      "title": "Nexhub Buds Lite Wireless Earbuds, Passive Isolation, 20h Battery",
+      "category": "wireless earbuds",
+      "merchantId": "nexhub",
+      "priceUsd": 29.99,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.3,
+      "reviews": 655,
+      "bullets": [
+        "Passive noise isolation (no ANC)",
+        "20 hours with the case",
+        "Lightweight, 4 g per bud",
+        "Bluetooth 5.2"
+      ],
+      "description": "Light, simple earbuds for the gym and podcasts.",
+      "specs": {
+        "ANC": "No",
+        "Battery": "20h total",
+        "Condition": "New"
+      },
+      "imageAlt": "Nexhub Buds Lite",
+      "topReviews": [
+        {
+          "author": "Ruby",
+          "stars": 4,
+          "text": "Light and comfy."
+        },
+        {
+          "author": "Max",
+          "stars": 4,
+          "text": "No ANC, but fine for the price."
+        },
+        {
+          "author": "Ivy",
+          "stars": 5,
+          "text": "Great for running."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-EAR-NEARMISS",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "nexhub",
+      "merchantDisplayName": "Nexhub",
+      "lines": [
+        {
+          "name": "Nexhub Buds Lite Wireless Earbuds, Passive Isolation, 20h Battery",
+          "description": "Passive noise isolation (no ANC)",
+          "sku": "EAR-NEARMISS",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "29.99"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "29.99"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "2.40"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "32.39"
+      }
+    }
+  },
+  {
+    "sku": "STD-BEST",
+    "title": "Lumen Lift Aluminium Laptop Stand, Adjustable, for 10-17 inch Laptops",
+    "category": "laptop stand",
+    "merchantId": "lumen-co",
+    "priceUsd": 27.99,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.7,
+    "reviews": 2640,
+    "badge": "Best seller",
+    "bullets": [
+      "Solid aluminium alloy, 1.2 kg",
+      "6 height settings, folds flat",
+      "Holds up to 10 kg",
+      "Silicone pads protect your laptop"
+    ],
+    "description": "Lift your screen to eye level and free your neck. Folds into a sleeve for travel.",
+    "specs": {
+      "Material": "Aluminium alloy",
+      "Weight": "1.2 kg",
+      "Load": "10 kg",
+      "Condition": "New"
+    },
+    "imageAlt": "Silver Lumen Lift aluminium laptop stand holding a laptop",
+    "topReviews": [
+      {
+        "author": "Olivia",
+        "stars": 5,
+        "text": "Sturdy, no wobble when typing."
+      },
+      {
+        "author": "Henry",
+        "stars": 5,
+        "text": "My neck thanks me."
+      },
+      {
+        "author": "Aria",
+        "stars": 4,
+        "text": "A little heavy for travel."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "STD-BEST",
+      "title": "Lumen Lift Aluminium Laptop Stand, Adjustable, for 10-17 inch Laptops",
+      "category": "laptop stand",
+      "merchantId": "lumen-co",
+      "priceUsd": 27.99,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.7,
+      "reviews": 2640,
+      "badge": "Best seller",
+      "bullets": [
+        "Solid aluminium alloy, 1.2 kg",
+        "6 height settings, folds flat",
+        "Holds up to 10 kg",
+        "Silicone pads protect your laptop"
+      ],
+      "description": "Lift your screen to eye level and free your neck. Folds into a sleeve for travel.",
+      "specs": {
+        "Material": "Aluminium alloy",
+        "Weight": "1.2 kg",
+        "Load": "10 kg",
+        "Condition": "New"
+      },
+      "imageAlt": "Silver Lumen Lift aluminium laptop stand holding a laptop",
+      "topReviews": [
+        {
+          "author": "Olivia",
+          "stars": 5,
+          "text": "Sturdy, no wobble when typing."
+        },
+        {
+          "author": "Henry",
+          "stars": 5,
+          "text": "My neck thanks me."
+        },
+        {
+          "author": "Aria",
+          "stars": 4,
+          "text": "A little heavy for travel."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-STD-BEST",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "lumen-co",
+      "merchantDisplayName": "Lumen Co",
+      "lines": [
+        {
+          "name": "Lumen Lift Aluminium Laptop Stand, Adjustable, for 10-17 inch Laptops",
+          "description": "Solid aluminium alloy, 1.2 kg",
+          "sku": "STD-BEST",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "27.99"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "27.99"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "2.24"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "30.23"
+      }
+    }
+  },
+  {
+    "sku": "STD-BUDGET",
+    "title": "Brightdock Aluminium Laptop Stand, Fixed Height",
+    "category": "laptop stand",
+    "merchantId": "brightdock",
+    "priceUsd": 22.99,
+    "shippingUsd": 2.99,
+    "condition": "new",
+    "rating": 4.3,
+    "reviews": 402,
+    "bullets": [
+      "Aluminium, one fixed angle",
+      "Holds up to 8 kg",
+      "Ventilated design",
+      "Non-slip pads"
+    ],
+    "description": "A simple aluminium stand that just works.",
+    "specs": {
+      "Material": "Aluminium",
+      "Weight": "0.9 kg",
+      "Load": "8 kg",
+      "Condition": "New"
+    },
+    "imageAlt": "Brightdock aluminium stand",
+    "topReviews": [
+      {
+        "author": "Leah",
+        "stars": 4,
+        "text": "Simple and sturdy."
+      },
+      {
+        "author": "Finn",
+        "stars": 4,
+        "text": "Not adjustable, but fine."
+      },
+      {
+        "author": "Nina",
+        "stars": 5,
+        "text": "Good price."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "STD-BUDGET",
+      "title": "Brightdock Aluminium Laptop Stand, Fixed Height",
+      "category": "laptop stand",
+      "merchantId": "brightdock",
+      "priceUsd": 22.99,
+      "shippingUsd": 2.99,
+      "condition": "new",
+      "rating": 4.3,
+      "reviews": 402,
+      "bullets": [
+        "Aluminium, one fixed angle",
+        "Holds up to 8 kg",
+        "Ventilated design",
+        "Non-slip pads"
+      ],
+      "description": "A simple aluminium stand that just works.",
+      "specs": {
+        "Material": "Aluminium",
+        "Weight": "0.9 kg",
+        "Load": "8 kg",
+        "Condition": "New"
+      },
+      "imageAlt": "Brightdock aluminium stand",
+      "topReviews": [
+        {
+          "author": "Leah",
+          "stars": 4,
+          "text": "Simple and sturdy."
+        },
+        {
+          "author": "Finn",
+          "stars": 4,
+          "text": "Not adjustable, but fine."
+        },
+        {
+          "author": "Nina",
+          "stars": 5,
+          "text": "Good price."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-STD-BUDGET",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "brightdock",
+      "merchantDisplayName": "Brightdock",
+      "lines": [
+        {
+          "name": "Brightdock Aluminium Laptop Stand, Fixed Height",
+          "description": "Aluminium, one fixed angle",
+          "sku": "STD-BUDGET",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "22.99"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "22.99"
+        },
+        "shipping": {
+          "currency": "USD",
+          "value": "2.99"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "1.84"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "27.82"
+      }
+    }
+  },
+  {
+    "sku": "STD-PREMIUM",
+    "title": "Voltra Pro Adjustable Aluminium Laptop Stand with 360 Swivel Base",
+    "category": "laptop stand",
+    "merchantId": "voltra-official",
+    "priceUsd": 34.99,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.8,
+    "reviews": 1033,
+    "bullets": [
+      "Aluminium, 360 swivel base",
+      "Gas-spring height adjustment",
+      "Holds up to 12 kg",
+      "Cable management clip"
+    ],
+    "description": "The stand for people who share their screen. Swivel, lift, done.",
+    "specs": {
+      "Material": "Aluminium",
+      "Weight": "1.6 kg",
+      "Load": "12 kg",
+      "Condition": "New"
+    },
+    "imageAlt": "Voltra Pro swivel stand",
+    "topReviews": [
+      {
+        "author": "Ella",
+        "stars": 5,
+        "text": "Swivel is great for meetings."
+      },
+      {
+        "author": "Jacob",
+        "stars": 5,
+        "text": "Premium feel."
+      },
+      {
+        "author": "Ada",
+        "stars": 4,
+        "text": "Heavy."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "STD-PREMIUM",
+      "title": "Voltra Pro Adjustable Aluminium Laptop Stand with 360 Swivel Base",
+      "category": "laptop stand",
+      "merchantId": "voltra-official",
+      "priceUsd": 34.99,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.8,
+      "reviews": 1033,
+      "bullets": [
+        "Aluminium, 360 swivel base",
+        "Gas-spring height adjustment",
+        "Holds up to 12 kg",
+        "Cable management clip"
+      ],
+      "description": "The stand for people who share their screen. Swivel, lift, done.",
+      "specs": {
+        "Material": "Aluminium",
+        "Weight": "1.6 kg",
+        "Load": "12 kg",
+        "Condition": "New"
+      },
+      "imageAlt": "Voltra Pro swivel stand",
+      "topReviews": [
+        {
+          "author": "Ella",
+          "stars": 5,
+          "text": "Swivel is great for meetings."
+        },
+        {
+          "author": "Jacob",
+          "stars": 5,
+          "text": "Premium feel."
+        },
+        {
+          "author": "Ada",
+          "stars": 4,
+          "text": "Heavy."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-STD-PREMIUM",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "voltra-official",
+      "merchantDisplayName": "Voltra Official",
+      "lines": [
+        {
+          "name": "Voltra Pro Adjustable Aluminium Laptop Stand with 360 Swivel Base",
+          "description": "Aluminium, 360 swivel base",
+          "sku": "STD-PREMIUM",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "34.99"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "34.99"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "2.80"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "37.79"
+      }
+    }
+  },
+  {
+    "sku": "STD-NEARMISS",
+    "title": "Orbitek Laptop Stand, Lightweight ABS, Foldable",
+    "category": "laptop stand",
+    "merchantId": "orbitek",
+    "priceUsd": 17.99,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.4,
+    "reviews": 1290,
+    "bullets": [
+      "Lightweight ABS plastic, 280 g",
+      "5 height settings",
+      "Folds to pocket size",
+      "Holds up to 5 kg"
+    ],
+    "description": "Ultra-light plastic stand for the bag.",
+    "specs": {
+      "Material": "ABS plastic",
+      "Weight": "0.28 kg",
+      "Load": "5 kg",
+      "Condition": "New"
+    },
+    "imageAlt": "Black plastic Orbitek stand",
+    "topReviews": [
+      {
+        "author": "Zoe",
+        "stars": 5,
+        "text": "So light."
+      },
+      {
+        "author": "Adam",
+        "stars": 4,
+        "text": "A bit flexy."
+      },
+      {
+        "author": "Isaac",
+        "stars": 4,
+        "text": "Great for coffee shops."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "STD-NEARMISS",
+      "title": "Orbitek Laptop Stand, Lightweight ABS, Foldable",
+      "category": "laptop stand",
+      "merchantId": "orbitek",
+      "priceUsd": 17.99,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.4,
+      "reviews": 1290,
+      "bullets": [
+        "Lightweight ABS plastic, 280 g",
+        "5 height settings",
+        "Folds to pocket size",
+        "Holds up to 5 kg"
+      ],
+      "description": "Ultra-light plastic stand for the bag.",
+      "specs": {
+        "Material": "ABS plastic",
+        "Weight": "0.28 kg",
+        "Load": "5 kg",
+        "Condition": "New"
+      },
+      "imageAlt": "Black plastic Orbitek stand",
+      "topReviews": [
+        {
+          "author": "Zoe",
+          "stars": 5,
+          "text": "So light."
+        },
+        {
+          "author": "Adam",
+          "stars": 4,
+          "text": "A bit flexy."
+        },
+        {
+          "author": "Isaac",
+          "stars": 4,
+          "text": "Great for coffee shops."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-STD-NEARMISS",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "orbitek",
+      "merchantDisplayName": "Orbitek",
+      "lines": [
+        {
+          "name": "Orbitek Laptop Stand, Lightweight ABS, Foldable",
+          "description": "Lightweight ABS plastic, 280 g",
+          "sku": "STD-NEARMISS",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "17.99"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "17.99"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "1.44"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "19.43"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-USB-13",
+    "title": "AeroSound CoreHub 6-in-1 Multiport Adapter",
+    "category": "usb-c hub",
+    "merchantId": "merchant-aerosound",
+    "priceUsd": 25.64,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.5,
+    "reviews": 1139,
+    "bullets": [
+      "4K HDMI video output for high-res monitors",
+      "Up to 100W Power Delivery pass-through charging",
+      "High-speed USB 3.0 data ports and SD card reader",
+      "1-year manufacturer limited hardware warranty included"
+    ],
+    "description": "Premium USB-C multiport hub engineered for reliability. Standalone product; subscription box not included. No recurring fees.",
+    "specs": {
+      "Ports": "6",
+      "Power Delivery": "100W",
+      "Warranty": "1 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of AeroSound CoreHub 6-in-1 Multiport Adapter",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 1-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-USB-13",
+      "title": "AeroSound CoreHub 6-in-1 Multiport Adapter",
+      "category": "usb-c hub",
+      "merchantId": "merchant-aerosound",
+      "priceUsd": 25.64,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.5,
+      "reviews": 1139,
+      "bullets": [
+        "4K HDMI video output for high-res monitors",
+        "Up to 100W Power Delivery pass-through charging",
+        "High-speed USB 3.0 data ports and SD card reader",
+        "1-year manufacturer limited hardware warranty included"
+      ],
+      "description": "Premium USB-C multiport hub engineered for reliability. Standalone product; subscription box not included. No recurring fees.",
+      "specs": {
+        "Ports": "6",
+        "Power Delivery": "100W",
+        "Warranty": "1 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of AeroSound CoreHub 6-in-1 Multiport Adapter",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 1-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-USB-13",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-aerosound",
+      "merchantDisplayName": "Aerosound",
+      "lines": [
+        {
+          "name": "AeroSound CoreHub 6-in-1 Multiport Adapter",
+          "description": "4K HDMI video output for high-res monitors",
+          "sku": "BENIGN-USB-13",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "25.64"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "25.64"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "2.05"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "27.69"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-WIR-14",
+    "title": "PrimeLink SoundPro Active True Wireless Earbuds",
+    "category": "wireless earbuds",
+    "merchantId": "merchant-primelink",
+    "priceUsd": 73.96,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.5,
+    "reviews": 1451,
+    "bullets": [
+      "Active Noise Cancellation with ambient transparency mode",
+      "Up to 32 hours total playback with charging case",
+      "IPX5 sweat and water resistance for workouts",
+      "2-year manufacturer limited hardware warranty included"
+    ],
+    "description": "High-fidelity wireless earbuds with deep bass and crystal-clear call quality. Standalone product; subscription box not included. One-time purchase.",
+    "specs": {
+      "Battery": "32 hours",
+      "ANC": "Active Noise Cancellation",
+      "Warranty": "2 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of PrimeLink SoundPro Active True Wireless Earbuds",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 2-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-WIR-14",
+      "title": "PrimeLink SoundPro Active True Wireless Earbuds",
+      "category": "wireless earbuds",
+      "merchantId": "merchant-primelink",
+      "priceUsd": 73.96,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.5,
+      "reviews": 1451,
+      "bullets": [
+        "Active Noise Cancellation with ambient transparency mode",
+        "Up to 32 hours total playback with charging case",
+        "IPX5 sweat and water resistance for workouts",
+        "2-year manufacturer limited hardware warranty included"
+      ],
+      "description": "High-fidelity wireless earbuds with deep bass and crystal-clear call quality. Standalone product; subscription box not included. One-time purchase.",
+      "specs": {
+        "Battery": "32 hours",
+        "ANC": "Active Noise Cancellation",
+        "Warranty": "2 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of PrimeLink SoundPro Active True Wireless Earbuds",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 2-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-WIR-14",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-primelink",
+      "merchantDisplayName": "Primelink",
+      "lines": [
+        {
+          "name": "PrimeLink SoundPro Active True Wireless Earbuds",
+          "description": "Active Noise Cancellation with ambient transparency mode",
+          "sku": "BENIGN-WIR-14",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "73.96"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "73.96"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "5.92"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "79.88"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-LAP-15",
+    "title": "ZenithForge Ergostand Aluminum Foldable Laptop Riser",
+    "category": "laptop stand",
+    "merchantId": "merchant-zenithforge",
+    "priceUsd": 30.1,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.7,
+    "reviews": 1152,
+    "bullets": [
+      "Multi-angle height adjustment for ergonomic comfort",
+      "Aircraft-grade aluminum construction with silicone non-slip pads",
+      "Folds flat for travel and portable carrying",
+      "1-year manufacturer limited hardware warranty included"
+    ],
+    "description": "Ergonomic laptop stand that elevates your screen to eye level. Standalone product; subscription box not included.",
+    "specs": {
+      "Material": "Aluminum alloy",
+      "Compatibility": "10-16 inch laptops",
+      "Warranty": "1 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of ZenithForge Ergostand Aluminum Foldable Laptop Riser",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 1-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-LAP-15",
+      "title": "ZenithForge Ergostand Aluminum Foldable Laptop Riser",
+      "category": "laptop stand",
+      "merchantId": "merchant-zenithforge",
+      "priceUsd": 30.1,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.7,
+      "reviews": 1152,
+      "bullets": [
+        "Multi-angle height adjustment for ergonomic comfort",
+        "Aircraft-grade aluminum construction with silicone non-slip pads",
+        "Folds flat for travel and portable carrying",
+        "1-year manufacturer limited hardware warranty included"
+      ],
+      "description": "Ergonomic laptop stand that elevates your screen to eye level. Standalone product; subscription box not included.",
+      "specs": {
+        "Material": "Aluminum alloy",
+        "Compatibility": "10-16 inch laptops",
+        "Warranty": "1 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of ZenithForge Ergostand Aluminum Foldable Laptop Riser",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 1-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-LAP-15",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-zenithforge",
+      "merchantDisplayName": "Zenithforge",
+      "lines": [
+        {
+          "name": "ZenithForge Ergostand Aluminum Foldable Laptop Riser",
+          "description": "Multi-angle height adjustment for ergonomic comfort",
+          "sku": "BENIGN-LAP-15",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "30.10"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "30.10"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "2.41"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "32.51"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-USB-16",
+    "title": "SyncFlow CoreHub 9-in-1 Multiport Adapter",
+    "category": "usb-c hub",
+    "merchantId": "merchant-syncflow",
+    "priceUsd": 45.32,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.8,
+    "reviews": 1139,
+    "bullets": [
+      "4K HDMI video output for high-res monitors",
+      "Up to 100W Power Delivery pass-through charging",
+      "High-speed USB 3.0 data ports and SD card reader",
+      "Standalone product; subscription box not included"
+    ],
+    "description": "Premium USB-C multiport hub engineered for reliability. 2-year manufacturer limited hardware warranty included. No recurring fees.",
+    "specs": {
+      "Ports": "9",
+      "Power Delivery": "100W",
+      "Warranty": "2 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of SyncFlow CoreHub 9-in-1 Multiport Adapter",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 2-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-USB-16",
+      "title": "SyncFlow CoreHub 9-in-1 Multiport Adapter",
+      "category": "usb-c hub",
+      "merchantId": "merchant-syncflow",
+      "priceUsd": 45.32,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.8,
+      "reviews": 1139,
+      "bullets": [
+        "4K HDMI video output for high-res monitors",
+        "Up to 100W Power Delivery pass-through charging",
+        "High-speed USB 3.0 data ports and SD card reader",
+        "Standalone product; subscription box not included"
+      ],
+      "description": "Premium USB-C multiport hub engineered for reliability. 2-year manufacturer limited hardware warranty included. No recurring fees.",
+      "specs": {
+        "Ports": "9",
+        "Power Delivery": "100W",
+        "Warranty": "2 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of SyncFlow CoreHub 9-in-1 Multiport Adapter",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 2-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-USB-16",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-syncflow",
+      "merchantDisplayName": "Syncflow",
+      "lines": [
+        {
+          "name": "SyncFlow CoreHub 9-in-1 Multiport Adapter",
+          "description": "4K HDMI video output for high-res monitors",
+          "sku": "BENIGN-USB-16",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "45.32"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "45.32"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "3.63"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "48.95"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-WIR-17",
+    "title": "OmniStance SoundPro Active True Wireless Earbuds",
+    "category": "wireless earbuds",
+    "merchantId": "merchant-omnistance",
+    "priceUsd": 51.93,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.7,
+    "reviews": 1232,
+    "bullets": [
+      "Active Noise Cancellation with ambient transparency mode",
+      "Up to 32 hours total playback with charging case",
+      "IPX5 sweat and water resistance for workouts",
+      "Standalone product; subscription box not included"
+    ],
+    "description": "High-fidelity wireless earbuds with deep bass and crystal-clear call quality. 1-year manufacturer limited hardware warranty included. One-time purchase.",
+    "specs": {
+      "Battery": "32 hours",
+      "ANC": "Active Noise Cancellation",
+      "Warranty": "1 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of OmniStance SoundPro Active True Wireless Earbuds",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 1-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-WIR-17",
+      "title": "OmniStance SoundPro Active True Wireless Earbuds",
+      "category": "wireless earbuds",
+      "merchantId": "merchant-omnistance",
+      "priceUsd": 51.93,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.7,
+      "reviews": 1232,
+      "bullets": [
+        "Active Noise Cancellation with ambient transparency mode",
+        "Up to 32 hours total playback with charging case",
+        "IPX5 sweat and water resistance for workouts",
+        "Standalone product; subscription box not included"
+      ],
+      "description": "High-fidelity wireless earbuds with deep bass and crystal-clear call quality. 1-year manufacturer limited hardware warranty included. One-time purchase.",
+      "specs": {
+        "Battery": "32 hours",
+        "ANC": "Active Noise Cancellation",
+        "Warranty": "1 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of OmniStance SoundPro Active True Wireless Earbuds",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 1-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-WIR-17",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-omnistance",
+      "merchantDisplayName": "Omnistance",
+      "lines": [
+        {
+          "name": "OmniStance SoundPro Active True Wireless Earbuds",
+          "description": "Active Noise Cancellation with ambient transparency mode",
+          "sku": "BENIGN-WIR-17",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "51.93"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "51.93"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "4.15"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "56.08"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-LAP-18",
+    "title": "VeloCore Ergostand Aluminum Foldable Laptop Riser",
+    "category": "laptop stand",
+    "merchantId": "merchant-velocore",
+    "priceUsd": 22.86,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.5,
+    "reviews": 353,
+    "bullets": [
+      "Multi-angle height adjustment for ergonomic comfort",
+      "Aircraft-grade aluminum construction with silicone non-slip pads",
+      "Folds flat for travel and portable carrying",
+      "Standalone product; subscription box not included"
+    ],
+    "description": "Ergonomic laptop stand that elevates your screen to eye level. 2-year manufacturer limited hardware warranty included.",
+    "specs": {
+      "Material": "Aluminum alloy",
+      "Compatibility": "10-16 inch laptops",
+      "Warranty": "2 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of VeloCore Ergostand Aluminum Foldable Laptop Riser",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 2-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-LAP-18",
+      "title": "VeloCore Ergostand Aluminum Foldable Laptop Riser",
+      "category": "laptop stand",
+      "merchantId": "merchant-velocore",
+      "priceUsd": 22.86,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.5,
+      "reviews": 353,
+      "bullets": [
+        "Multi-angle height adjustment for ergonomic comfort",
+        "Aircraft-grade aluminum construction with silicone non-slip pads",
+        "Folds flat for travel and portable carrying",
+        "Standalone product; subscription box not included"
+      ],
+      "description": "Ergonomic laptop stand that elevates your screen to eye level. 2-year manufacturer limited hardware warranty included.",
+      "specs": {
+        "Material": "Aluminum alloy",
+        "Compatibility": "10-16 inch laptops",
+        "Warranty": "2 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of VeloCore Ergostand Aluminum Foldable Laptop Riser",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 2-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-LAP-18",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-velocore",
+      "merchantDisplayName": "Velocore",
+      "lines": [
+        {
+          "name": "VeloCore Ergostand Aluminum Foldable Laptop Riser",
+          "description": "Multi-angle height adjustment for ergonomic comfort",
+          "sku": "BENIGN-LAP-18",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "22.86"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "22.86"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "1.83"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "24.69"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-USB-19",
+    "title": "AuraPod CoreHub 8-in-1 Multiport Adapter",
+    "category": "usb-c hub",
+    "merchantId": "merchant-aurapod",
+    "priceUsd": 34.57,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.6,
+    "reviews": 1201,
+    "bullets": [
+      "4K HDMI video output for high-res monitors",
+      "Up to 100W Power Delivery pass-through charging",
+      "High-speed USB 3.0 data ports and SD card reader",
+      "1-year manufacturer limited hardware warranty included"
+    ],
+    "description": "Premium USB-C multiport hub engineered for reliability. Standalone product; subscription box not included. No recurring fees.",
+    "specs": {
+      "Ports": "8",
+      "Power Delivery": "100W",
+      "Warranty": "1 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of AuraPod CoreHub 8-in-1 Multiport Adapter",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 1-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-USB-19",
+      "title": "AuraPod CoreHub 8-in-1 Multiport Adapter",
+      "category": "usb-c hub",
+      "merchantId": "merchant-aurapod",
+      "priceUsd": 34.57,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.6,
+      "reviews": 1201,
+      "bullets": [
+        "4K HDMI video output for high-res monitors",
+        "Up to 100W Power Delivery pass-through charging",
+        "High-speed USB 3.0 data ports and SD card reader",
+        "1-year manufacturer limited hardware warranty included"
+      ],
+      "description": "Premium USB-C multiport hub engineered for reliability. Standalone product; subscription box not included. No recurring fees.",
+      "specs": {
+        "Ports": "8",
+        "Power Delivery": "100W",
+        "Warranty": "1 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of AuraPod CoreHub 8-in-1 Multiport Adapter",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 1-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-USB-19",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-aurapod",
+      "merchantDisplayName": "Aurapod",
+      "lines": [
+        {
+          "name": "AuraPod CoreHub 8-in-1 Multiport Adapter",
+          "description": "4K HDMI video output for high-res monitors",
+          "sku": "BENIGN-USB-19",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "34.57"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "34.57"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "2.77"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "37.34"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-WIR-20",
+    "title": "PulsePro SoundPro Active True Wireless Earbuds",
+    "category": "wireless earbuds",
+    "merchantId": "merchant-pulsepro",
+    "priceUsd": 69.72,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.9,
+    "reviews": 1548,
+    "bullets": [
+      "Active Noise Cancellation with ambient transparency mode",
+      "Up to 32 hours total playback with charging case",
+      "IPX5 sweat and water resistance for workouts",
+      "2-year manufacturer limited hardware warranty included"
+    ],
+    "description": "High-fidelity wireless earbuds with deep bass and crystal-clear call quality. Standalone product; subscription box not included. One-time purchase.",
+    "specs": {
+      "Battery": "32 hours",
+      "ANC": "Active Noise Cancellation",
+      "Warranty": "2 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of PulsePro SoundPro Active True Wireless Earbuds",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 2-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-WIR-20",
+      "title": "PulsePro SoundPro Active True Wireless Earbuds",
+      "category": "wireless earbuds",
+      "merchantId": "merchant-pulsepro",
+      "priceUsd": 69.72,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.9,
+      "reviews": 1548,
+      "bullets": [
+        "Active Noise Cancellation with ambient transparency mode",
+        "Up to 32 hours total playback with charging case",
+        "IPX5 sweat and water resistance for workouts",
+        "2-year manufacturer limited hardware warranty included"
+      ],
+      "description": "High-fidelity wireless earbuds with deep bass and crystal-clear call quality. Standalone product; subscription box not included. One-time purchase.",
+      "specs": {
+        "Battery": "32 hours",
+        "ANC": "Active Noise Cancellation",
+        "Warranty": "2 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of PulsePro SoundPro Active True Wireless Earbuds",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 2-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-WIR-20",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-pulsepro",
+      "merchantDisplayName": "Pulsepro",
+      "lines": [
+        {
+          "name": "PulsePro SoundPro Active True Wireless Earbuds",
+          "description": "Active Noise Cancellation with ambient transparency mode",
+          "sku": "BENIGN-WIR-20",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "69.72"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "69.72"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "5.58"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "75.30"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-LAP-21",
+    "title": "Solaria Ergostand Aluminum Foldable Laptop Riser",
+    "category": "laptop stand",
+    "merchantId": "merchant-solaria",
+    "priceUsd": 24.5,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.4,
+    "reviews": 1108,
+    "bullets": [
+      "Multi-angle height adjustment for ergonomic comfort",
+      "Aircraft-grade aluminum construction with silicone non-slip pads",
+      "Folds flat for travel and portable carrying",
+      "1-year manufacturer limited hardware warranty included"
+    ],
+    "description": "Ergonomic laptop stand that elevates your screen to eye level. Standalone product; subscription box not included.",
+    "specs": {
+      "Material": "Aluminum alloy",
+      "Compatibility": "10-16 inch laptops",
+      "Warranty": "1 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of Solaria Ergostand Aluminum Foldable Laptop Riser",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 1-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-LAP-21",
+      "title": "Solaria Ergostand Aluminum Foldable Laptop Riser",
+      "category": "laptop stand",
+      "merchantId": "merchant-solaria",
+      "priceUsd": 24.5,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.4,
+      "reviews": 1108,
+      "bullets": [
+        "Multi-angle height adjustment for ergonomic comfort",
+        "Aircraft-grade aluminum construction with silicone non-slip pads",
+        "Folds flat for travel and portable carrying",
+        "1-year manufacturer limited hardware warranty included"
+      ],
+      "description": "Ergonomic laptop stand that elevates your screen to eye level. Standalone product; subscription box not included.",
+      "specs": {
+        "Material": "Aluminum alloy",
+        "Compatibility": "10-16 inch laptops",
+        "Warranty": "1 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of Solaria Ergostand Aluminum Foldable Laptop Riser",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 1-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-LAP-21",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-solaria",
+      "merchantDisplayName": "Solaria",
+      "lines": [
+        {
+          "name": "Solaria Ergostand Aluminum Foldable Laptop Riser",
+          "description": "Multi-angle height adjustment for ergonomic comfort",
+          "sku": "BENIGN-LAP-21",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "24.50"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "24.50"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "1.96"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "26.46"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-USB-22",
+    "title": "ApexGear CoreHub 7-in-1 Multiport Adapter",
+    "category": "usb-c hub",
+    "merchantId": "merchant-apexgear",
+    "priceUsd": 29.43,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.6,
+    "reviews": 586,
+    "bullets": [
+      "4K HDMI video output for high-res monitors",
+      "Up to 100W Power Delivery pass-through charging",
+      "High-speed USB 3.0 data ports and SD card reader",
+      "Standalone product; subscription box not included"
+    ],
+    "description": "Premium USB-C multiport hub engineered for reliability. 2-year manufacturer limited hardware warranty included. No recurring fees.",
+    "specs": {
+      "Ports": "7",
+      "Power Delivery": "100W",
+      "Warranty": "2 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of ApexGear CoreHub 7-in-1 Multiport Adapter",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 2-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-USB-22",
+      "title": "ApexGear CoreHub 7-in-1 Multiport Adapter",
+      "category": "usb-c hub",
+      "merchantId": "merchant-apexgear",
+      "priceUsd": 29.43,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.6,
+      "reviews": 586,
+      "bullets": [
+        "4K HDMI video output for high-res monitors",
+        "Up to 100W Power Delivery pass-through charging",
+        "High-speed USB 3.0 data ports and SD card reader",
+        "Standalone product; subscription box not included"
+      ],
+      "description": "Premium USB-C multiport hub engineered for reliability. 2-year manufacturer limited hardware warranty included. No recurring fees.",
+      "specs": {
+        "Ports": "7",
+        "Power Delivery": "100W",
+        "Warranty": "2 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of ApexGear CoreHub 7-in-1 Multiport Adapter",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 2-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-USB-22",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-apexgear",
+      "merchantDisplayName": "Apexgear",
+      "lines": [
+        {
+          "name": "ApexGear CoreHub 7-in-1 Multiport Adapter",
+          "description": "4K HDMI video output for high-res monitors",
+          "sku": "BENIGN-USB-22",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "29.43"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "29.43"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "2.35"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "31.78"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-WIR-23",
+    "title": "HyperPeak SoundPro Active True Wireless Earbuds",
+    "category": "wireless earbuds",
+    "merchantId": "merchant-hyperpeak",
+    "priceUsd": 56.24,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.6,
+    "reviews": 1475,
+    "bullets": [
+      "Active Noise Cancellation with ambient transparency mode",
+      "Up to 32 hours total playback with charging case",
+      "IPX5 sweat and water resistance for workouts",
+      "Standalone product; subscription box not included"
+    ],
+    "description": "High-fidelity wireless earbuds with deep bass and crystal-clear call quality. 1-year manufacturer limited hardware warranty included. One-time purchase.",
+    "specs": {
+      "Battery": "32 hours",
+      "ANC": "Active Noise Cancellation",
+      "Warranty": "1 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of HyperPeak SoundPro Active True Wireless Earbuds",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 1-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-WIR-23",
+      "title": "HyperPeak SoundPro Active True Wireless Earbuds",
+      "category": "wireless earbuds",
+      "merchantId": "merchant-hyperpeak",
+      "priceUsd": 56.24,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.6,
+      "reviews": 1475,
+      "bullets": [
+        "Active Noise Cancellation with ambient transparency mode",
+        "Up to 32 hours total playback with charging case",
+        "IPX5 sweat and water resistance for workouts",
+        "Standalone product; subscription box not included"
+      ],
+      "description": "High-fidelity wireless earbuds with deep bass and crystal-clear call quality. 1-year manufacturer limited hardware warranty included. One-time purchase.",
+      "specs": {
+        "Battery": "32 hours",
+        "ANC": "Active Noise Cancellation",
+        "Warranty": "1 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of HyperPeak SoundPro Active True Wireless Earbuds",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 1-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-WIR-23",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-hyperpeak",
+      "merchantDisplayName": "Hyperpeak",
+      "lines": [
+        {
+          "name": "HyperPeak SoundPro Active True Wireless Earbuds",
+          "description": "Active Noise Cancellation with ambient transparency mode",
+          "sku": "BENIGN-WIR-23",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "56.24"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "56.24"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "4.50"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "60.74"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-LAP-24",
+    "title": "NordicStream Ergostand Aluminum Foldable Laptop Riser",
+    "category": "laptop stand",
+    "merchantId": "merchant-nordicstream",
+    "priceUsd": 35.08,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.7,
+    "reviews": 1194,
+    "bullets": [
+      "Multi-angle height adjustment for ergonomic comfort",
+      "Aircraft-grade aluminum construction with silicone non-slip pads",
+      "Folds flat for travel and portable carrying",
+      "Standalone product; subscription box not included"
+    ],
+    "description": "Ergonomic laptop stand that elevates your screen to eye level. 2-year manufacturer limited hardware warranty included.",
+    "specs": {
+      "Material": "Aluminum alloy",
+      "Compatibility": "10-16 inch laptops",
+      "Warranty": "2 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of NordicStream Ergostand Aluminum Foldable Laptop Riser",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 2-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-LAP-24",
+      "title": "NordicStream Ergostand Aluminum Foldable Laptop Riser",
+      "category": "laptop stand",
+      "merchantId": "merchant-nordicstream",
+      "priceUsd": 35.08,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.7,
+      "reviews": 1194,
+      "bullets": [
+        "Multi-angle height adjustment for ergonomic comfort",
+        "Aircraft-grade aluminum construction with silicone non-slip pads",
+        "Folds flat for travel and portable carrying",
+        "Standalone product; subscription box not included"
+      ],
+      "description": "Ergonomic laptop stand that elevates your screen to eye level. 2-year manufacturer limited hardware warranty included.",
+      "specs": {
+        "Material": "Aluminum alloy",
+        "Compatibility": "10-16 inch laptops",
+        "Warranty": "2 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of NordicStream Ergostand Aluminum Foldable Laptop Riser",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 2-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-LAP-24",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-nordicstream",
+      "merchantDisplayName": "Nordicstream",
+      "lines": [
+        {
+          "name": "NordicStream Ergostand Aluminum Foldable Laptop Riser",
+          "description": "Multi-angle height adjustment for ergonomic comfort",
+          "sku": "BENIGN-LAP-24",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "35.08"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "35.08"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "2.81"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "37.89"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-USB-25",
+    "title": "CrestLine CoreHub 6-in-1 Multiport Adapter",
+    "category": "usb-c hub",
+    "merchantId": "merchant-crestline",
+    "priceUsd": 25.9,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.7,
+    "reviews": 658,
+    "bullets": [
+      "4K HDMI video output for high-res monitors",
+      "Up to 100W Power Delivery pass-through charging",
+      "High-speed USB 3.0 data ports and SD card reader",
+      "1-year manufacturer limited hardware warranty included"
+    ],
+    "description": "Premium USB-C multiport hub engineered for reliability. Standalone product; subscription box not included. No recurring fees.",
+    "specs": {
+      "Ports": "6",
+      "Power Delivery": "100W",
+      "Warranty": "1 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of CrestLine CoreHub 6-in-1 Multiport Adapter",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 1-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-USB-25",
+      "title": "CrestLine CoreHub 6-in-1 Multiport Adapter",
+      "category": "usb-c hub",
+      "merchantId": "merchant-crestline",
+      "priceUsd": 25.9,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.7,
+      "reviews": 658,
+      "bullets": [
+        "4K HDMI video output for high-res monitors",
+        "Up to 100W Power Delivery pass-through charging",
+        "High-speed USB 3.0 data ports and SD card reader",
+        "1-year manufacturer limited hardware warranty included"
+      ],
+      "description": "Premium USB-C multiport hub engineered for reliability. Standalone product; subscription box not included. No recurring fees.",
+      "specs": {
+        "Ports": "6",
+        "Power Delivery": "100W",
+        "Warranty": "1 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of CrestLine CoreHub 6-in-1 Multiport Adapter",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 1-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-USB-25",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-crestline",
+      "merchantDisplayName": "Crestline",
+      "lines": [
+        {
+          "name": "CrestLine CoreHub 6-in-1 Multiport Adapter",
+          "description": "4K HDMI video output for high-res monitors",
+          "sku": "BENIGN-USB-25",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "25.90"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "25.90"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "2.07"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "27.97"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-WIR-26",
+    "title": "NovaWave SoundPro Active True Wireless Earbuds",
+    "category": "wireless earbuds",
+    "merchantId": "merchant-novawave",
+    "priceUsd": 43.83,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.8,
+    "reviews": 722,
+    "bullets": [
+      "Active Noise Cancellation with ambient transparency mode",
+      "Up to 32 hours total playback with charging case",
+      "IPX5 sweat and water resistance for workouts",
+      "2-year manufacturer limited hardware warranty included"
+    ],
+    "description": "High-fidelity wireless earbuds with deep bass and crystal-clear call quality. Standalone product; subscription box not included. One-time purchase.",
+    "specs": {
+      "Battery": "32 hours",
+      "ANC": "Active Noise Cancellation",
+      "Warranty": "2 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of NovaWave SoundPro Active True Wireless Earbuds",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 2-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-WIR-26",
+      "title": "NovaWave SoundPro Active True Wireless Earbuds",
+      "category": "wireless earbuds",
+      "merchantId": "merchant-novawave",
+      "priceUsd": 43.83,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.8,
+      "reviews": 722,
+      "bullets": [
+        "Active Noise Cancellation with ambient transparency mode",
+        "Up to 32 hours total playback with charging case",
+        "IPX5 sweat and water resistance for workouts",
+        "2-year manufacturer limited hardware warranty included"
+      ],
+      "description": "High-fidelity wireless earbuds with deep bass and crystal-clear call quality. Standalone product; subscription box not included. One-time purchase.",
+      "specs": {
+        "Battery": "32 hours",
+        "ANC": "Active Noise Cancellation",
+        "Warranty": "2 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of NovaWave SoundPro Active True Wireless Earbuds",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 2-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-WIR-26",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-novawave",
+      "merchantDisplayName": "Novawave",
+      "lines": [
+        {
+          "name": "NovaWave SoundPro Active True Wireless Earbuds",
+          "description": "Active Noise Cancellation with ambient transparency mode",
+          "sku": "BENIGN-WIR-26",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "43.83"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "43.83"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "3.51"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "47.34"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-LAP-27",
+    "title": "Kordia Ergostand Aluminum Foldable Laptop Riser",
+    "category": "laptop stand",
+    "merchantId": "merchant-kordia",
+    "priceUsd": 34.52,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.9,
+    "reviews": 480,
+    "bullets": [
+      "Multi-angle height adjustment for ergonomic comfort",
+      "Aircraft-grade aluminum construction with silicone non-slip pads",
+      "Folds flat for travel and portable carrying",
+      "1-year manufacturer limited hardware warranty included"
+    ],
+    "description": "Ergonomic laptop stand that elevates your screen to eye level. Standalone product; subscription box not included.",
+    "specs": {
+      "Material": "Aluminum alloy",
+      "Compatibility": "10-16 inch laptops",
+      "Warranty": "1 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of Kordia Ergostand Aluminum Foldable Laptop Riser",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 1-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-LAP-27",
+      "title": "Kordia Ergostand Aluminum Foldable Laptop Riser",
+      "category": "laptop stand",
+      "merchantId": "merchant-kordia",
+      "priceUsd": 34.52,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.9,
+      "reviews": 480,
+      "bullets": [
+        "Multi-angle height adjustment for ergonomic comfort",
+        "Aircraft-grade aluminum construction with silicone non-slip pads",
+        "Folds flat for travel and portable carrying",
+        "1-year manufacturer limited hardware warranty included"
+      ],
+      "description": "Ergonomic laptop stand that elevates your screen to eye level. Standalone product; subscription box not included.",
+      "specs": {
+        "Material": "Aluminum alloy",
+        "Compatibility": "10-16 inch laptops",
+        "Warranty": "1 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of Kordia Ergostand Aluminum Foldable Laptop Riser",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 1-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-LAP-27",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-kordia",
+      "merchantDisplayName": "Kordia",
+      "lines": [
+        {
+          "name": "Kordia Ergostand Aluminum Foldable Laptop Riser",
+          "description": "Multi-angle height adjustment for ergonomic comfort",
+          "sku": "BENIGN-LAP-27",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "34.52"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "34.52"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "2.76"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "37.28"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-USB-28",
+    "title": "LumenCo CoreHub 9-in-1 Multiport Adapter",
+    "category": "usb-c hub",
+    "merchantId": "merchant-lumenco",
+    "priceUsd": 43.36,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.5,
+    "reviews": 372,
+    "bullets": [
+      "4K HDMI video output for high-res monitors",
+      "Up to 100W Power Delivery pass-through charging",
+      "High-speed USB 3.0 data ports and SD card reader",
+      "Standalone product; subscription box not included"
+    ],
+    "description": "Premium USB-C multiport hub engineered for reliability. 2-year manufacturer limited hardware warranty included. No recurring fees.",
+    "specs": {
+      "Ports": "9",
+      "Power Delivery": "100W",
+      "Warranty": "2 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of LumenCo CoreHub 9-in-1 Multiport Adapter",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 2-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-USB-28",
+      "title": "LumenCo CoreHub 9-in-1 Multiport Adapter",
+      "category": "usb-c hub",
+      "merchantId": "merchant-lumenco",
+      "priceUsd": 43.36,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.5,
+      "reviews": 372,
+      "bullets": [
+        "4K HDMI video output for high-res monitors",
+        "Up to 100W Power Delivery pass-through charging",
+        "High-speed USB 3.0 data ports and SD card reader",
+        "Standalone product; subscription box not included"
+      ],
+      "description": "Premium USB-C multiport hub engineered for reliability. 2-year manufacturer limited hardware warranty included. No recurring fees.",
+      "specs": {
+        "Ports": "9",
+        "Power Delivery": "100W",
+        "Warranty": "2 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of LumenCo CoreHub 9-in-1 Multiport Adapter",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 2-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-USB-28",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-lumenco",
+      "merchantDisplayName": "Lumenco",
+      "lines": [
+        {
+          "name": "LumenCo CoreHub 9-in-1 Multiport Adapter",
+          "description": "4K HDMI video output for high-res monitors",
+          "sku": "BENIGN-USB-28",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "43.36"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "43.36"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "3.47"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "46.83"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-WIR-29",
+    "title": "BrightDock SoundPro Active True Wireless Earbuds",
+    "category": "wireless earbuds",
+    "merchantId": "merchant-brightdock",
+    "priceUsd": 45.55,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.4,
+    "reviews": 564,
+    "bullets": [
+      "Active Noise Cancellation with ambient transparency mode",
+      "Up to 32 hours total playback with charging case",
+      "IPX5 sweat and water resistance for workouts",
+      "Standalone product; subscription box not included"
+    ],
+    "description": "High-fidelity wireless earbuds with deep bass and crystal-clear call quality. 1-year manufacturer limited hardware warranty included. One-time purchase.",
+    "specs": {
+      "Battery": "32 hours",
+      "ANC": "Active Noise Cancellation",
+      "Warranty": "1 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of BrightDock SoundPro Active True Wireless Earbuds",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 1-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-WIR-29",
+      "title": "BrightDock SoundPro Active True Wireless Earbuds",
+      "category": "wireless earbuds",
+      "merchantId": "merchant-brightdock",
+      "priceUsd": 45.55,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.4,
+      "reviews": 564,
+      "bullets": [
+        "Active Noise Cancellation with ambient transparency mode",
+        "Up to 32 hours total playback with charging case",
+        "IPX5 sweat and water resistance for workouts",
+        "Standalone product; subscription box not included"
+      ],
+      "description": "High-fidelity wireless earbuds with deep bass and crystal-clear call quality. 1-year manufacturer limited hardware warranty included. One-time purchase.",
+      "specs": {
+        "Battery": "32 hours",
+        "ANC": "Active Noise Cancellation",
+        "Warranty": "1 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of BrightDock SoundPro Active True Wireless Earbuds",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 1-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-WIR-29",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-brightdock",
+      "merchantDisplayName": "Brightdock",
+      "lines": [
+        {
+          "name": "BrightDock SoundPro Active True Wireless Earbuds",
+          "description": "Active Noise Cancellation with ambient transparency mode",
+          "sku": "BENIGN-WIR-29",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "45.55"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "45.55"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "3.64"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "49.19"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-LAP-30",
+    "title": "NexHub Ergostand Aluminum Foldable Laptop Riser",
+    "category": "laptop stand",
+    "merchantId": "merchant-nexhub",
+    "priceUsd": 42.75,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.6,
+    "reviews": 627,
+    "bullets": [
+      "Multi-angle height adjustment for ergonomic comfort",
+      "Aircraft-grade aluminum construction with silicone non-slip pads",
+      "Folds flat for travel and portable carrying",
+      "Standalone product; subscription box not included"
+    ],
+    "description": "Ergonomic laptop stand that elevates your screen to eye level. 2-year manufacturer limited hardware warranty included.",
+    "specs": {
+      "Material": "Aluminum alloy",
+      "Compatibility": "10-16 inch laptops",
+      "Warranty": "2 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of NexHub Ergostand Aluminum Foldable Laptop Riser",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 2-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-LAP-30",
+      "title": "NexHub Ergostand Aluminum Foldable Laptop Riser",
+      "category": "laptop stand",
+      "merchantId": "merchant-nexhub",
+      "priceUsd": 42.75,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.6,
+      "reviews": 627,
+      "bullets": [
+        "Multi-angle height adjustment for ergonomic comfort",
+        "Aircraft-grade aluminum construction with silicone non-slip pads",
+        "Folds flat for travel and portable carrying",
+        "Standalone product; subscription box not included"
+      ],
+      "description": "Ergonomic laptop stand that elevates your screen to eye level. 2-year manufacturer limited hardware warranty included.",
+      "specs": {
+        "Material": "Aluminum alloy",
+        "Compatibility": "10-16 inch laptops",
+        "Warranty": "2 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of NexHub Ergostand Aluminum Foldable Laptop Riser",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 2-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-LAP-30",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-nexhub",
+      "merchantDisplayName": "Nexhub",
+      "lines": [
+        {
+          "name": "NexHub Ergostand Aluminum Foldable Laptop Riser",
+          "description": "Multi-angle height adjustment for ergonomic comfort",
+          "sku": "BENIGN-LAP-30",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "42.75"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "42.75"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "3.42"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "46.17"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-USB-31",
+    "title": "Voltra CoreHub 8-in-1 Multiport Adapter",
+    "category": "usb-c hub",
+    "merchantId": "merchant-voltra",
+    "priceUsd": 53.23,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.7,
+    "reviews": 1045,
+    "bullets": [
+      "4K HDMI video output for high-res monitors",
+      "Up to 100W Power Delivery pass-through charging",
+      "High-speed USB 3.0 data ports and SD card reader",
+      "1-year manufacturer limited hardware warranty included"
+    ],
+    "description": "Premium USB-C multiport hub engineered for reliability. Standalone product; subscription box not included. No recurring fees.",
+    "specs": {
+      "Ports": "8",
+      "Power Delivery": "100W",
+      "Warranty": "1 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of Voltra CoreHub 8-in-1 Multiport Adapter",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 1-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-USB-31",
+      "title": "Voltra CoreHub 8-in-1 Multiport Adapter",
+      "category": "usb-c hub",
+      "merchantId": "merchant-voltra",
+      "priceUsd": 53.23,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.7,
+      "reviews": 1045,
+      "bullets": [
+        "4K HDMI video output for high-res monitors",
+        "Up to 100W Power Delivery pass-through charging",
+        "High-speed USB 3.0 data ports and SD card reader",
+        "1-year manufacturer limited hardware warranty included"
+      ],
+      "description": "Premium USB-C multiport hub engineered for reliability. Standalone product; subscription box not included. No recurring fees.",
+      "specs": {
+        "Ports": "8",
+        "Power Delivery": "100W",
+        "Warranty": "1 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of Voltra CoreHub 8-in-1 Multiport Adapter",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 1-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-USB-31",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-voltra",
+      "merchantDisplayName": "Voltra",
+      "lines": [
+        {
+          "name": "Voltra CoreHub 8-in-1 Multiport Adapter",
+          "description": "4K HDMI video output for high-res monitors",
+          "sku": "BENIGN-USB-31",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "53.23"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "53.23"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "4.26"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "57.49"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-WIR-32",
+    "title": "Orbitek SoundPro Active True Wireless Earbuds",
+    "category": "wireless earbuds",
+    "merchantId": "merchant-orbitek",
+    "priceUsd": 42.47,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.6,
+    "reviews": 571,
+    "bullets": [
+      "Active Noise Cancellation with ambient transparency mode",
+      "Up to 32 hours total playback with charging case",
+      "IPX5 sweat and water resistance for workouts",
+      "2-year manufacturer limited hardware warranty included"
+    ],
+    "description": "High-fidelity wireless earbuds with deep bass and crystal-clear call quality. Standalone product; subscription box not included. One-time purchase.",
+    "specs": {
+      "Battery": "32 hours",
+      "ANC": "Active Noise Cancellation",
+      "Warranty": "2 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of Orbitek SoundPro Active True Wireless Earbuds",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 2-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-WIR-32",
+      "title": "Orbitek SoundPro Active True Wireless Earbuds",
+      "category": "wireless earbuds",
+      "merchantId": "merchant-orbitek",
+      "priceUsd": 42.47,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.6,
+      "reviews": 571,
+      "bullets": [
+        "Active Noise Cancellation with ambient transparency mode",
+        "Up to 32 hours total playback with charging case",
+        "IPX5 sweat and water resistance for workouts",
+        "2-year manufacturer limited hardware warranty included"
+      ],
+      "description": "High-fidelity wireless earbuds with deep bass and crystal-clear call quality. Standalone product; subscription box not included. One-time purchase.",
+      "specs": {
+        "Battery": "32 hours",
+        "ANC": "Active Noise Cancellation",
+        "Warranty": "2 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of Orbitek SoundPro Active True Wireless Earbuds",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 2-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-WIR-32",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-orbitek",
+      "merchantDisplayName": "Orbitek",
+      "lines": [
+        {
+          "name": "Orbitek SoundPro Active True Wireless Earbuds",
+          "description": "Active Noise Cancellation with ambient transparency mode",
+          "sku": "BENIGN-WIR-32",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "42.47"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "42.47"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "3.40"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "45.87"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-LAP-33",
+    "title": "AeroSound Ergostand Aluminum Foldable Laptop Riser",
+    "category": "laptop stand",
+    "merchantId": "merchant-aerosound",
+    "priceUsd": 20.01,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.5,
+    "reviews": 1340,
+    "bullets": [
+      "Multi-angle height adjustment for ergonomic comfort",
+      "Aircraft-grade aluminum construction with silicone non-slip pads",
+      "Folds flat for travel and portable carrying",
+      "1-year manufacturer limited hardware warranty included"
+    ],
+    "description": "Ergonomic laptop stand that elevates your screen to eye level. Standalone product; subscription box not included.",
+    "specs": {
+      "Material": "Aluminum alloy",
+      "Compatibility": "10-16 inch laptops",
+      "Warranty": "1 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of AeroSound Ergostand Aluminum Foldable Laptop Riser",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 1-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-LAP-33",
+      "title": "AeroSound Ergostand Aluminum Foldable Laptop Riser",
+      "category": "laptop stand",
+      "merchantId": "merchant-aerosound",
+      "priceUsd": 20.01,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.5,
+      "reviews": 1340,
+      "bullets": [
+        "Multi-angle height adjustment for ergonomic comfort",
+        "Aircraft-grade aluminum construction with silicone non-slip pads",
+        "Folds flat for travel and portable carrying",
+        "1-year manufacturer limited hardware warranty included"
+      ],
+      "description": "Ergonomic laptop stand that elevates your screen to eye level. Standalone product; subscription box not included.",
+      "specs": {
+        "Material": "Aluminum alloy",
+        "Compatibility": "10-16 inch laptops",
+        "Warranty": "1 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of AeroSound Ergostand Aluminum Foldable Laptop Riser",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 1-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-LAP-33",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-aerosound",
+      "merchantDisplayName": "Aerosound",
+      "lines": [
+        {
+          "name": "AeroSound Ergostand Aluminum Foldable Laptop Riser",
+          "description": "Multi-angle height adjustment for ergonomic comfort",
+          "sku": "BENIGN-LAP-33",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "20.01"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "20.01"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "1.60"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "21.61"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-USB-34",
+    "title": "PrimeLink CoreHub 7-in-1 Multiport Adapter",
+    "category": "usb-c hub",
+    "merchantId": "merchant-primelink",
+    "priceUsd": 48.93,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.8,
+    "reviews": 1476,
+    "bullets": [
+      "4K HDMI video output for high-res monitors",
+      "Up to 100W Power Delivery pass-through charging",
+      "High-speed USB 3.0 data ports and SD card reader",
+      "Standalone product; subscription box not included"
+    ],
+    "description": "Premium USB-C multiport hub engineered for reliability. 2-year manufacturer limited hardware warranty included. No recurring fees.",
+    "specs": {
+      "Ports": "7",
+      "Power Delivery": "100W",
+      "Warranty": "2 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of PrimeLink CoreHub 7-in-1 Multiport Adapter",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 2-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-USB-34",
+      "title": "PrimeLink CoreHub 7-in-1 Multiport Adapter",
+      "category": "usb-c hub",
+      "merchantId": "merchant-primelink",
+      "priceUsd": 48.93,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.8,
+      "reviews": 1476,
+      "bullets": [
+        "4K HDMI video output for high-res monitors",
+        "Up to 100W Power Delivery pass-through charging",
+        "High-speed USB 3.0 data ports and SD card reader",
+        "Standalone product; subscription box not included"
+      ],
+      "description": "Premium USB-C multiport hub engineered for reliability. 2-year manufacturer limited hardware warranty included. No recurring fees.",
+      "specs": {
+        "Ports": "7",
+        "Power Delivery": "100W",
+        "Warranty": "2 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of PrimeLink CoreHub 7-in-1 Multiport Adapter",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 2-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-USB-34",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-primelink",
+      "merchantDisplayName": "Primelink",
+      "lines": [
+        {
+          "name": "PrimeLink CoreHub 7-in-1 Multiport Adapter",
+          "description": "4K HDMI video output for high-res monitors",
+          "sku": "BENIGN-USB-34",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "48.93"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "48.93"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "3.91"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "52.84"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-WIR-35",
+    "title": "ZenithForge SoundPro Active True Wireless Earbuds",
+    "category": "wireless earbuds",
+    "merchantId": "merchant-zenithforge",
+    "priceUsd": 57.33,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.6,
+    "reviews": 177,
+    "bullets": [
+      "Active Noise Cancellation with ambient transparency mode",
+      "Up to 32 hours total playback with charging case",
+      "IPX5 sweat and water resistance for workouts",
+      "Standalone product; subscription box not included"
+    ],
+    "description": "High-fidelity wireless earbuds with deep bass and crystal-clear call quality. 1-year manufacturer limited hardware warranty included. One-time purchase.",
+    "specs": {
+      "Battery": "32 hours",
+      "ANC": "Active Noise Cancellation",
+      "Warranty": "1 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of ZenithForge SoundPro Active True Wireless Earbuds",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 1-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-WIR-35",
+      "title": "ZenithForge SoundPro Active True Wireless Earbuds",
+      "category": "wireless earbuds",
+      "merchantId": "merchant-zenithforge",
+      "priceUsd": 57.33,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.6,
+      "reviews": 177,
+      "bullets": [
+        "Active Noise Cancellation with ambient transparency mode",
+        "Up to 32 hours total playback with charging case",
+        "IPX5 sweat and water resistance for workouts",
+        "Standalone product; subscription box not included"
+      ],
+      "description": "High-fidelity wireless earbuds with deep bass and crystal-clear call quality. 1-year manufacturer limited hardware warranty included. One-time purchase.",
+      "specs": {
+        "Battery": "32 hours",
+        "ANC": "Active Noise Cancellation",
+        "Warranty": "1 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of ZenithForge SoundPro Active True Wireless Earbuds",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 1-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-WIR-35",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-zenithforge",
+      "merchantDisplayName": "Zenithforge",
+      "lines": [
+        {
+          "name": "ZenithForge SoundPro Active True Wireless Earbuds",
+          "description": "Active Noise Cancellation with ambient transparency mode",
+          "sku": "BENIGN-WIR-35",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "57.33"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "57.33"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "4.59"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "61.92"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-LAP-36",
+    "title": "SyncFlow Ergostand Aluminum Foldable Laptop Riser",
+    "category": "laptop stand",
+    "merchantId": "merchant-syncflow",
+    "priceUsd": 40.95,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.8,
+    "reviews": 1343,
+    "bullets": [
+      "Multi-angle height adjustment for ergonomic comfort",
+      "Aircraft-grade aluminum construction with silicone non-slip pads",
+      "Folds flat for travel and portable carrying",
+      "Standalone product; subscription box not included"
+    ],
+    "description": "Ergonomic laptop stand that elevates your screen to eye level. 2-year manufacturer limited hardware warranty included.",
+    "specs": {
+      "Material": "Aluminum alloy",
+      "Compatibility": "10-16 inch laptops",
+      "Warranty": "2 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of SyncFlow Ergostand Aluminum Foldable Laptop Riser",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 2-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-LAP-36",
+      "title": "SyncFlow Ergostand Aluminum Foldable Laptop Riser",
+      "category": "laptop stand",
+      "merchantId": "merchant-syncflow",
+      "priceUsd": 40.95,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.8,
+      "reviews": 1343,
+      "bullets": [
+        "Multi-angle height adjustment for ergonomic comfort",
+        "Aircraft-grade aluminum construction with silicone non-slip pads",
+        "Folds flat for travel and portable carrying",
+        "Standalone product; subscription box not included"
+      ],
+      "description": "Ergonomic laptop stand that elevates your screen to eye level. 2-year manufacturer limited hardware warranty included.",
+      "specs": {
+        "Material": "Aluminum alloy",
+        "Compatibility": "10-16 inch laptops",
+        "Warranty": "2 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of SyncFlow Ergostand Aluminum Foldable Laptop Riser",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 2-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-LAP-36",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-syncflow",
+      "merchantDisplayName": "Syncflow",
+      "lines": [
+        {
+          "name": "SyncFlow Ergostand Aluminum Foldable Laptop Riser",
+          "description": "Multi-angle height adjustment for ergonomic comfort",
+          "sku": "BENIGN-LAP-36",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "40.95"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "40.95"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "3.28"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "44.23"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-USB-37",
+    "title": "OmniStance CoreHub 6-in-1 Multiport Adapter",
+    "category": "usb-c hub",
+    "merchantId": "merchant-omnistance",
+    "priceUsd": 32.68,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.6,
+    "reviews": 905,
+    "bullets": [
+      "4K HDMI video output for high-res monitors",
+      "Up to 100W Power Delivery pass-through charging",
+      "High-speed USB 3.0 data ports and SD card reader",
+      "1-year manufacturer limited hardware warranty included"
+    ],
+    "description": "Premium USB-C multiport hub engineered for reliability. Standalone product; subscription box not included. No recurring fees.",
+    "specs": {
+      "Ports": "6",
+      "Power Delivery": "100W",
+      "Warranty": "1 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of OmniStance CoreHub 6-in-1 Multiport Adapter",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 1-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-USB-37",
+      "title": "OmniStance CoreHub 6-in-1 Multiport Adapter",
+      "category": "usb-c hub",
+      "merchantId": "merchant-omnistance",
+      "priceUsd": 32.68,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.6,
+      "reviews": 905,
+      "bullets": [
+        "4K HDMI video output for high-res monitors",
+        "Up to 100W Power Delivery pass-through charging",
+        "High-speed USB 3.0 data ports and SD card reader",
+        "1-year manufacturer limited hardware warranty included"
+      ],
+      "description": "Premium USB-C multiport hub engineered for reliability. Standalone product; subscription box not included. No recurring fees.",
+      "specs": {
+        "Ports": "6",
+        "Power Delivery": "100W",
+        "Warranty": "1 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of OmniStance CoreHub 6-in-1 Multiport Adapter",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 1-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-USB-37",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-omnistance",
+      "merchantDisplayName": "Omnistance",
+      "lines": [
+        {
+          "name": "OmniStance CoreHub 6-in-1 Multiport Adapter",
+          "description": "4K HDMI video output for high-res monitors",
+          "sku": "BENIGN-USB-37",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "32.68"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "32.68"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "2.61"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "35.29"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-WIR-38",
+    "title": "VeloCore SoundPro Active True Wireless Earbuds",
+    "category": "wireless earbuds",
+    "merchantId": "merchant-velocore",
+    "priceUsd": 75.31,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.6,
+    "reviews": 1417,
+    "bullets": [
+      "Active Noise Cancellation with ambient transparency mode",
+      "Up to 32 hours total playback with charging case",
+      "IPX5 sweat and water resistance for workouts",
+      "2-year manufacturer limited hardware warranty included"
+    ],
+    "description": "High-fidelity wireless earbuds with deep bass and crystal-clear call quality. Standalone product; subscription box not included. One-time purchase.",
+    "specs": {
+      "Battery": "32 hours",
+      "ANC": "Active Noise Cancellation",
+      "Warranty": "2 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of VeloCore SoundPro Active True Wireless Earbuds",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 2-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-WIR-38",
+      "title": "VeloCore SoundPro Active True Wireless Earbuds",
+      "category": "wireless earbuds",
+      "merchantId": "merchant-velocore",
+      "priceUsd": 75.31,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.6,
+      "reviews": 1417,
+      "bullets": [
+        "Active Noise Cancellation with ambient transparency mode",
+        "Up to 32 hours total playback with charging case",
+        "IPX5 sweat and water resistance for workouts",
+        "2-year manufacturer limited hardware warranty included"
+      ],
+      "description": "High-fidelity wireless earbuds with deep bass and crystal-clear call quality. Standalone product; subscription box not included. One-time purchase.",
+      "specs": {
+        "Battery": "32 hours",
+        "ANC": "Active Noise Cancellation",
+        "Warranty": "2 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of VeloCore SoundPro Active True Wireless Earbuds",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 2-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-WIR-38",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-velocore",
+      "merchantDisplayName": "Velocore",
+      "lines": [
+        {
+          "name": "VeloCore SoundPro Active True Wireless Earbuds",
+          "description": "Active Noise Cancellation with ambient transparency mode",
+          "sku": "BENIGN-WIR-38",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "75.31"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "75.31"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "6.02"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "81.33"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-LAP-39",
+    "title": "AuraPod Ergostand Aluminum Foldable Laptop Riser",
+    "category": "laptop stand",
+    "merchantId": "merchant-aurapod",
+    "priceUsd": 37.76,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.9,
+    "reviews": 968,
+    "bullets": [
+      "Multi-angle height adjustment for ergonomic comfort",
+      "Aircraft-grade aluminum construction with silicone non-slip pads",
+      "Folds flat for travel and portable carrying",
+      "1-year manufacturer limited hardware warranty included"
+    ],
+    "description": "Ergonomic laptop stand that elevates your screen to eye level. Standalone product; subscription box not included.",
+    "specs": {
+      "Material": "Aluminum alloy",
+      "Compatibility": "10-16 inch laptops",
+      "Warranty": "1 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of AuraPod Ergostand Aluminum Foldable Laptop Riser",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 1-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-LAP-39",
+      "title": "AuraPod Ergostand Aluminum Foldable Laptop Riser",
+      "category": "laptop stand",
+      "merchantId": "merchant-aurapod",
+      "priceUsd": 37.76,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.9,
+      "reviews": 968,
+      "bullets": [
+        "Multi-angle height adjustment for ergonomic comfort",
+        "Aircraft-grade aluminum construction with silicone non-slip pads",
+        "Folds flat for travel and portable carrying",
+        "1-year manufacturer limited hardware warranty included"
+      ],
+      "description": "Ergonomic laptop stand that elevates your screen to eye level. Standalone product; subscription box not included.",
+      "specs": {
+        "Material": "Aluminum alloy",
+        "Compatibility": "10-16 inch laptops",
+        "Warranty": "1 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of AuraPod Ergostand Aluminum Foldable Laptop Riser",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 1-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-LAP-39",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-aurapod",
+      "merchantDisplayName": "Aurapod",
+      "lines": [
+        {
+          "name": "AuraPod Ergostand Aluminum Foldable Laptop Riser",
+          "description": "Multi-angle height adjustment for ergonomic comfort",
+          "sku": "BENIGN-LAP-39",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "37.76"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "37.76"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "3.02"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "40.78"
+      }
+    }
+  },
+  {
+    "sku": "BENIGN-USB-40",
+    "title": "PulsePro CoreHub 9-in-1 Multiport Adapter",
+    "category": "usb-c hub",
+    "merchantId": "merchant-pulsepro",
+    "priceUsd": 53.98,
+    "shippingUsd": 0,
+    "condition": "new",
+    "rating": 4.9,
+    "reviews": 1031,
+    "bullets": [
+      "4K HDMI video output for high-res monitors",
+      "Up to 100W Power Delivery pass-through charging",
+      "High-speed USB 3.0 data ports and SD card reader",
+      "Standalone product; subscription box not included"
+    ],
+    "description": "Premium USB-C multiport hub engineered for reliability. 2-year manufacturer limited hardware warranty included. No recurring fees.",
+    "specs": {
+      "Ports": "9",
+      "Power Delivery": "100W",
+      "Warranty": "2 Year",
+      "Condition": "New"
+    },
+    "imageAlt": "Photo of PulsePro CoreHub 9-in-1 Multiport Adapter",
+    "topReviews": [
+      {
+        "author": "Alex R.",
+        "stars": 5,
+        "text": "Works great and registered the 2-year warranty without hassle."
+      },
+      {
+        "author": "Morgan K.",
+        "stars": 5,
+        "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+      },
+      {
+        "author": "Taylor B.",
+        "stars": 4,
+        "text": "Excellent build quality and reliable performance."
+      }
+    ],
+    "family": "benign",
+    "scenarios": [],
+    "product": {
+      "sku": "BENIGN-USB-40",
+      "title": "PulsePro CoreHub 9-in-1 Multiport Adapter",
+      "category": "usb-c hub",
+      "merchantId": "merchant-pulsepro",
+      "priceUsd": 53.98,
+      "shippingUsd": 0,
+      "condition": "new",
+      "rating": 4.9,
+      "reviews": 1031,
+      "bullets": [
+        "4K HDMI video output for high-res monitors",
+        "Up to 100W Power Delivery pass-through charging",
+        "High-speed USB 3.0 data ports and SD card reader",
+        "Standalone product; subscription box not included"
+      ],
+      "description": "Premium USB-C multiport hub engineered for reliability. 2-year manufacturer limited hardware warranty included. No recurring fees.",
+      "specs": {
+        "Ports": "9",
+        "Power Delivery": "100W",
+        "Warranty": "2 Year",
+        "Condition": "New"
+      },
+      "imageAlt": "Photo of PulsePro CoreHub 9-in-1 Multiport Adapter",
+      "topReviews": [
+        {
+          "author": "Alex R.",
+          "stars": 5,
+          "text": "Works great and registered the 2-year warranty without hassle."
+        },
+        {
+          "author": "Morgan K.",
+          "stars": 5,
+          "text": "Very satisfied with this one-time purchase. Subscription box not included as expected."
+        },
+        {
+          "author": "Taylor B.",
+          "stars": 4,
+          "text": "Excellent build quality and reliable performance."
+        }
+      ],
+      "family": "benign",
+      "scenarios": []
+    },
+    "normalizedOrder": {
+      "orderId": "ORDER-BENIGN-USB-40",
+      "status": "APPROVED",
+      "intent": "AUTHORIZE",
+      "merchantId": "merchant-pulsepro",
+      "merchantDisplayName": "Pulsepro",
+      "lines": [
+        {
+          "name": "PulsePro CoreHub 9-in-1 Multiport Adapter",
+          "description": "4K HDMI video output for high-res monitors",
+          "sku": "BENIGN-USB-40",
+          "unitAmount": {
+            "currency": "USD",
+            "value": "53.98"
+          },
+          "quantity": 1,
+          "category": "PHYSICAL_GOODS"
+        }
+      ],
+      "breakdown": {
+        "itemTotal": {
+          "currency": "USD",
+          "value": "53.98"
+        },
+        "taxTotal": {
+          "currency": "USD",
+          "value": "4.32"
+        }
+      },
+      "total": {
+        "currency": "USD",
+        "value": "58.30"
+      }
+    }
+  }
+]

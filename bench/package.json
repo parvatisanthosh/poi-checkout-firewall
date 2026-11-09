@@ -9,10 +9,15 @@
     "bench:smoke": "tsx src/run.ts --smoke",
     "bench:summarize": "tsx src/summarize.ts",
     "bench:freeze": "tsx src/freeze-intents.ts",
+    "bench:evolved": "tsx src/evolved.ts",
+    "bench:make-heldout": "tsx evolved/make-heldout.ts",
+    "bench:eval": "tsx evolved/run-eval.ts",
+    "bench:eval:summarize": "tsx evolved/summarize.ts",
     "test": "vitest run"
   },
   "dependencies": {
     "@poi/agent": "workspace:*",
+    "@poi/arena": "workspace:*",
     "@poi/shared": "workspace:*",
     "p-limit": "^7.3.3",
     "zod": "^4.6.7"

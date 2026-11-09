@@ -2,7 +2,10 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "lib": ["ES2023", "DOM"],
-    "types": ["node"]
+    "types": ["node"],
+    "paths": {
+      "@poi/arena": ["../packages/arena/src/index.ts"]
+    }
   },
-  "include": ["src", "test"]
+  "include": ["src", "test", "evolved"]
 }

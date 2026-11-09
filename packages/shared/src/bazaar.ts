@@ -80,7 +80,7 @@ export type ProductFamily = z.infer<typeof ProductFamily>;
 
 /** One Bazaar listing. `family` and `hidden` label the attack so nothing has to parse text. */
 export const BazaarProduct = z.object({
-  sku: z.string().regex(/^[A-Z0-9-]+$/),
+  sku: z.string().regex(/^[A-Za-z0-9-]+$/),
   title: z.string().min(5),
   category: ProductCategory,
   merchantId: z.string(),

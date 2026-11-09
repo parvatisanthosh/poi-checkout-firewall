@@ -32,6 +32,9 @@
     "bench:smoke": "pnpm --filter @poi/bench bench:smoke",
     "bench:summarize": "pnpm --filter @poi/bench bench:summarize",
     "bench:freeze": "pnpm --filter @poi/bench bench:freeze",
+    "bench:make-heldout": "pnpm --filter @poi/bench bench:make-heldout",
+    "bench:eval": "pnpm --filter @poi/bench bench:eval",
+    "bench:eval:summarize": "pnpm --filter @poi/bench bench:eval:summarize",
     "shop": "pnpm --filter @poi/agent shop"
   },
   "devDependencies": {
@@ -48,5 +51,8 @@
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.72.1",
     "vitest": "^5.1.0"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
   }
 }
