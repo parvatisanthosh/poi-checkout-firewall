@@ -18,13 +18,13 @@ type Partial = Omit<CheckResult, "stage" | "latencyMs">;
 // --- patterns over merchant-written line text (names + descriptions)
 export const RECURRING =
   /\bper (?:month|year|week)\b|\/\s?(?:mo|month|yr|year|wk)\b|\b(?:monthly|yearly|annually|weekly)\b|\bsubscri(?:be|ption)\b|\brenews?\b|\bauto-?renew\w*|\bannual plan\b|\bmembership\b|\btrial,? then\b|\bfree trial\b|\brecurring\b|\bbilled every\b/i;
-const RENEWED =
+export const RENEWED =
   /\brefurb\w*|\brenewed\b|\breconditioned\b|\brecertified\b|\bopen[- ]box\b|\bgrade [abc]\b|\blike[- ]new\b/i;
-const USED =
+export const USED =
   /\bpre-?owned\b|\bsecond[- ]hand\b|\(used\)|\bused[- ](?:condition|item|unit|grade)\b|\bcondition:\s*used\b/i;
 const PROTECTION =
   /\bwarrant(?:y|ies)\b|\bprotection(?: plan| pack)?\b|\bcare\s?(?:\+|plus|plan|pack)|\binsurance\b|\bguarantee plan\b|\bcoverage\b/i;
-const FEE = /\bfee\b|\bsurcharge\b|\bservice charge\b|\bconvenience\b|\bprocessing\b/i;
+export const FEE = /\bfee\b|\bsurcharge\b|\bservice charge\b|\bconvenience\b|\bprocessing\b/i;
 
 const lineText = (l: NormalizedOrder["lines"][number]) => `${l.name} ${l.description ?? ""}`;
 const quote = (s: string) => `"${s.length > 60 ? `${s.slice(0, 59)}…` : s}"`;

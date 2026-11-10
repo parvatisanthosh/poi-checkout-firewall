@@ -19,6 +19,8 @@ import { PayPalError, type PayPal, type PayPalOrder } from "../src/paypal";
 import type { Emitter } from "../src/realtime/emitter";
 import { markVerificationFailed, runVerification } from "../src/verifier/pipeline";
 import { testSigningKey } from "./helpers";
+import type { MintJob } from "../src/immune/mint.job";
+import { preserveMerchantRisk } from "./risk-guard";
 
 const RUN = Date.now().toString(36);
 const fixture = (name: string): PayPalOrder =>
@@ -105,6 +107,8 @@ describe.runIf(process.env.RUN_DB_TESTS === "1")("pipeline (real DB, fake PayPal
   let poi: PoiClient;
   let baseUrl = "";
   let intentId = "";
+  let restoreRisk: () => Promise<void> = async () => {};
+  const mints: MintJob[] = [];
   let server: ReturnType<typeof createServer>;
 
   let placed = 0;
@@ -128,7 +132,13 @@ describe.runIf(process.env.RUN_DB_TESTS === "1")("pipeline (real DB, fake PayPal
     const db = getPrisma();
     for (const m of merchants)
       await db.merchant.upsert({ where: { id: m.id }, create: m, update: m });
+    restoreRisk = await preserveMerchantRisk(
+      db,
+      merchants.map((m) => m.id),
+    );
     deps = buildDeps({
+      // Layer 2: record live-VOID mints instead of growing a dev database's immune memory
+      enqueueMint: async (job) => void mints.push(job),
       paypal: fakePayPal,
       signingKey: async () => key,
       compilerModel: undefined,
@@ -156,6 +166,7 @@ describe.runIf(process.env.RUN_DB_TESTS === "1")("pipeline (real DB, fake PayPal
   });
   afterAll(async () => {
     await new Promise<void>((r) => server.close(() => r()));
+    await restoreRisk();
     await disconnectPrisma();
   });
 
@@ -174,6 +185,8 @@ describe.runIf(process.env.RUN_DB_TESTS === "1")("pipeline (real DB, fake PayPal
     expect(v.summary).toMatch(/^Voided: /);
     expect(calls.void).toContain(authorizationId);
     expect(calls.capture).not.toContain(authorizationId);
+    // Layer 2: a live VOID with a recognisable trick feeds immune memory
+    expect(mints).toContainEqual({ orderId, family: "subscription", source: "live-void" });
 
     const mine = events.filter((e) => e.orderId === orderId).map((e) => e.type);
     expect(mine[0]).toBe("started");

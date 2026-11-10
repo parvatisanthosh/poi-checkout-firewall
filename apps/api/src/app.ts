@@ -33,6 +33,8 @@ import { fetchScenarios, httpArenaBazaar, type ArenaBazaar } from "./lib/bazaar"
 import { runShopper } from "@poi/agent";
 import type { ArenaTrialDeps } from "./arena/trial.job";
 import { noopArenaEmitter, type ArenaEmitter } from "./realtime/arena-emitter";
+import { createInlineImmuneQueue, type ImmuneQueue, type ImmuneWorkerDeps } from "./immune/queue";
+import { immuneRouter } from "./immune/routes";
 import { markVerificationFailed, runVerification, type PipelineDeps } from "./verifier/pipeline";
 
 /** Everything the routes need from the outside world; tests swap in fakes. */
@@ -58,8 +60,10 @@ export interface AppDeps extends PipelineDeps {
   arenaQueue: ArenaQueue;
   arenaBazaar: ArenaBazaar;
   arenaShop: ArenaTrialDeps["shop"];
-  /** immune.mint (task Q4); logs until then. */
+  /** immune.mint: arena reports, POST /immune/report, live VOIDs, human rejects. */
   enqueueMint: ArenaTrialDeps["enqueueMint"];
+  /** Mutable like `queue`: server.ts swaps in BullMQ when Redis is set. */
+  immuneQueue: ImmuneQueue;
 }
 
 /**
@@ -92,8 +96,8 @@ export function buildDeps(overrides: Partial<AppDeps> = {}): AppDeps {
     arenaQueue: undefined as unknown as ArenaQueue,
     arenaBazaar: httpArenaBazaar(),
     arenaShop: runShopper,
-    enqueueMint: async (job) =>
-      defaultLogger.info(job, "immune.mint requested (minting lands in Q4)"),
+    enqueueMint: (job) => deps.immuneQueue.enqueueMint(job),
+    immuneQueue: undefined as unknown as ImmuneQueue,
     health: {
       db: async () => getPrisma().$queryRaw`SELECT 1`,
       redis: async () => {
@@ -106,6 +110,7 @@ export function buildDeps(overrides: Partial<AppDeps> = {}): AppDeps {
     },
     ...overrides,
   };
+  deps.immuneQueue ??= createInlineImmuneQueue(immuneWorkerDeps(deps));
   deps.arenaQueue ??= createInlineArenaQueue(arenaJobDeps(deps), env.ARENA_CONCURRENCY);
   deps.queue ??= createInlineQueue(
     (id) => runVerification(deps, id),
@@ -173,6 +178,7 @@ export function createApp(deps: AppDeps = buildDeps()) {
   app.use("/api", ledgerRouter(deps));
   app.use("/api", webhooksRouter(deps));
   app.use("/api", arenaRouter(deps));
+  app.use("/api", immuneRouter(deps));
   app.use(jwksRouter(deps));
   app.use("/api", jwksRouter(deps));
 
@@ -204,5 +210,22 @@ export function arenaJobDeps(deps: AppDeps) {
       return deps.compilerModel;
     },
     enqueueMint: (job: Parameters<ArenaTrialDeps["enqueueMint"]>[0]) => deps.enqueueMint(job),
+  };
+}
+
+/** The immune jobs' view of the deps (getters, so the socket emitter swap is picked up). */
+export function immuneWorkerDeps(deps: AppDeps): ImmuneWorkerDeps {
+  return {
+    prisma: deps.prisma,
+    signingKey: deps.signingKey,
+    get embeddingModel() {
+      return deps.embeddingModel;
+    },
+    get emitter() {
+      return deps.arenaEmitter;
+    },
+    logger: deps.logger,
+    benignSetPath: env.IMMUNE_BENIGN_SET,
+    thresholds: { jaccard: env.IMMUNE_JACCARD, cosine: env.IMMUNE_COSINE },
   };
 }

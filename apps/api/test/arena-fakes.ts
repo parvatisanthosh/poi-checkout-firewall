@@ -4,7 +4,7 @@
 import type { RunShopperResult } from "@poi/agent";
 import type { BazaarProduct, Scenario } from "@poi/shared";
 import { buildOrderRequest } from "../../bazaar/src/checkout";
-import { loadData, type BazaarData } from "../../bazaar/src/data";
+import { loadData, type BazaarData, type MerchantRecord } from "../../bazaar/src/data";
 import { pageText } from "../../bazaar/src/render-page";
 import type { ArenaShopOptions } from "../src/arena/trial.job";
 import type { ArenaBazaar } from "../src/lib/bazaar";
@@ -19,6 +19,8 @@ export interface ArenaFakes {
   paypal: PayPal;
   /** What the shopper does in a tenant. Default: buy the evolved listing. */
   choose: (tenant: string, evolvedSku: string, scenario: Scenario) => string | null | Error;
+  /** Sellers the Bazaar data doesn't have (evolved listings may name their own). */
+  merchants: Map<string, MerchantRecord>;
 }
 
 export function arenaFakes(): ArenaFakes {
@@ -28,16 +30,19 @@ export function arenaFakes(): ArenaFakes {
   const deleted: string[] = [];
 
   /** A BazaarData view of one tenant: the scenario's catalog + the evolved product. */
+  const merchants = new Map<string, MerchantRecord>();
   const tenantData = (tenant: string): BazaarData => {
     const t = tenants.get(tenant)!;
     return {
       ...bazaarData,
       product: (sku) => (sku === t.product.sku ? t.product : bazaarData.product(sku)),
+      merchant: (id) => merchants.get(id) ?? bazaarData.merchant(id),
     };
   };
 
   const fakes: ArenaFakes = {
     choose: (_tenant, evolvedSku) => evolvedSku,
+    merchants,
     bazaar: {
       created,
       deleted,
@@ -64,7 +69,7 @@ export function arenaFakes(): ArenaFakes {
         sku,
         pageText: pageText(
           sku === t.product.sku ? t.product : bazaarData.product(sku)!,
-          bazaarData,
+          tenantData(tenant),
         ),
       }));
       const trace = {

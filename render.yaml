@@ -63,6 +63,118 @@ services:
         sync: false
       - key: GROQ_API_KEY
         sync: false
+      # --- Layer 2 (docs/CONTRACTS-L2.md 4.8) ---
+      # Live authorizations also run immune memory + the conformal gate (they only tighten).
+      - key: LIVE_LAYER2
+        value: "true"
+      # The dedicated poi-arena-worker below takes arena + immune jobs; set "true" if you don't deploy it.
+      - key: ARENA_WORKERS_INLINE
+        value: "false"
+      - key: ARENA_ENGINE
+        value: real
+      - key: ARENA_AGENT_MODEL
+        value: google:gemini-flash-lite-latest
+      - key: IMMUNE_BENIGN_SET
+        value: bench/evolved/benign-40.json
+      - key: CRC_ALPHA
+        value: "0.05"
+
+  # --- Layer 2 arena worker (task Q10): arena.generation / arena.trial / immune.mint /
+  # immune.promote. Same build as the API; no Layer 1 verify jobs, so a long arena run never
+  # slows a checkout. Background workers are a paid Render plan.
+  - type: worker
+    name: poi-arena-worker
+    runtime: node
+    plan: starter
+    region: oregon
+    buildCommand: >-
+      corepack enable && pnpm install --frozen-lockfile --prod=false &&
+      pnpm --filter @poi/api build
+    startCommand: node apps/api/dist/arena-worker.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: poi-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: poi-redis
+          property: connectionString
+      - key: ARENA_ENGINE
+        value: real
+      # Free-tier LLM keys: keep trial parallelism low.
+      - key: ARENA_CONCURRENCY
+        value: "2"
+      - key: ARENA_MAX_USD
+        value: "15"
+      - key: ARENA_ATTACKER_MODEL
+        value: groq:openai/gpt-oss-120b
+      - key: ARENA_HELDOUT_ATTACKER_MODEL
+        value: groq:qwen/qwen3.8-27b
+      - key: ARENA_AGENT_MODEL
+        value: google:gemini-flash-lite-latest
+      - key: IMMUNE_BENIGN_SET
+        value: bench/evolved/benign-40.json
+      - key: COMPILER_MODEL
+        value: google:gemini-flash-lite-latest
+      - key: JUDGE_MODEL
+        value: google:gemini-flash-lite-latest
+      - key: EMBEDDING_MODEL
+        value: google:gemini-embedding-001
+      - key: POI_SIGNING_JWK
+        sync: false # the same key as poi-api (antibodies and evidence are signed with it)
+      - key: BAZAAR_URL
+        sync: false # https://poi-bazaar.onrender.com (arena tenants)
+      - key: PAYPAL_BASE_URL
+        value: https://api-m.sandbox.paypal.com
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_GENERATIVE_AI_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+
+  # --- Nightly calibration (task Q10): calibrate.crc once at CRC_ALPHA, then exit. With too little
+  # data it logs "need more calibration data" and keeps the previous calibration active.
+  - type: cron
+    name: poi-calibrate
+    runtime: node
+    plan: starter
+    region: oregon
+    schedule: "30 21 * * *" # 03:00 IST
+    buildCommand: >-
+      corepack enable && pnpm install --frozen-lockfile --prod=false &&
+      pnpm --filter @poi/api build
+    startCommand: node apps/api/dist/calibrate.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: poi-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: poi-redis
+          property: connectionString
+      - key: CRC_ALPHA
+        value: "0.05"
+      - key: CRC_BENIGN_VOID_QUANTILE
+        value: "0.99"
 
   # --- Optional separate worker (background workers are a paid Render plan). To use it, set
   # WORKER_INLINE=false on poi-api and uncomment. Both share Redis: jobs via BullMQ, events via

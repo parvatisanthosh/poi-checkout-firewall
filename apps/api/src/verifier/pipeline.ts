@@ -25,10 +25,16 @@ import type { Emitter } from "../realtime/emitter";
 import { runDeterministic } from "./deterministic";
 import { checkInjection } from "./injection";
 import { judgeOrder } from "./judge";
-import { decideVerdict, topCheck } from "./lattice";
+import { decideVerdict, maxVerdict, topCheck } from "./lattice";
 import { normalizeOrder, NormalizeError } from "./normalize";
 import { runShadow } from "./shadow";
 import { retrieveTerms, termsChecks, type TermsChunk } from "./terms-rag";
+import { env } from "../env";
+import { recordHits } from "../immune/antibody.repo";
+import { computeCounterfactual } from "../immune/counterfactual";
+import { gateSummary, runLayer2, type L2Record, type L2Thresholds } from "../immune/layer2";
+import { familyFromCheck, type MintJob } from "../immune/mint.job";
+import { bumpRisk, riskKey } from "../immune/risk";
 
 export interface PipelineDeps {
   prisma: () => PrismaClient;
@@ -48,7 +54,17 @@ export interface PipelineDeps {
    * and run through the same checks, so it can only add evidence.
    */
   extraTerms?: (orderId: string) => TermsChunk[];
+  /** Layer 2 match thresholds; defaults from env (IMMUNE_JACCARD, IMMUNE_COSINE, RISK_ASK_THRESHOLD). */
+  l2Thresholds?: L2Thresholds;
+  /** immune.mint: a live VOID with a recognisable trick feeds immune memory. */
+  enqueueMint?: (job: MintJob) => Promise<void>;
 }
+
+const defaultL2Thresholds = (): L2Thresholds => ({
+  jaccard: env.IMMUNE_JACCARD,
+  cosine: env.IMMUNE_COSINE,
+  riskAsk: env.RISK_ASK_THRESHOLD,
+});
 
 const json = (v: unknown) => v as Prisma.InputJsonValue;
 
@@ -95,6 +111,9 @@ export async function runVerification(deps: PipelineDeps, verificationId: string
   let normalized: NormalizedOrder | null = order.normalized
     ? NormalizedOrder.parse(order.normalized)
     : null;
+  let l2: L2Record | null = (v.l2 as L2Record | null) ?? null;
+  let l2Matches: Awaited<ReturnType<typeof runLayer2>>["matches"] = [];
+  const extraTermsText = (deps.extraTerms?.(order.id) ?? []).map((c) => c.text).join("\n");
 
   if (v.verdict) {
     // Retry after the verdict was stored (e.g. capture failed): settle, don't re-judge.
@@ -199,19 +218,69 @@ export async function runVerification(deps: PipelineDeps, verificationId: string
         : Promise.resolve();
 
       await Promise.all([rag, semantic, shadow]);
+
+      // Layer 2: immune memory, merchant risk, conformal gate. Only adds checks / raises.
+      if (config.immune || config.conformal) {
+        const out = await runLayer2(db, {
+          config,
+          order: n,
+          trace,
+          mode: v.mode,
+          ...(extraTermsText ? { termsText: extraTermsText } : {}),
+          registry,
+          checks,
+          emit,
+          thresholds: deps.l2Thresholds ?? defaultL2Thresholds(),
+          embeddingModel: deps.embeddingModel,
+        });
+        l2 = out.record;
+        l2Matches = out.matches;
+      }
     }
 
-    verdict = decideVerdict(checks);
-    summary = summarize(verdict, checks, live);
+    const checksVerdict = decideVerdict(checks);
+    verdict = maxVerdict(checksVerdict, l2?.gate?.verdict ?? "CAPTURE");
+    summary =
+      l2 && verdict !== checksVerdict
+        ? gateSummary(verdict, l2, live)
+        : summarize(verdict, checks, live);
+    if (l2 && normalized) {
+      l2.counterfactual =
+        verdict === "CAPTURE"
+          ? null
+          : computeCounterfactual(normalized, extraTermsText || undefined);
+    }
     await db.verification.update({
       where: { id: verificationId },
       data: {
         checks: json(checks),
         verdict,
         summary,
+        ...(l2 ? { l2: json(l2) } : {}),
         latencyMs: Math.round(performance.now() - t0),
       },
     });
+    if (l2Matches.length) {
+      const layer1 = l2?.layer1Verdict ?? "CAPTURE";
+      const RANK = { CAPTURE: 0, ASK_HUMAN: 1, VOID: 2 } as const;
+      await recordHits(
+        db,
+        l2Matches.map((m) => ({
+          antibodyId: m.antibodyId,
+          orderId: order.id,
+          verificationId,
+          kind: m.kind,
+          similarity: m.similarity,
+          live,
+          escalated: RANK[m.action] > RANK[layer1],
+        })),
+      );
+    }
+    // Merchant risk: every order counts once (its first verification), under its live or arena key.
+    if (normalized) {
+      const done = await db.verification.count({ where: { orderId: order.id, status: "DONE" } });
+      if (done === 0) await bumpRisk(db, riskKey(normalized.merchantId, v.mode), "orders");
+    }
   }
 
   deps.emitter.verdict({ ...base, verdict, summary });
@@ -234,6 +303,7 @@ export async function runVerification(deps: PipelineDeps, verificationId: string
       action = "VOIDED";
       paypalStatus = auth.status;
       await db.orderRecord.update({ where: { id: order.id }, data: { paypalStatus: "VOIDED" } });
+      await afterLiveVoid(deps, order.id, normalized?.merchantId ?? order.merchantId, checks);
     } else {
       action = "PENDING_HUMAN";
     }
@@ -253,6 +323,8 @@ export async function runVerification(deps: PipelineDeps, verificationId: string
       checks,
       verdict,
       settlement: { action, ...(paypalStatus ? { paypalStatus } : {}) },
+      // Layer 2 fields appear only in records of Layer 2 verifications (older records unchanged).
+      ...(l2 ? { layer2: evidenceL2(l2) } : {}),
       createdAt: new Date().toISOString(),
     });
   }
@@ -268,6 +340,41 @@ export async function runVerification(deps: PipelineDeps, verificationId: string
   });
   if (action === "CAPTURED" || action === "VOIDED") {
     deps.emitter.settled({ orderId: order.id, action, paypalStatus: paypalStatus ?? action });
+  }
+}
+
+/**
+ * The signed Layer 2 part of an evidence record: matches, risk, calibration, defender version,
+ * counterfactual, the Layer 1 verdict and the gate. Antibodies are referenced by id + signature
+ * (their counters change later; their signed claims don't).
+ */
+function evidenceL2(l2: L2Record) {
+  const { antibodies, ...rest } = l2;
+  return {
+    ...rest,
+    ...(antibodies
+      ? { antibodies: antibodies.map((a) => ({ id: a.id, signature: a.signature })) }
+      : {}),
+  };
+}
+
+/** A live VOID: the seller's risk goes up, and a recognisable trick is minted into immune memory. */
+async function afterLiveVoid(
+  deps: PipelineDeps,
+  orderId: string,
+  merchantId: string,
+  checks: CheckResult[],
+): Promise<void> {
+  const db = deps.prisma();
+  await bumpRisk(db, riskKey(merchantId, "LIVE"), "voids");
+  const top = topCheck(checks);
+  const family = top ? familyFromCheck(top.check) : null;
+  if (family && deps.enqueueMint) {
+    await deps
+      .enqueueMint({ orderId, family, source: "live-void" })
+      .catch((err: unknown) =>
+        deps.logger.warn({ orderId, err: (err as Error).message }, "immune.mint enqueue failed"),
+      );
   }
 }
 

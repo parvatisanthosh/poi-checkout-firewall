@@ -26,6 +26,12 @@ export interface EvidenceFacts {
   verdict: string | null;
   humanDecision?: string;
   settlement: { action: string; paypalStatus?: string };
+  /**
+   * Layer 2 (CONTRACTS-L2 4.4 / Q9): immune matches, merchant risk, calibration, defender version,
+   * counterfactual. Present only in records of Layer 2 verifications, so older records and their
+   * hashes are unchanged.
+   */
+  layer2?: unknown;
   createdAt: string;
 }
 

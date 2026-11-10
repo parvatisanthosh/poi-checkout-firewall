@@ -8,7 +8,7 @@ import {
   type AntibodySummary,
 } from "@poi/shared";
 import type { Prisma, PrismaClient } from "../lib/prisma";
-import { toVectorLiteral } from "../lib/vector";
+import { parseVector, toVectorLiteral } from "../lib/vector";
 import { lshBands } from "./lsh";
 
 type Db = PrismaClient | Prisma.TransactionClient;
@@ -65,6 +65,8 @@ export interface NewAntibody {
   /** The defender version at mint time. */
   defenderVersion: number;
   signature: string;
+  /** Distinct shingles in the source text (promotion gate containment). */
+  shingleCount?: number;
 }
 
 /** Insert a CANDIDATE antibody with its 32 LSH bands (and embedding, if given) in one transaction. */
@@ -85,6 +87,7 @@ export async function insertCandidate(
         action: a.action,
         defenderVersion: a.defenderVersion,
         signature: a.signature,
+        shingleCount: a.shingleCount ?? 0,
       },
     });
     await tx.antibodyBand.createMany({
@@ -196,6 +199,99 @@ export async function recordFalseHit(
     data: { falseHits: { increment: 1 } },
     select: { hits: true, falseHits: true },
   });
+}
+
+/** The antibody minted from this order, if any (minting is once per source order). */
+export async function antibodyForSourceOrder(db: Db, orderId: string): Promise<Antibody | null> {
+  const r = await db.antibody.findFirst({ where: { sourceOrderId: orderId } });
+  return r ? toAntibody(r) : null;
+}
+
+/** ACTIVE antibodies, or exactly the given ids (a pinned defender snapshot). */
+export async function liveAntibodies(db: Db, ids?: string[]): Promise<Antibody[]> {
+  if (ids && ids.length === 0) return [];
+  const rows = await db.antibody.findMany({
+    where: ids ? { id: { in: ids } } : { state: "ACTIVE" },
+  });
+  return rows.map(toAntibody);
+}
+
+export async function antibodyEmbedding(db: Db, id: string): Promise<number[] | undefined> {
+  const rows = await db.$queryRaw<Array<{ e: string | null }>>`
+    SELECT embedding::text AS e FROM "Antibody" WHERE id = ${id}`;
+  return rows[0]?.e ? parseVector(rows[0].e) : undefined;
+}
+
+export async function shingleCountOf(db: Db, id: string): Promise<number> {
+  const r = await db.antibody.findUnique({ where: { id }, select: { shingleCount: true } });
+  return r?.shingleCount ?? 0;
+}
+
+export async function getAntibodySummary(db: Db, id: string): Promise<AntibodySummary | null> {
+  const r = await db.antibody.findUnique({ where: { id } });
+  return r ? toSummary(r) : null;
+}
+
+export async function getAntibodySummaries(db: Db, ids: string[]): Promise<AntibodySummary[]> {
+  if (!ids.length) return [];
+  return (await db.antibody.findMany({ where: { id: { in: ids } } })).map(toSummary);
+}
+
+// --- hit log -------------------------------------------------------------------------------
+
+export interface HitRow {
+  antibodyId: string;
+  orderId: string;
+  verificationId: string;
+  kind: string;
+  similarity: number;
+  live: boolean;
+  escalated: boolean;
+}
+
+/** Log a verification's matches; live matches also count toward Antibody.hits. */
+export async function recordHits(db: Db, hits: HitRow[]): Promise<void> {
+  if (!hits.length) return;
+  await db.antibodyHit.createMany({ data: hits });
+  for (const h of hits.filter((x) => x.live)) await recordHit(db, h.antibodyId);
+}
+
+export async function recentHits(db: Db, antibodyId: string, take = 20) {
+  const rows = await db.antibodyHit.findMany({
+    where: { antibodyId },
+    orderBy: { createdAt: "desc" },
+    take,
+  });
+  return rows.map((r) => ({
+    orderId: r.orderId,
+    at: r.createdAt.toISOString(),
+    kind: r.kind as "minhash" | "embedding" | "features" | "skeleton",
+    similarity: r.similarity,
+    falseHit: r.falseHit,
+  }));
+}
+
+/**
+ * A human approved this verification's order: every antibody that escalated it gets a false hit
+ * (once). Returns the antibodies' new counts, for the auto-retirement rule.
+ */
+export async function markFalseHits(
+  db: Db,
+  verificationId: string,
+): Promise<Array<{ antibodyId: string; hits: number; falseHits: number }>> {
+  const rows = await db.antibodyHit.findMany({
+    where: { verificationId, escalated: true, falseHit: false },
+    select: { id: true, antibodyId: true },
+  });
+  const out: Array<{ antibodyId: string; hits: number; falseHits: number }> = [];
+  for (const id of new Set(rows.map((r) => r.antibodyId))) {
+    await db.antibodyHit.updateMany({
+      where: { verificationId, antibodyId: id },
+      data: { falseHit: true },
+    });
+    out.push({ antibodyId: id, ...(await recordFalseHit(db, id)) });
+  }
+  return out;
 }
 
 /** Ids live at defender version v: activated at or before v and not retired by v. */

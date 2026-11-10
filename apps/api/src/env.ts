@@ -49,6 +49,22 @@ const Env = z.object({
     .transform((v) => v === "true"),
 
   // --- Layer 2 (docs/CONTRACTS-L2.md 4.8) ---
+  /**
+   * Live authorizations (POST /orders/:id/authorize, MCP capture_if_verified) also run the immune
+   * stage and the conformal gate. Off by default: Layer 1 behaviour is unchanged unless enabled.
+   */
+  LIVE_LAYER2: z
+    .enum(["true", "false"])
+    .default("false")
+    .transform((v) => v === "true"),
+  /**
+   * With WORKER_INLINE, the API also runs the arena + immune workers. Set false when the dedicated
+   * poi-arena-worker (dist/arena-worker.js) is deployed, so only it takes those jobs.
+   */
+  ARENA_WORKERS_INLINE: z
+    .enum(["true", "false"])
+    .default("true")
+    .transform((v) => v === "true"),
   /** "real" = @poi/arena (LLM attacker); "fake" = no-LLM stand-in for demos and offline work. */
   ARENA_ENGINE: z.enum(["real", "fake"]).default("real"),
   ARENA_ATTACKER_MODEL: z.string().optional(),
@@ -59,6 +75,16 @@ const Env = z.object({
   ARENA_MAX_USD: z.coerce.number().positive().default(15),
   /** Optional JSON price overrides: {"provider:model": {"in": usdPer1M, "out": usdPer1M}}. */
   ARENA_PRICES: z.string().optional(),
+  /** Immune memory: MinHash (estimated Jaccard) and embedding (cosine) match thresholds. */
+  IMMUNE_JACCARD: z.coerce.number().min(0).max(1).default(0.5),
+  IMMUNE_COSINE: z.coerce.number().min(0).max(1).default(0.85),
+  /** The promotion gate's benign set (repo-relative or absolute). */
+  IMMUNE_BENIGN_SET: z.string().default("bench/evolved/benign-40.json"),
+  /** Merchant risk above this raises the verdict to ASK_HUMAN. */
+  RISK_ASK_THRESHOLD: z.coerce.number().min(0).max(1).default(0.35),
+  /** Conformal gate: default alpha, and the benign quantile that sets lambdaVoid. */
+  CRC_ALPHA: z.coerce.number().gt(0).lt(1).default(0.05),
+  CRC_BENIGN_VOID_QUANTILE: z.coerce.number().gt(0).max(1).default(0.99),
 });
 
 export type Env = z.infer<typeof Env>;

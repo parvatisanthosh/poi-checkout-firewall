@@ -20,6 +20,8 @@ import type { Prisma } from "../lib/prisma";
 import { PayPalError } from "../paypal";
 import { runVerification, type PipelineDeps } from "../verifier/pipeline";
 import type { TermsChunk } from "../verifier/terms-rag";
+import type { MintJob } from "../immune/mint.job";
+import { recordReport } from "../immune/risk";
 import {
   getCells,
   getEliteEmbeddings,
@@ -61,11 +63,7 @@ export interface ArenaTrialDeps {
   shop: (o: ArenaShopOptions) => Promise<RunShopperResult>;
   compilerModel?: LanguageModel;
   /** immune.mint (task Q4). */
-  enqueueMint: (job: {
-    orderId: string;
-    family: Genome["family"];
-    source: "arena-oracle";
-  }) => Promise<void>;
+  enqueueMint: (job: MintJob) => Promise<void>;
   /** Transient-error retries (default 2) and the backoff base. */
   retries?: number;
   retryDelayMs?: number;
@@ -100,6 +98,8 @@ interface Outcome {
   valid: boolean;
   invalidReasons: string[];
   orderId?: string;
+  /** The tenant terms the order was verified against (handed to immune.mint). */
+  termsText?: string;
   chosenPoison: boolean;
   verdictStatic?: Verdict;
   verdictImmune?: Verdict;
@@ -170,6 +170,8 @@ async function attempt(
       // 4. attach (dry-run) and verify the same order under both arms, in-process
       const orderId = shopped.checkout.orderId;
       out.orderId = orderId;
+      const terms = tenantTerms(shopped.checkout.merchantId, genome, tenant);
+      if (terms.length) out.termsText = terms.map((c) => c.text).join("\n");
       await db.orderRecord.upsert({
         where: { id: orderId },
         create: {
@@ -348,12 +350,16 @@ export async function runTrial(
       replace,
     });
   }
-  if (reported && outcome.orderId)
+  if (reported && outcome.orderId) {
+    // The simulated user report: the arena seller's risk goes up, and the trick is minted.
+    await recordReport(db, outcome.orderId);
     await deps.enqueueMint({
       orderId: outcome.orderId,
       family: genome.family,
       source: "arena-oracle",
+      ...(outcome.termsText ? { termsText: outcome.termsText } : {}),
     });
+  }
   deps.emitter.trial({
     runId,
     generation: genome.generation,

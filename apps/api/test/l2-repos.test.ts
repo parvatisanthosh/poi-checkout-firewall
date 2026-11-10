@@ -1,5 +1,5 @@
 // Layer 2 persistence (task Q1). LSH is pure; the repo tests need Postgres (RUN_DB_TESTS=1).
-import { afterAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { ArenaRunConfig, type TrialResult } from "@poi/shared";
 import { demoAntibodyMinhashes, demoGenomes } from "@poi/shared/fixtures-l2";
 import {
@@ -74,8 +74,17 @@ describe.runIf(process.env.RUN_DB_TESTS === "1")("Layer 2 repos (real DB)", () =
   const db = getPrisma();
   const createdAntibodies: string[] = [];
   let runId = "";
+  let calibrationBefore: string | null | undefined;
+  beforeAll(async () => {
+    calibrationBefore = (await db.defenderState.findUnique({ where: { id: 1 } }))
+      ?.activeCalibrationId;
+  });
   afterAll(async () => {
-    // Leave no live antibodies or arena rows behind in a dev database.
+    // Leave no live antibodies, arena rows or test calibration active in a dev database.
+    await db.defenderState.update({
+      where: { id: 1 },
+      data: { activeCalibrationId: calibrationBefore ?? null },
+    });
     if (createdAntibodies.length)
       await db.antibody.deleteMany({ where: { id: { in: createdAntibodies } } });
     if (runId) {

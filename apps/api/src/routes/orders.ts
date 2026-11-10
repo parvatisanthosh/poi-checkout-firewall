@@ -9,6 +9,7 @@ import {
 } from "@poi/shared";
 import { z } from "zod";
 import type { AppDeps } from "../app";
+import { env } from "../env";
 import { HttpError } from "../lib/errors";
 import { handle } from "../lib/handler";
 import { toDbMode } from "../lib/mappers";
@@ -103,7 +104,14 @@ export function ordersRouter(deps: Deps): Router {
       const verification =
         prior ??
         (await db.verification.create({
-          data: { orderId: order.id, mode: "LIVE", config: json(VerifierConfig.parse({})) },
+          data: {
+            orderId: order.id,
+            mode: "LIVE",
+            // LIVE_LAYER2: immune memory + conformal gate on live orders (Layer 1 only when off).
+            config: json(
+              VerifierConfig.parse(env.LIVE_LAYER2 ? { immune: true, conformal: true } : {}),
+            ),
+          },
         }));
       await deps.queue.enqueue(verification.id);
       return { authorizationId, verificationId: verification.id };

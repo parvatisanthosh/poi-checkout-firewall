@@ -96,6 +96,9 @@ model Verification {
   error         String?
   // Added beyond 4.7: a dry-run verification of a live order must never settle.
   mode          RunMode            @default(LIVE)
+  // Added in Q5 (Layer 2): VerifyRecordL2Fields for this verification -- immune matches, merchant
+  // risk, calibration, defender version, counterfactual -- plus the Layer 1 verdict before them.
+  l2            Json?
   createdAt     DateTime           @default(now())
   // One record for the verdict, one more per human decision (append-only chain).
   evidence      EvidenceRecord[]
@@ -258,10 +261,34 @@ model Antibody {
   // Added beyond 4.2: the version its retirement created, so snapshotDefender(v) is exact.
   retiredVersion  Int?
   signature       String
+  // Added in Q4: distinct shingles in the source text (the promotion gate's containment estimate).
+  shingleCount    Int                          @default(0)
   createdAt       DateTime                     @default(now())
   bands           AntibodyBand[]
+  hitLog          AntibodyHit[]
 
   @@index([state])
+  @@index([sourceOrderId])
+}
+
+// Added in Q5: one row per antibody match in a verification (live and dry-run). Antibody.hits
+// counts live matches only; falseHit is set when a human approved an order the antibody escalated.
+model AntibodyHit {
+  id             String   @id @default(cuid())
+  antibodyId     String
+  antibody       Antibody @relation(fields: [antibodyId], references: [id], onDelete: Cascade)
+  orderId        String
+  verificationId String
+  kind           String
+  similarity     Float
+  live           Boolean
+  // The match raised the verdict above what Layer 1 alone decided.
+  escalated      Boolean  @default(false)
+  falseHit       Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  @@index([antibodyId, createdAt])
+  @@index([verificationId])
 }
 
 // LSH index: 32 bands x 4 rows.

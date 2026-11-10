@@ -9,6 +9,8 @@ import type { CheckResult, StageScores } from "@poi/shared";
 const MISSING_CONFIDENCE = 0.9;
 
 export function checkScore(c: CheckResult): number {
+  // Merchant risk is itself a probability estimate: its score is the risk, pass or fail.
+  if (c.check === "risk") return c.confidence ?? 0;
   const confidence = c.confidence ?? MISSING_CONFIDENCE;
   if (c.outcome === "fail") return confidence;
   if (c.outcome === "warn") return confidence / 2;

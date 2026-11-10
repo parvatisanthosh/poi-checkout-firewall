@@ -6,7 +6,7 @@ import {
   LedgerQuery,
   LedgerResponse,
   NormalizedOrder,
-  VerifyRecordResponse,
+  VerifyRecordResponseL2,
   type LedgerRow,
 } from "@poi/shared";
 import { z } from "zod";
@@ -17,6 +17,8 @@ import { handle } from "../lib/handler";
 import { fromDbMode, parseChecks, toDbMode, toVerificationResult } from "../lib/mappers";
 import { verifyIntentJws } from "../intent/sign";
 import { topCheck } from "../verifier/lattice";
+import { getAntibodySummaries } from "../immune/antibody.repo";
+import type { L2Record } from "../immune/layer2";
 
 type Deps = Pick<AppDeps, "prisma" | "signingKey">;
 
@@ -86,7 +88,10 @@ export function ledgerRouter(deps: Deps): Router {
   r.get(
     "/verify/:orderId",
     handle(
-      { params: z.object({ orderId: z.string().min(1).max(64) }), response: VerifyRecordResponse },
+      {
+        params: z.object({ orderId: z.string().min(1).max(64) }),
+        response: VerifyRecordResponseL2,
+      },
       async ({ params }) => {
         const db = deps.prisma();
         const key = await deps.signingKey();
@@ -135,10 +140,28 @@ export function ledgerRouter(deps: Deps): Router {
           // This order's signatures: the intent JWS and its latest evidence record's JWS.
           signatureValid: intentSigOk && (ev ? await verifyEvidenceJws(ev, key.publicKey) : true),
           publicJwk: key.publicJwk,
+          ...(await layer2Fields(db, v?.l2 as L2Record | null | undefined)),
         };
       },
     ),
   );
 
   return r;
+}
+
+/**
+ * The Layer 2 part of GET /verify/:orderId (CONTRACTS-L2 4.4): absent for Layer 1 verifications.
+ * Antibody summaries are read fresh (current hits / status); everything else is as decided.
+ */
+async function layer2Fields(db: ReturnType<AppDeps["prisma"]>, l2: L2Record | null | undefined) {
+  if (!l2) return {};
+  const ids = (l2.immuneMatches ?? []).map((m) => m.antibodyId);
+  return {
+    ...(l2.immuneMatches ? { immuneMatches: l2.immuneMatches } : {}),
+    ...(l2.immuneMatches ? { antibodies: await getAntibodySummaries(db, [...new Set(ids)]) } : {}),
+    ...(l2.merchantRisk !== undefined ? { merchantRisk: l2.merchantRisk } : {}),
+    ...(l2.calibration !== undefined ? { calibration: l2.calibration } : {}),
+    ...(l2.defenderVersion !== undefined ? { defenderVersion: l2.defenderVersion } : {}),
+    ...(l2.counterfactual !== undefined ? { counterfactual: l2.counterfactual } : {}),
+  };
 }

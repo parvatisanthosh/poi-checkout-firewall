@@ -1,7 +1,8 @@
 import { createServer } from "node:http";
-import { arenaJobDeps, buildDeps, createApp } from "./app";
+import { arenaJobDeps, buildDeps, createApp, immuneWorkerDeps } from "./app";
 import { createBullArenaQueue, startArenaWorkers } from "./arena/queue";
 import { env } from "./env";
+import { createBullImmuneQueue, startImmuneWorkers } from "./immune/queue";
 import { logger } from "./lib/logger";
 import { disconnectPrisma } from "./lib/prisma";
 import { createBullQueue, startBullWorker } from "./lib/queue";
@@ -31,14 +32,21 @@ if (env.REDIS_URL) {
       env.VERIFY_CONCURRENCY,
     );
     closers.push(worker.close);
-    const arena = startArenaWorkers(env.REDIS_URL, arenaJobDeps(deps), env.ARENA_CONCURRENCY);
-    closers.push(arena.close);
+    if (env.ARENA_WORKERS_INLINE) {
+      const arena = startArenaWorkers(env.REDIS_URL, arenaJobDeps(deps), env.ARENA_CONCURRENCY);
+      closers.push(arena.close);
+      const immune = startImmuneWorkers(env.REDIS_URL, immuneWorkerDeps(deps));
+      closers.push(immune.close);
+    }
   }
+  const immuneQueue = createBullImmuneQueue(env.REDIS_URL);
+  deps.immuneQueue = immuneQueue;
+  closers.push(immuneQueue.close);
   const arenaQueue = createBullArenaQueue(env.REDIS_URL);
   deps.arenaQueue = arenaQueue;
   closers.push(arenaQueue.close);
   logger.info(
-    `verify + arena queues: BullMQ (${env.WORKER_INLINE ? "workers in this process" : "separate worker process"})`,
+    `verify + arena + immune queues: BullMQ (${env.WORKER_INLINE ? "workers in this process" : "separate worker process"}${env.WORKER_INLINE && !env.ARENA_WORKERS_INLINE ? ", arena + immune in poi-arena-worker" : ""})`,
   );
 } else {
   logger.warn(

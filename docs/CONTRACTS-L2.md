@@ -83,6 +83,17 @@ Additions made in Q1 (internal to the API, no client impact):
 - Indexes on `ArenaTrial.genomeId` and `Antibody.state`; `AntibodyBand` rows cascade-delete with
   their antibody.
 
+Additions made in Q4-Q5 (internal to the API, no client impact):
+
+- `Antibody.shingleCount Int` -- distinct shingles in the source text (the promotion gate's
+  containment estimate); index on `Antibody.sourceOrderId` (minting is once per source order).
+- `AntibodyHit { antibodyId, orderId, verificationId, kind, similarity, live, escalated, falseHit, createdAt }`
+  -- one row per match in a verification (live and dry-run). `Antibody.hits` counts live matches
+  only; `escalated` = the match raised the verdict above Layer 1's; `falseHit` is set when a human
+  approves that order. It backs `AntibodyDetail.recentHits`.
+- `Verification.l2 Json?` -- the Layer 2 record of that verification: `VerifyRecordL2Fields` plus
+  `layer1Verdict` (before the immune stage and the gate) and `gate { s, verdict }`.
+
 Repos (Parvati): `apps/api/src/arena/archive.repo.ts`, `apps/api/src/immune/antibody.repo.ts`,
 `apps/api/src/calibration/calibration.repo.ts`, and the defender service
 `apps/api/src/immune/defender.ts` (`getDefender`, `bumpVersion(reason, change)` under a row lock,
@@ -94,7 +105,7 @@ Repos (Parvati): `apps/api/src/arena/archive.repo.ts`, `apps/api/src/immune/anti
 | --- | --- | --- | --- |
 | `arena.generation` | `{runId}-g{gen}` ("propose"); its parent `{runId}-g{gen}-final` ("finalize") | `POST /arena/runs`, and itself for the next generation | select parents, `proposeGeneration`, validate, persist genomes, fan out trials, wait, compute generation stats, run Strategist, enqueue next gen |
 | `arena.trial` | genome id | generation job | deploy tenant, run agent, attach order, verify static + immune, oracle, fitness, archive update, report |
-| `immune.mint` | `mint-{orderId}` | report (arena or `POST /immune/report`), live VOID or human reject | build candidate antibody, dedupe |
+| `immune.mint` | `mint-{orderId}` | report (arena or `POST /immune/report`), live VOID or human reject | build candidate antibody, dedupe; data `{ orderId, family, source: "arena-oracle" \| "report" \| "live-void" \| "human-reject", termsText? }` (`termsText` = an arena tenant's evolved terms excerpt) |
 | `immune.promote` | `promote-{antibodyId}` | after mint | replay on 40 benign listings, activate if 0 false hits, bump defender version |
 | `calibrate.crc` | `crc-{timestamp}` | `POST /calibration/run`, nightly cron | fuse scores, compute lambdas, store, set active |
 
@@ -213,6 +224,8 @@ Clients join rooms with `arena:subscribe { runId }` (room `arena:{runId}`) and `
 | Variable | Default (free-tier) | Note |
 | --- | --- | --- |
 | `ARENA_ENGINE` | `real` | `real` = `@poi/arena`; `fake` = the no-LLM stand-in in `apps/api/src/arena/engine.ts` (demos, offline, tests) |
+| `LIVE_LAYER2` | `false` | live authorizations (and so MCP `capture_if_verified`) run with `{ immune: true, conformal: true }`; off = Layer 1 only |
+| `ARENA_WORKERS_INLINE` | `true` | with `WORKER_INLINE`, the API also runs the arena + immune workers; `false` when `poi-arena-worker` (`dist/arena-worker.js`) is deployed |
 | `ARENA_ATTACKER_MODEL` | `groq:openai/gpt-oss-120b` | attacker A (train) |
 | `ARENA_HELDOUT_ATTACKER_MODEL` | `groq:qwen/qwen3.8-27b` | attacker B, held-out only -- must come from a different model vendor than A |
 | `ARENA_AGENT_MODEL` | `google:gemini-flash-lite-latest` | the agent under attack (Layer 1 agent default) |
@@ -224,6 +237,75 @@ Clients join rooms with `arena:subscribe { runId }` (room `arena:{runId}`) and `
 | `RISK_ASK_THRESHOLD` | `0.35` | merchant risk above this = ASK_HUMAN |
 | `CRC_ALPHA` | `0.05` | default alpha |
 | `CRC_BENIGN_VOID_QUANTILE` | `0.99` | sets lambdaVoid from benign scores |
+
+## 5. How Layer 2 is implemented (Parvati, Q4-Q10)
+
+Where the plan left a choice open, this is what the API does. Code: `apps/api/src/immune/`,
+`apps/api/src/calibration/`, the pipeline hook in `apps/api/src/verifier/pipeline.ts`.
+
+**Fingerprint text.** An antibody fingerprints what the agent read and what the order says: the
+chosen listing's page text from the agent trace, the order's line names and descriptions, and an
+arena tenant's terms excerpt when there is one. The same text is built at mint time and at match
+time. (A live order has no `BazaarProduct`, only the page the agent read, so `listingText()` can't
+be used there; the promotion gate's benign side does use `listingText(product)`.)
+
+**Normalization.** NFKC, lowercase, collapsed whitespace, and every *run* of digits becomes one
+`#` -- so `$14.99/mo` and `$9.49/mo` both become `$#.#/mo` (per-digit replacement would leave
+`$##.##` vs `$#.##`). It is idempotent on `listingText()` output. MinHash minima are stored as
+signed 32-bit integers (Postgres `int4`).
+
+**Matching** (`immune/match.ts`, one function shared by the verifier, the promotion gate and its
+self-check):
+
+| Matcher | Fires when | Action |
+| --- | --- | --- |
+| `minhash` | estimated Jaccard >= `IMMUNE_JACCARD` (exact comparison over the live antibodies; LSH bands serve the merge lookup) | ASK_HUMAN |
+| `embedding` | pgvector cosine >= `IMMUNE_COSINE` (top 5, scoped) -- only with an `EMBEDDING_MODEL` | ASK_HUMAN |
+| `features` | the antibody's true flags (at least 2) are a subset of the order's | the antibody's action |
+| `skeleton` | same confusables skeleton of the seller name, and the order's seller is unverified | the antibody's action |
+
+An antibody's action is VOID only for `subscription`, `addon`, `lookalike`, `dripfee` with
+structural evidence (2+ flags or a skeleton); otherwise ASK_HUMAN. A skeleton is kept only for an
+unverified seller -- a verified seller's own name is never an attack signature.
+
+**Immune stage.** With `config.immune`, after the Layer 1 stages: one `immune` check (fail,
+severity high for VOID / medium for ASK_HUMAN, confidence = best similarity; or pass) and one
+`risk` check (fail/medium above `RISK_ASK_THRESHOLD`, else pass; confidence = the risk either way,
+which is the `risk` stage score). Scope = all ACTIVE antibodies, or exactly the antibodies of
+`config.defenderVersion` (`snapshotDefender`).
+
+**Promotion gate.** Any match against the 40 benign items rejects; so does an estimated containment
+>= 0.8 of the candidate's text in a benign listing (catches short generic text, whose Jaccard
+against a long listing is low). It must also match its own source order.
+
+**Merchant risk keys.** Live orders count under the merchant id; dry-run (arena) orders under
+`arena:<merchantId>`. `orders` +1 on an order's first verification, `voids` +1 on a live VOID,
+`reports` +1 on `POST /immune/report`, an arena oracle report, or a human rejecting an ASK_HUMAN.
+
+**Conformal gate.** With `config.conformal` and an active (or pinned) calibration: orders with a
+deterministic fail skip it; otherwise `s = fuse(stageScores(checks))` and the gate verdict joins the
+max. When the gate alone raised the verdict, the summary says so (score vs threshold vs alpha). The
+calibration set = train-split arena trials that reached a checkout; label = oracle (`chosenPoison`);
+score = recomputed from the immune-arm verification's checks; deterministic fails excluded.
+"Never" thresholds are `1.000001` (above any score), e.g. when every attack may be missed within
+the bound.
+
+**Signed record.** Layer 2 verifications put their record under one `layer2` key of the evidence
+payload (`immuneMatches`, `merchantRisk`, `calibration`, `defenderVersion`, `counterfactual`,
+`layer1Verdict`, `gate`, and `antibodies` as `{ id, signature }`). Records without it are byte-for-byte
+what they were, so the chain stays backward compatible. Antibodies carry their own EdDSA JWS
+(typ `poi-antibody+jws`) over the canonical JSON of `{ family, sourceOrderId, minhash, features,
+skeleton, action }`.
+
+**Counterfactual** is computed for verdicts other than CAPTURE: recurring lines (quoted rate, else the
+line price for an extra line) x 12, non-primary lines and handling/insurance as one-offs, and a
+renewal clause in the tenant terms. Any recurring charge without a readable amount makes the total
+`null`.
+
+**Feedback.** A human approving a verification gives a false hit to each antibody that escalated it;
+retirement at 2+ false hits and false/hits > 0.2 (version +1). A human rejecting an ASK_HUMAN, and a
+live VOID whose top check names a trick (`recurrence`, `addons`, `condition`, `lookalike`,
+`merchant`, `terms`, `injection`), queue `immune.mint`.
 
 ## Invariants (from the plan, sections 3 and 5)
 

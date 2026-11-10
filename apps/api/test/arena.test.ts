@@ -39,6 +39,7 @@ import { PayPalError } from "../src/paypal";
 import type { ArenaEmitter } from "../src/realtime/arena-emitter";
 import { arenaFakes, bazaarData, scenarios } from "./arena-fakes";
 import { testSigningKey } from "./helpers";
+import { preserveMerchantRisk } from "./risk-guard";
 
 const usage = (input: number, output: number) => ({
   inputTokens: { total: input, noCache: input, cacheRead: 0, cacheWrite: 0 },
@@ -166,6 +167,7 @@ describe.runIf(process.env.RUN_DB_TESTS === "1")("arena with the real trial (rea
   let deps: AppDeps;
   let baseUrl = "";
   let server: ReturnType<typeof createServer>;
+  let restoreRisk: () => Promise<void> = async () => {};
 
   beforeAll(async () => {
     // Prefer the real key so evidence rows in a dev DB keep valid signatures; CI has none.
@@ -174,6 +176,11 @@ describe.runIf(process.env.RUN_DB_TESTS === "1")("arena with the real trial (rea
       : await testSigningKey();
     for (const m of bazaarData.merchants)
       await db.merchant.upsert({ where: { id: m.id }, create: m, update: m });
+    // trials count arena orders and reports against the demo sellers' arena risk rows
+    restoreRisk = await preserveMerchantRisk(
+      db,
+      bazaarData.merchants.map((m) => `arena:${m.id}`),
+    );
     deps = buildDeps({
       paypal: fakes.paypal,
       signingKey: async () => key,
@@ -211,6 +218,7 @@ describe.runIf(process.env.RUN_DB_TESTS === "1")("arena with the real trial (rea
       await db.arenaGeneration.deleteMany({ where: { runId } });
       await db.arenaRun.deleteMany({ where: { id: runId } });
     }
+    await restoreRisk();
     await disconnectPrisma();
   });
 
