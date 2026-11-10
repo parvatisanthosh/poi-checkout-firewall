@@ -374,6 +374,145 @@
           ]
         }
       ]
+    },
+    {
+      "name": "6. Arena & Immune",
+      "item": [
+        {
+          "name": "Start arena run",
+          "request": {
+            "method": "POST",
+            "url": "{{poiUrl}}/api/arena/runs",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"generations\": 2,\n  \"populationSize\": 4,\n  \"attackerModel\": \"openai:gpt-4o-mini\",\n  \"agentModel\": \"openai:gpt-4o-mini\",\n  \"families\": [\"subscription\", \"tosrenew\"],\n  \"target\": \"static\",\n  \"immuneLearning\": true\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('200 or 201 created', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));",
+                  "const b = pm.response.json();",
+                  "pm.test('has run id and valid status', () => {",
+                  "  pm.expect(b.id).to.be.a('string');",
+                  "  pm.expect(['queued', 'running', 'completed']).to.include(b.status);",
+                  "  pm.collectionVariables.set('arenaRunId', b.id);",
+                  "});",
+                  "pm.test('run config matches request', () => {",
+                  "  pm.expect(b.generations).to.eql(2);",
+                  "  pm.expect(b.populationSize).to.eql(4);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Poll arena run",
+          "request": {
+            "method": "GET",
+            "url": "{{poiUrl}}/api/arena/runs/{{arenaRunId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('200 ok', () => pm.response.to.have.status(200));",
+                  "const b = pm.response.json();",
+                  "pm.test('arena run detail shape', () => {",
+                  "  pm.expect(b.id).to.eql(pm.collectionVariables.get('arenaRunId'));",
+                  "  pm.expect(b.generation).to.be.a('number');",
+                  "  pm.expect(b.coverage).to.be.a('number');",
+                  "  pm.expect(b.archive).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List antibodies",
+          "request": {
+            "method": "GET",
+            "url": "{{poiUrl}}/api/immune/antibodies"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('200 ok', () => pm.response.to.have.status(200));",
+                  "const abs = pm.response.json();",
+                  "pm.test('antibodies list', () => {",
+                  "  pm.expect(abs).to.be.an('array');",
+                  "  if (abs.length > 0) {",
+                  "    const a = abs[0];",
+                  "    pm.expect(a).to.include.keys('id', 'family', 'action', 'status', 'hits');",
+                  "    pm.expect(['ASK_HUMAN', 'VOID']).to.include(a.action);",
+                  "    pm.expect(['candidate', 'active', 'retired']).to.include(a.status);",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Latest calibration",
+          "request": {
+            "method": "GET",
+            "url": "{{poiUrl}}/api/calibration/latest"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('200 ok', () => pm.response.to.have.status(200));",
+                  "const c = pm.response.json();",
+                  "pm.test('calibration result fields', () => {",
+                  "  pm.expect(c.alpha).to.be.a('number');",
+                  "  pm.expect(c.n).to.be.a('number');",
+                  "  pm.expect(c.lambdaAsk).to.be.a('number');",
+                  "  pm.expect(c.lambdaVoid).to.be.a('number');",
+                  "  pm.expect(c.empiricalMiss).to.be.a('number');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Verify order with immune & conformal",
+          "request": {
+            "method": "POST",
+            "url": "{{poiUrl}}/api/orders/{{orderId}}/verify",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mode\": \"dry-run\",\n  \"config\": {\n    \"immune\": true,\n    \"conformal\": true\n  }\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('202 accepted', () => pm.response.to.have.status(202));",
+                  "const b = pm.response.json();",
+                  "pm.test('has verificationId', () => {",
+                  "  pm.expect(b.verificationId).to.be.a('string');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
     }
   ],
   "variable": [
@@ -383,6 +522,7 @@
     { "key": "intentId", "value": "" },
     { "key": "orderId", "value": "" },
     { "key": "verificationId", "value": "" },
-    { "key": "polls", "value": "0" }
+    { "key": "polls", "value": "0" },
+    { "key": "arenaRunId", "value": "" }
   ]
 }
