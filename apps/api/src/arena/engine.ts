@@ -1,8 +1,16 @@
 // The attacker engine behind the arena jobs (CONTRACTS-L2 4.6). The jobs only ever see the
-// ArenaEngine interface, so swapping in the teammate's @poi/arena is one line in app.ts.
-// Until then: a fake engine built on @poi/shared/arena-fake, no LLM calls.
+// ArenaEngine interface. The default is the teammate's @poi/arena (its LLM calls go through the
+// shared metered getModel, so the per-run budget guard covers them); ARENA_ENGINE=fake selects
+// the no-LLM stand-in below, built on @poi/shared/arena-fake, which the tests also use.
+import { arenaEngine } from "@poi/arena";
 import type { ArenaEngine } from "@poi/shared";
 import { fakeProposeGeneration } from "@poi/shared/arena-fake";
+
+export const realEngine: ArenaEngine = arenaEngine;
+
+export function selectArenaEngine(kind: "real" | "fake"): ArenaEngine {
+  return kind === "fake" ? fakeEngine : realEngine;
+}
 
 /** Same normalization the real listingText must use (CONTRACTS-L2 4.6): NFKC, lowercase, digits -> #. */
 function fakeListingText(p: Parameters<ArenaEngine["listingText"]>[0]): string {

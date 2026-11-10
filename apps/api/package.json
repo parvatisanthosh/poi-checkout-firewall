@@ -17,6 +17,7 @@
   "dependencies": {
     "@paypal/agent-toolkit": "1.11.0",
     "@poi/agent": "workspace:*",
+    "@poi/arena": "workspace:*",
     "@poi/shared": "workspace:*",
     "@prisma/adapter-pg": "7.10.1",
     "@prisma/client": "7.10.1",

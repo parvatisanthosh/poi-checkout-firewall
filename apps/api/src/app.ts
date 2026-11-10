@@ -26,7 +26,7 @@ import { ordersRouter } from "./routes/orders";
 import { verificationsRouter } from "./routes/verifications";
 import { webhooksRouter, type RawBodyRequest } from "./routes/webhooks";
 import type { ArenaEngine, Scenario } from "@poi/shared";
-import { fakeEngine } from "./arena/engine";
+import { selectArenaEngine } from "./arena/engine";
 import { createInlineArenaQueue, type ArenaQueue } from "./arena/queue";
 import { arenaRouter } from "./arena/routes";
 import { fetchScenarios, httpArenaBazaar, type ArenaBazaar } from "./lib/bazaar";
@@ -86,7 +86,7 @@ export function buildDeps(overrides: Partial<AppDeps> = {}): AppDeps {
     emitter: noopEmitter,
     queue: undefined as unknown as VerifyQueue,
     webhookId: env.PAYPAL_WEBHOOK_ID,
-    arenaEngine: fakeEngine,
+    arenaEngine: selectArenaEngine(env.ARENA_ENGINE),
     arenaEmitter: noopArenaEmitter,
     arenaScenarios: () => fetchScenarios(),
     arenaQueue: undefined as unknown as ArenaQueue,

@@ -212,6 +212,7 @@ Clients join rooms with `arena:subscribe { runId }` (room `arena:{runId}`) and `
 
 | Variable | Default (free-tier) | Note |
 | --- | --- | --- |
+| `ARENA_ENGINE` | `real` | `real` = `@poi/arena`; `fake` = the no-LLM stand-in in `apps/api/src/arena/engine.ts` (demos, offline, tests) |
 | `ARENA_ATTACKER_MODEL` | `groq:openai/gpt-oss-120b` | attacker A (train) |
 | `ARENA_HELDOUT_ATTACKER_MODEL` | `groq:qwen/qwen3.8-27b` | attacker B, held-out only -- must come from a different model vendor than A |
 | `ARENA_AGENT_MODEL` | `google:gemini-flash-lite-latest` | the agent under attack (Layer 1 agent default) |

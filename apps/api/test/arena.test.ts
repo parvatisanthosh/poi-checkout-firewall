@@ -23,7 +23,8 @@ import {
   isBudgetExceeded,
   priceTable,
 } from "../src/arena/budget";
-import { fakeEngine } from "../src/arena/engine";
+import { arenaEngine } from "@poi/arena";
+import { fakeEngine, selectArenaEngine } from "../src/arena/engine";
 import {
   createBullArenaQueue,
   createInlineArenaQueue,
@@ -96,6 +97,13 @@ describe("budget pricing and metering", () => {
       true,
     );
     expect(isBudgetExceeded(new Error("other"))).toBe(false);
+  });
+});
+
+describe("engine selection", () => {
+  it("ARENA_ENGINE picks @poi/arena (real) or the no-LLM stand-in (fake)", () => {
+    expect(selectArenaEngine("real")).toBe(arenaEngine);
+    expect(selectArenaEngine("fake")).toBe(fakeEngine);
   });
 });
 
@@ -176,6 +184,8 @@ describe.runIf(process.env.RUN_DB_TESTS === "1")("arena with the real trial (rea
       embeddingModel: undefined,
       agentModel: () => undefined,
       listingCard: async () => undefined,
+      // pinned: the real engine would call the attacker LLM with whatever keys .env holds
+      arenaEngine: fakeEngine,
       arenaEmitter: emitter,
       arenaScenarios: async () => scenarios,
       arenaBazaar: fakes.bazaar,

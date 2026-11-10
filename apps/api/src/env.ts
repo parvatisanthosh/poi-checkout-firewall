@@ -49,6 +49,8 @@ const Env = z.object({
     .transform((v) => v === "true"),
 
   // --- Layer 2 (docs/CONTRACTS-L2.md 4.8) ---
+  /** "real" = @poi/arena (LLM attacker); "fake" = no-LLM stand-in for demos and offline work. */
+  ARENA_ENGINE: z.enum(["real", "fake"]).default("real"),
   ARENA_ATTACKER_MODEL: z.string().optional(),
   ARENA_HELDOUT_ATTACKER_MODEL: z.string().optional(),
   ARENA_AGENT_MODEL: z.string().optional(),
