@@ -1,0 +1,19 @@
+{
+  "name": "@poi/arena",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "try-gen": "tsx scripts/try-gen.ts"
+  },
+  "dependencies": {
+    "@poi/shared": "workspace:*",
+    "ai": "^7.0.165",
+    "zod": "^4.6.7"
+  }
+}

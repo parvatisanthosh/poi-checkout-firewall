@@ -19,10 +19,11 @@ const flag = (name: string) => {
 const model =
   flag("--model") ?? process.env.AGENT_MODELS?.split(",")[0]?.trim() ?? "openai:gpt-4o-mini";
 const scenario = flag("--scenario");
+const tenant = flag("--tenant");
 const userText = args.join(" ").trim();
 if (!userText) {
   console.error(
-    'Usage: pnpm --filter @poi/agent shop "<request>" --model provider:model [--scenario id]',
+    'Usage: pnpm --filter @poi/agent shop "<request>" --model provider:model [--scenario id] [--tenant id]',
   );
   process.exit(1);
 }
@@ -31,6 +32,7 @@ const { trace, checkout, summary } = await runShopper({
   userText,
   model,
   scenario,
+  tenant,
   bazaarUrl: process.env.BAZAAR_URL ?? "http://localhost:4100",
   onStep: (s) => {
     if (s.type === "tool_call") console.log(`  -> ${s.tool} ${JSON.stringify(s.input)}`);

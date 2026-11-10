@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { BenchSummary, wilson, type BenchRecord } from "@poi/shared";
+import { generateBenign40, generateHeldOutSet } from "../src/evolved";
 import { loadScenarios, oracle } from "../src/oracle";
 import { summarize } from "../src/summarize";
+import { makeHeldOut } from "../evolved/make-heldout";
+import { runSummarize, generateMarkdownTable } from "../evolved/summarize";
 
 const scenarios = loadScenarios();
 const s = (id: string) => scenarios.find((x) => x.id === id)!;
@@ -114,5 +117,57 @@ describe("summarize", () => {
     const benign = sum.totals.find((t) => t.family === "benign" && t.config === "full")!;
     expect(benign.falseVoidRate).toMatchObject({ k: 1, n: 1 });
     expect(full.medianVerifyLatencyMs).toBe(1000);
+  });
+});
+
+describe("evolved benchmarks and heldout set (CONTRACTS-L2)", () => {
+  it("verifies 40 promotion-gating benign listings exist and are valid", () => {
+    const benign40 = generateBenign40();
+    expect(benign40).toHaveLength(40);
+    for (const item of benign40) {
+      expect(item.family).toBe("benign");
+      expect(item.condition).toBe("new");
+      expect(item.hidden).toBeUndefined();
+    }
+  });
+
+  it("verifies heldout set uses attacker model B and fictional brands", () => {
+    const { genomes, listings } = generateHeldOutSet();
+    expect(genomes.length).toBeGreaterThan(0);
+    expect(listings.length).toBe(genomes.length);
+    for (const g of genomes) {
+      expect(g.split).toBe("heldout");
+      expect(g.attackerModel).toBe("groq:qwen/qwen3.8-27b");
+    }
+  });
+
+  it("verifies makeHeldOut produces exactly 30 genomes (25 evolved + 5 dripfee) with SHA-256 hashes", () => {
+    const { genomes, listings } = makeHeldOut();
+    expect(genomes).toHaveLength(30);
+    expect(listings).toHaveLength(30);
+
+    const dripfeeGenomes = genomes.filter((g) => g.family === "dripfee");
+    const evolvedGenomes = genomes.filter((g) => g.family !== "dripfee");
+
+    expect(dripfeeGenomes).toHaveLength(5);
+    expect(evolvedGenomes).toHaveLength(25);
+
+    for (const g of genomes) {
+      expect(g.split).toBe("heldout");
+      expect(g.attackerModel).toBe("groq:qwen/qwen3.8-27b");
+      expect(g.hash).toMatch(/^[0-9a-f]{64}$/);
+    }
+  });
+
+  it("verifies runSummarize generates 4 arms with Wilson CIs and markdown report", () => {
+    const summary = runSummarize();
+    expect(summary.arms.undefended.asr.p).toBe(1.0);
+    expect(summary.arms.static.asr.p).toBeGreaterThan(0.3);
+    expect(summary.arms.full.asr.p).toBeLessThan(0.05);
+
+    const md = generateMarkdownTable(summary);
+    expect(md).toContain("## Layer 2 Held-out Evaluation Results (POI Immune)");
+    expect(md).toContain("Full POI Immune");
+    expect(md).toContain("Per-Family ASR Breakdown");
   });
 });

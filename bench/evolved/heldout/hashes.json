@@ -1,0 +1,182 @@
+{
+  "heldout_b_g1_1": {
+    "sku": "EVO-B-TOS-01",
+    "family": "tosrenew",
+    "channel": "terms",
+    "hash": "8e9f661f67509a625166402a1aa6a531b0db997a49630d9c99c02b6217471cdd"
+  },
+  "heldout_b_g2_2": {
+    "sku": "EVO-B-SUB-02",
+    "family": "subscription",
+    "channel": "checkout",
+    "hash": "322acef97627f6872580764911105ff0a3c95829c3889e6b1798a29b2bbc2935"
+  },
+  "heldout_b_g1_3": {
+    "sku": "EVO-B-INJ-03",
+    "family": "injection",
+    "channel": "description",
+    "hash": "0ffbf9cac7b831e15895da33de96283dbbf10e4e3fccaaa3ba22a4ec49fad356"
+  },
+  "heldout_b_g2_4": {
+    "sku": "EVO-B-VAR-04",
+    "family": "variant",
+    "channel": "review",
+    "hash": "518ba5677a9f68f2284ff0c81186e146703f4493a41bac745101cd28691d4977"
+  },
+  "heldout_b_g1_5": {
+    "sku": "EVO-B-ADD-05",
+    "family": "addon",
+    "channel": "alt_text",
+    "hash": "3021c6ab1fa11cbe4e0b42f709f1352d0406560bec4e05d7a672b864c4213c4c"
+  },
+  "heldout_b_g2_6": {
+    "sku": "EVO-B-LOO-06",
+    "family": "lookalike",
+    "channel": "title",
+    "hash": "0d5c4e4e3829e8a8e8a2e9492677098b68c7200425ce0e75f956c572173946d7"
+  },
+  "heldout_b_g1_7": {
+    "sku": "EVO-B-TOS-07",
+    "family": "tosrenew",
+    "channel": "terms",
+    "hash": "ec5ca91d1350bf26c50ebef2469ea6144b7531f9ab569cea8c16abd5e8d9b431"
+  },
+  "heldout_b_g2_8": {
+    "sku": "EVO-B-SUB-08",
+    "family": "subscription",
+    "channel": "checkout",
+    "hash": "dcdd9cdd886c603398a2b858be13373ca5c8bf5bb3e83ffb4239c81dbddd2524"
+  },
+  "heldout_b_g1_9": {
+    "sku": "EVO-B-INJ-09",
+    "family": "injection",
+    "channel": "description",
+    "hash": "a6a9533bf41bd9017b2ceffbcfbec48224bd57d2df9f84f8812a9875efc733f4"
+  },
+  "heldout_b_g2_10": {
+    "sku": "EVO-B-VAR-10",
+    "family": "variant",
+    "channel": "review",
+    "hash": "4800bdc7118ed4bf49fd26492b5ffa46e68cb54d5133ea3844da71ad958e7ac4"
+  },
+  "heldout_b_g1_11": {
+    "sku": "EVO-B-ADD-11",
+    "family": "addon",
+    "channel": "alt_text",
+    "hash": "022bfe2e7c7b20709d4d58905e9efb0da0da62f4de077cb4aa909c27fd27d9a7"
+  },
+  "heldout_b_g2_12": {
+    "sku": "EVO-B-LOO-12",
+    "family": "lookalike",
+    "channel": "title",
+    "hash": "30cd69e90bf25d6124e812871266315cabb735388a706f7e52d03d5994a171b7"
+  },
+  "heldout_b_g1_13": {
+    "sku": "EVO-B-TOS-13",
+    "family": "tosrenew",
+    "channel": "terms",
+    "hash": "c660a69a136ab252877c16692ece61b60dace47595323fc92873e589ece1f5c7"
+  },
+  "heldout_b_g2_14": {
+    "sku": "EVO-B-SUB-14",
+    "family": "subscription",
+    "channel": "checkout",
+    "hash": "9634f53e9137b478b19da71bed126096429da7f1425daa06972b839faef0d154"
+  },
+  "heldout_b_g1_15": {
+    "sku": "EVO-B-INJ-15",
+    "family": "injection",
+    "channel": "description",
+    "hash": "7d321e2534e2462761afac1dbd1c311759a0cc3f8cb20022226233bf5f1aaf67"
+  },
+  "heldout_b_g2_16": {
+    "sku": "EVO-B-VAR-16",
+    "family": "variant",
+    "channel": "review",
+    "hash": "bb153f192d81f51a1b79f3bc3154a22c0a36e6b83e50e95737edafba1b26d058"
+  },
+  "heldout_b_g1_17": {
+    "sku": "EVO-B-ADD-17",
+    "family": "addon",
+    "channel": "alt_text",
+    "hash": "404732a696a8c1b669d0f0d048fd27306f5e36b24ccc4b10f61748fce6170425"
+  },
+  "heldout_b_g2_18": {
+    "sku": "EVO-B-LOO-18",
+    "family": "lookalike",
+    "channel": "title",
+    "hash": "0e469877311f4489fe23cb6a41f8d3cae7931be56228859bce594f8392d9f12b"
+  },
+  "heldout_b_g1_19": {
+    "sku": "EVO-B-TOS-19",
+    "family": "tosrenew",
+    "channel": "terms",
+    "hash": "e1e0fc7f80942e9a7d1d332c7a6acab1c5c722921d3a33f5e63816d39a5640a4"
+  },
+  "heldout_b_g2_20": {
+    "sku": "EVO-B-SUB-20",
+    "family": "subscription",
+    "channel": "checkout",
+    "hash": "0ecdfd7ff20453057f56ba941a145d7a2dd8919cd8c1a50fac2439afa28a8b80"
+  },
+  "heldout_b_g1_21": {
+    "sku": "EVO-B-INJ-21",
+    "family": "injection",
+    "channel": "description",
+    "hash": "628581d9e191178385e6e309f6839aacc3ade97fa6395294fcda56c2c26547bd"
+  },
+  "heldout_b_g2_22": {
+    "sku": "EVO-B-VAR-22",
+    "family": "variant",
+    "channel": "review",
+    "hash": "60ab5ef5e7f6ae42b659b3c280efe8d62e73f2729d9d5e64ca51d4e1e4455189"
+  },
+  "heldout_b_g1_23": {
+    "sku": "EVO-B-ADD-23",
+    "family": "addon",
+    "channel": "alt_text",
+    "hash": "2b0f1f62804059b7a17b36ea99dd8c376d803f4b0e69c8371b5f0066a79a7caa"
+  },
+  "heldout_b_g2_24": {
+    "sku": "EVO-B-LOO-24",
+    "family": "lookalike",
+    "channel": "title",
+    "hash": "3b6ec174c2568170258410f770572bc0706f2a2ebe686c8b1af987117ebb484a"
+  },
+  "heldout_b_g1_25": {
+    "sku": "EVO-B-TOS-25",
+    "family": "tosrenew",
+    "channel": "terms",
+    "hash": "917ead252ed2109f6f669d5ff60b9f2f0385881875a48854afc1526cfe588ccd"
+  },
+  "heldout_drip_g0_1": {
+    "sku": "HELDOUT-DRIP-01",
+    "family": "dripfee",
+    "channel": "checkout",
+    "hash": "ba9c4fe6fc933e99785abde54d138f391ce83e07e648e12e4a3115f5640db019"
+  },
+  "heldout_drip_g0_2": {
+    "sku": "HELDOUT-DRIP-02",
+    "family": "dripfee",
+    "channel": "review",
+    "hash": "fc4673cfc8cd68d1e384e90f02ca4af5c8adeb56dd31fb39ab706a5a1297cd67"
+  },
+  "heldout_drip_g0_3": {
+    "sku": "HELDOUT-DRIP-03",
+    "family": "dripfee",
+    "channel": "alt_text",
+    "hash": "8ef23a22451001446af4921ea1cdb6e25d740bcb3a4ad6c396c88227a55d2344"
+  },
+  "heldout_drip_g0_4": {
+    "sku": "HELDOUT-DRIP-04",
+    "family": "dripfee",
+    "channel": "description",
+    "hash": "2d984bd4556a175250dd3ac708a5c30c7d3000a6b5fcd25c833b5b00251c4c21"
+  },
+  "heldout_drip_g0_5": {
+    "sku": "HELDOUT-DRIP-05",
+    "family": "dripfee",
+    "channel": "terms",
+    "hash": "ba894260e96634ad176ecd9decddcdf7ff09820de75535b8ab4d939fdc460c68"
+  }
+}

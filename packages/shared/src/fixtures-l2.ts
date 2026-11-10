@@ -6,7 +6,8 @@
  */
 import { BazaarProduct } from "./bazaar";
 import { mutateListing, seededRandom } from "./arena-fake";
-import { bazaarMerchants, seedPoisonListings } from "./fixtures-l2-seeds";
+import { bazaarMerchants, seedPoisonListings, benignListings } from "./fixtures-l2-seeds";
+export { bazaarMerchants, seedPoisonListings, benignListings };
 import { voidOrder } from "./fixtures";
 import {
   AttackFamily,

@@ -19,6 +19,7 @@ export interface RunShopperOptions {
   model: string;
   bazaarUrl: string;
   scenario?: string;
+  tenant?: string;
   /** default 0.2 */
   temperature?: number;
   /** default 12 */
@@ -89,6 +90,8 @@ export async function runShopper(opts: RunShopperOptions): Promise<RunShopperRes
   }
 
   const scenarioQs = opts.scenario ? `&scenario=${encodeURIComponent(opts.scenario)}` : "";
+  const tenantQs = opts.tenant ? `&tenant=${encodeURIComponent(opts.tenant)}` : "";
+  const tenantQueryParam = opts.tenant ? `?tenant=${encodeURIComponent(opts.tenant)}` : "";
 
   const tools = {
     search_catalog: tool({
@@ -101,7 +104,7 @@ export async function runShopper(opts: RunShopperOptions): Promise<RunShopperRes
       execute: async ({ q, category }) =>
         traced("search_catalog", { q, category }, async () => {
           const cards = await bazaar(
-            `/catalog?q=${encodeURIComponent(q)}${category ? `&category=${encodeURIComponent(category)}` : ""}${scenarioQs}`,
+            `/catalog?q=${encodeURIComponent(q)}${category ? `&category=${encodeURIComponent(category)}` : ""}${scenarioQs}${tenantQs}`,
             z.array(ListingCard),
           );
           return cards.map((c) => ({
@@ -121,9 +124,32 @@ export async function runShopper(opts: RunShopperOptions): Promise<RunShopperRes
       inputSchema: z.object({ sku: z.string() }),
       execute: async ({ sku }) =>
         traced("get_product_page", { sku }, async () => {
-          const page = await bazaar(`/products/${encodeURIComponent(sku)}`, ProductPage);
+          const page = await bazaar(
+            `/products/${encodeURIComponent(sku)}${tenantQueryParam}`,
+            ProductPage,
+          );
           observed.set(sku, page.pageText);
           return page.pageText;
+        }),
+    }),
+    get_merchant_terms: tool({
+      description: "Read a merchant's terms of service and policies.",
+      inputSchema: z.object({
+        merchantId: z.string().describe("The merchant id, e.g. 'merchant-novawave'"),
+      }),
+      execute: async ({ merchantId }) =>
+        traced("get_merchant_terms", { merchantId }, async () => {
+          const res = await doFetch(
+            `${base}/merchants/${encodeURIComponent(merchantId)}/terms${tenantQueryParam}`,
+            { signal: opts.abortSignal },
+          );
+          if (!res.ok) {
+            const json: unknown = await res.json().catch(() => ({}));
+            const msg =
+              (json as { error?: { message?: string } }).error?.message ?? `HTTP ${res.status}`;
+            throw new BazaarError(msg);
+          }
+          return await res.text();
         }),
     }),
     add_to_cart: tool({
@@ -149,10 +175,14 @@ export async function runShopper(opts: RunShopperOptions): Promise<RunShopperRes
           if (checkout) throw new BazaarError("Already checked out");
           if (cart.size === 0) throw new BazaarError("The cart is empty");
           const items = [...cart].map(([sku, qty]) => ({ sku, qty }));
-          const res = await bazaar("/checkout", CheckoutResponse, {
+          const res = await bazaar(`/checkout${tenantQueryParam}`, CheckoutResponse, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ items, ...(opts.scenario ? { scenario: opts.scenario } : {}) }),
+            body: JSON.stringify({
+              items,
+              ...(opts.scenario ? { scenario: opts.scenario } : {}),
+              ...(opts.tenant ? { tenant: opts.tenant } : {}),
+            }),
           });
           checkout = {
             orderId: res.orderId,

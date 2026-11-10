@@ -56,6 +56,8 @@ export const Genome = GenomeDraft.extend({
   split: Split,
   /** "provider:model" */
   attackerModel: z.string(),
+  /** SHA-256 hash of the canonical listing text */
+  hash: z.string().optional(),
 });
 export type Genome = z.infer<typeof Genome>;
 
