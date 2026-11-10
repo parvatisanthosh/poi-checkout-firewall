@@ -53,6 +53,9 @@ importers:
       '@paypal/agent-toolkit':
         specifier: 1.11.0
         version: 1.11.0(react@18.3.1)(ws@8.21.3)
+      '@poi/agent':
+        specifier: workspace:*
+        version: link:../../packages/agent
       '@poi/shared':
         specifier: workspace:*
         version: link:../../packages/shared

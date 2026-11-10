@@ -4,12 +4,16 @@ import { Emitter as RedisEmitter } from "@socket.io/redis-emitter";
 import { Redis } from "ioredis";
 import { Server } from "socket.io";
 import {
+  arenaRoom,
   EVENTS,
+  IMMUNE_ROOM,
+  L2_EVENTS,
   LIVE_NAMESPACE,
   orderRoom,
-  type ClientToServerEvents,
-  type ServerToClientEvents,
+  type LiveClientToServerEvents,
+  type LiveServerToClientEvents,
 } from "@poi/shared";
+import { arenaRoomEmitter, type ArenaEmitter } from "./arena-emitter";
 import { roomEmitter, type Emitter } from "./emitter";
 
 const ORDER_ID = /^[\w-]{1,64}$/;
@@ -22,7 +26,7 @@ export function attachSocketServer(
   httpServer: HttpServer,
   opts: { origins: string[]; redisUrl?: string },
 ) {
-  const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer, {
+  const io = new Server<LiveClientToServerEvents, LiveServerToClientEvents>(httpServer, {
     cors: { origin: opts.origins },
     serveClient: false,
   });
@@ -43,11 +47,19 @@ export function attachSocketServer(
       if (p && typeof p.orderId === "string" && ORDER_ID.test(p.orderId))
         void socket.join(orderRoom(p.orderId));
     });
+    // Layer 2 (CONTRACTS-L2 4.7)
+    socket.on(L2_EVENTS.arenaSubscribe, (p) => {
+      if (p && typeof p.runId === "string" && ORDER_ID.test(p.runId))
+        void socket.join(arenaRoom(p.runId));
+    });
+    socket.on(L2_EVENTS.immuneSubscribe, () => void socket.join(IMMUNE_ROOM));
   });
   const emitter: Emitter = roomEmitter(io);
+  const arenaEmitter: ArenaEmitter = arenaRoomEmitter(io);
   return {
     io,
     emitter,
+    arenaEmitter,
     close: async () => {
       await io.close();
       closers.forEach((c) => c());
@@ -56,9 +68,17 @@ export function attachSocketServer(
 }
 
 /** For the standalone worker: publish into the API's rooms through Redis. */
-export function redisEmitter(redisUrl: string): { emitter: Emitter; close: () => void } {
+export function redisEmitter(redisUrl: string): {
+  emitter: Emitter;
+  arenaEmitter: ArenaEmitter;
+  close: () => void;
+} {
   const redis = new Redis(redisUrl, { maxRetriesPerRequest: null });
   redis.on("error", () => {});
-  const e = new RedisEmitter<ServerToClientEvents>(redis);
-  return { emitter: roomEmitter(e as never), close: () => redis.disconnect() };
+  const e = new RedisEmitter<LiveServerToClientEvents>(redis);
+  return {
+    emitter: roomEmitter(e as never),
+    arenaEmitter: arenaRoomEmitter(e as never),
+    close: () => redis.disconnect(),
+  };
 }

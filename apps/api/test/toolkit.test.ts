@@ -13,4 +13,4 @@ it("enables only the read-only toolkit tools", async () => {
     "list_disputes",
     "list_transactions",
   ]);
-}, 30_000);
+}, 120_000); // the toolkit pulls in langchain; slow to import when all packages test at once

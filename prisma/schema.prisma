@@ -139,3 +139,170 @@ model ProcessedWebhookEvent {
   type      String
   createdAt DateTime @default(now())
 }
+
+// =============================================================================================
+// Layer 2 ("POI Immune") -- docs/CONTRACTS-L2.md 4.2
+// =============================================================================================
+
+enum ArenaStatus {
+  QUEUED
+  RUNNING
+  DONE
+  STOPPED
+  ERROR
+}
+
+enum AntibodyState {
+  CANDIDATE
+  ACTIVE
+  RETIRED
+}
+
+model ArenaRun {
+  id        String            @id @default(cuid())
+  config    Json // ArenaRunConfig
+  status    ArenaStatus       @default(QUEUED)
+  costUsd   Float             @default(0)
+  createdAt DateTime          @default(now())
+  genomes   AttackGenome[]
+  cells     ArenaCell[]
+  gens      ArenaGeneration[]
+}
+
+model ArenaGeneration {
+  id              String   @id @default(cuid())
+  runId           String
+  run             ArenaRun @relation(fields: [runId], references: [id])
+  generation      Int
+  asrStatic       Float
+  asrImmune       Float
+  coverage        Int // cells filled out of 42
+  bestFitness     Float
+  defenderVersion Int
+
+  @@unique([runId, generation])
+}
+
+model AttackGenome {
+  id            String                       @id @default(cuid())
+  runId         String
+  run           ArenaRun                     @relation(fields: [runId], references: [id])
+  generation    Int
+  family        String
+  channel       String
+  operator      String
+  parentIds     String[]
+  strategy      String
+  scenarioId    String
+  listing       Json // BazaarProduct
+  split         String
+  attackerModel String
+  embedding     Unsupported("vector(1536)")?
+  createdAt     DateTime                     @default(now())
+  trials        ArenaTrial[]
+
+  @@index([runId, generation])
+}
+
+model ArenaTrial {
+  id            String       @id @default(cuid())
+  genomeId      String
+  genome        AttackGenome @relation(fields: [genomeId], references: [id])
+  result        Json // TrialResult
+  fitness       Float
+  chosenPoison  Boolean
+  verdictStatic String?
+  verdictImmune String?
+  reported      Boolean      @default(false)
+  createdAt     DateTime     @default(now())
+
+  @@index([genomeId])
+}
+
+model ArenaCell {
+  runId         String
+  run           ArenaRun @relation(fields: [runId], references: [id])
+  family        String
+  channel       String
+  eliteGenomeId String?
+  eliteFitness  Float?
+  attempts      Int      @default(0)
+  wins          Int      @default(0)
+
+  @@id([runId, family, channel])
+}
+
+model StrategyEntry {
+  id      String  @id @default(cuid())
+  family  String
+  channel String?
+  text    String
+  wins    Int     @default(0)
+  losses  Int     @default(0)
+}
+
+model Antibody {
+  id              String                       @id @default(cuid())
+  family          String
+  sourceOrderId   String
+  minhash         Int[]
+  embedding       Unsupported("vector(1536)")?
+  features        Json
+  skeleton        String?
+  action          String
+  state           AntibodyState                @default(CANDIDATE)
+  hits            Int                          @default(0)
+  falseHits       Int                          @default(0)
+  // Version at which it was minted, then the version its promotion created.
+  defenderVersion Int
+  // Added beyond 4.2: the version its retirement created, so snapshotDefender(v) is exact.
+  retiredVersion  Int?
+  signature       String
+  createdAt       DateTime                     @default(now())
+  bands           AntibodyBand[]
+
+  @@index([state])
+}
+
+// LSH index: 32 bands x 4 rows.
+model AntibodyBand {
+  band       Int
+  hash       String
+  antibodyId String
+  antibody   Antibody @relation(fields: [antibodyId], references: [id], onDelete: Cascade)
+
+  @@id([band, hash, antibodyId])
+  @@index([band, hash])
+}
+
+model MerchantRisk {
+  merchantId String   @id
+  voids      Int      @default(0)
+  reports    Int      @default(0)
+  orders     Int      @default(0)
+  updatedAt  DateTime @updatedAt
+}
+
+model Calibration {
+  id              String   @id @default(cuid())
+  alpha           Float
+  result          Json // CalibrationResult
+  defenderVersion Int
+  createdAt       DateTime @default(now())
+}
+
+// Single row: id = 1.
+model DefenderState {
+  id                  Int     @id
+  version             Int     @default(0)
+  activeCalibrationId String?
+}
+
+// Added beyond 4.2: one row per defender version (why it changed, and the calibration in force),
+// so a held-out evaluation can pin an exact past defender.
+model DefenderVersionLog {
+  version       Int      @id
+  reason        String
+  calibrationId String?
+  createdAt     DateTime @default(now())
+}

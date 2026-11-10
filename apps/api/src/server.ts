@@ -1,5 +1,6 @@
 import { createServer } from "node:http";
-import { buildDeps, createApp } from "./app";
+import { arenaJobDeps, buildDeps, createApp } from "./app";
+import { createBullArenaQueue, startArenaWorkers } from "./arena/queue";
 import { env } from "./env";
 import { logger } from "./lib/logger";
 import { disconnectPrisma } from "./lib/prisma";
@@ -15,6 +16,7 @@ const server = createServer(createApp(deps));
 const origins = env.WEB_ORIGIN.split(",").map((o) => o.trim());
 const sockets = attachSocketServer(server, { origins, redisUrl: env.REDIS_URL });
 deps.emitter = sockets.emitter;
+deps.arenaEmitter = sockets.arenaEmitter;
 
 const closers: Array<() => Promise<unknown>> = [sockets.close];
 if (env.REDIS_URL) {
@@ -29,12 +31,19 @@ if (env.REDIS_URL) {
       env.VERIFY_CONCURRENCY,
     );
     closers.push(worker.close);
+    const arena = startArenaWorkers(env.REDIS_URL, arenaJobDeps(deps), env.ARENA_CONCURRENCY);
+    closers.push(arena.close);
   }
+  const arenaQueue = createBullArenaQueue(env.REDIS_URL);
+  deps.arenaQueue = arenaQueue;
+  closers.push(arenaQueue.close);
   logger.info(
-    `verify queue: BullMQ (${env.WORKER_INLINE ? "worker in this process" : "separate worker process"})`,
+    `verify + arena queues: BullMQ (${env.WORKER_INLINE ? "workers in this process" : "separate worker process"})`,
   );
 } else {
-  logger.warn("REDIS_URL not set: verifications run in-process without a durable queue");
+  logger.warn(
+    "REDIS_URL not set: verifications and arena runs run in-process without a durable queue",
+  );
 }
 
 server.on("error", (err: NodeJS.ErrnoException) => {

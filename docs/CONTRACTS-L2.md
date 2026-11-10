@@ -71,17 +71,43 @@ Structural antibody flags (`ANTIBODY_FEATURES`): `recurrence_in_checkout`, `recu
 - `AntibodyBand { band, hash, antibodyId; @@id([band, hash, antibodyId]); @@index([band, hash]) }` -- LSH, 32 bands x 4 rows
 - `MerchantRisk { merchantId @id, voids = 0, reports = 0, orders = 0, updatedAt }`
 - `Calibration { id, alpha, result Json (CalibrationResult), defenderVersion, createdAt }`
-- `DefenderState { id = 1, version = 0, activeCalibrationId? }` (single row)
+- `DefenderState { id = 1, version = 0, activeCalibrationId? }` (single row, inserted by the migration)
+
+Additions made in Q1 (internal to the API, no client impact):
+
+- `Antibody.retiredVersion Int?` and `DefenderVersionLog { version @id, reason, calibrationId?, createdAt }`
+  (one row per version, with the calibration in force). Together they make
+  `snapshotDefender(v)` exact: an antibody is live at `v` when it was activated at or before `v` and not
+  retired by `v`; a rejected candidate is retired at its own mint version, so it was never live.
+- Antibody `defenderVersion` = the version at mint, then the version its promotion created.
+- Indexes on `ArenaTrial.genomeId` and `Antibody.state`; `AntibodyBand` rows cascade-delete with
+  their antibody.
+
+Repos (Parvati): `apps/api/src/arena/archive.repo.ts`, `apps/api/src/immune/antibody.repo.ts`,
+`apps/api/src/calibration/calibration.repo.ts`, and the defender service
+`apps/api/src/immune/defender.ts` (`getDefender`, `bumpVersion(reason, change)` under a row lock,
+`setActiveCalibration`, `snapshotDefender(version)`).
 
 ## 4.3 Queues (BullMQ, Parvati)
 
 | Queue | Job id | Triggered by | Does |
 | --- | --- | --- | --- |
-| `arena.generation` | `{runId}:{gen}` | `POST /arena/runs`, and itself for the next generation | select parents, `proposeGeneration`, validate, persist genomes, fan out trials, wait, compute generation stats, run Strategist, enqueue next gen |
+| `arena.generation` | `{runId}-g{gen}` ("propose"); its parent `{runId}-g{gen}-final` ("finalize") | `POST /arena/runs`, and itself for the next generation | select parents, `proposeGeneration`, validate, persist genomes, fan out trials, wait, compute generation stats, run Strategist, enqueue next gen |
 | `arena.trial` | genome id | generation job | deploy tenant, run agent, attach order, verify static + immune, oracle, fitness, archive update, report |
-| `immune.mint` | `mint:{orderId}` | report (arena or `POST /immune/report`), live VOID or human reject | build candidate antibody, dedupe |
-| `immune.promote` | `promote:{antibodyId}` | after mint | replay on 40 benign listings, activate if 0 false hits, bump defender version |
-| `calibrate.crc` | `crc:{timestamp}` | `POST /calibration/run`, nightly cron | fuse scores, compute lambdas, store, set active |
+| `immune.mint` | `mint-{orderId}` | report (arena or `POST /immune/report`), live VOID or human reject | build candidate antibody, dedupe |
+| `immune.promote` | `promote-{antibodyId}` | after mint | replay on 40 benign listings, activate if 0 false hits, bump defender version |
+| `calibrate.crc` | `crc-{timestamp}` | `POST /calibration/run`, nightly cron | fuse scores, compute lambdas, store, set active |
+
+Job ids use dashes, not colons: BullMQ rejects custom ids with one or two `:`. A generation is a
+BullMQ flow: "propose" persists the genomes and adds a FlowProducer flow whose parent is the
+generation's "finalize" job and whose children are the trials (`ignoreDependencyOnFailure`, so one
+broken trial never blocks the generation). Without Redis the same steps run in-process.
+
+Budget (Q2): `withBudget(run, fn)` runs `fn` in a usage context. Every model from `getModel()`
+(`@poi/shared/llm`) is metered, so every LLM call inside -- the agent, the judge, `@poi/arena` -- is
+priced (list price per 1M tokens, `ARENA_PRICES` overrides) and added to `ArenaRun.costUsd`; the
+call that crosses `min(config.maxUsd, ARENA_MAX_USD)` throws `BudgetExceeded` and the run ends
+STOPPED. `@poi/arena` needs no budget code of its own -- just resolve models with `getModel`.
 
 ## 4.4 POI API additions (Parvati) -- all under `/api`
 
@@ -115,10 +141,33 @@ and makes `annualExtraUsd` null ("recurring, amount unknown") -- never guessed.
 | --- | --- | --- | --- |
 | POST | `/arena/tenants/:tenant/listings` | `{ product: BazaarProduct, baseScenario }` | `{ sku }`; tenant catalog = the scenario's 4 benign listings + this product |
 | DELETE | `/arena/tenants/:tenant` | none | `{ ok }` |
-| GET `/catalog`, `/products/:sku`, POST `/checkout` | | add a `tenant` query/body field | same as Layer 1, scoped to the tenant |
+| GET `/catalog`, `/products/:sku`, `/products/:sku/meta`, `/merchants/:id/terms` | `?tenant=<id>` | none | same as Layer 1, scoped to the tenant |
+| POST `/checkout`, `/checkout/preview` | `?tenant=<id>` or `tenant` in the body | as Layer 1 | same as Layer 1, scoped to the tenant |
 
-Tenant ids: `arena-g{gen}-{genomeId}`. Tenants live in memory with a 2-hour TTL (plus a persisted copy
-in `data/arena/` for the held-out set), so a restart mid-run only loses in-flight trials.
+Tenant ids: `arena-g{gen}-{genomeId}`; tenant SKU: `ARENA-<tenant id>` (hence lowercase letters are
+allowed in `BazaarProduct.sku`). Tenants live in memory with a 2-hour TTL (plus a persisted copy in
+`data/arena/` for the held-out set), so a restart mid-run only loses in-flight trials.
+
+**Isolation:** a request without `tenant` must behave exactly like Layer 1. In particular
+`GET /merchants/:id/terms` without `tenant` returns the merchant's real terms, never a tenant's
+`termsExcerpt` (no cross-tenant fallback), and one tenant never sees another tenant's data.
+
+**Agent (`packages/agent`):** `RunShopperOptions` gains `tenant?: string`. When set, `runShopper`
+adds `tenant=<id>` to every Bazaar request it makes (catalog, product pages, terms, checkout) and
+does not need a `scenario`. Without it nothing changes. The CLI gets a matching `--tenant` flag.
+
+How a trial uses a tenant (Parvati's `arena.trial`, task Q3):
+
+- The trial calls `runShopper({ userText, model, bazaarUrl, tenant })` with no `scenario`: the tenant
+  already fixes the catalog.
+- The trial passes the returned `sku` to `oracle()` (the genome's listing with its sku replaced by
+  the deployed one), since that is the sku the agent saw and bought.
+- The evolved `termsExcerpt` is not ingested into POI's `TermsChunk` table (that would leak it into
+  Layer 1). The trial hands it to the order's terms stage directly (`PipelineDeps.extraTerms`), only
+  when the order went to the evolved listing's merchant.
+- The trial always calls `DELETE /arena/tenants/:tenant` when it finishes, even after an error; a
+  retry re-creates the same tenant id, so `POST .../listings` on an existing tenant must replace it.
+- Bazaar 5xx/429 are retried by the trial; other 4xx fail the trial (recorded as errored).
 
 ## 4.6 `packages/arena` interface (teammate; called by Parvati's jobs)
 

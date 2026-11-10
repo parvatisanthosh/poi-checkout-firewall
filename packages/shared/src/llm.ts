@@ -6,7 +6,17 @@ import { anthropic } from "@ai-sdk/anthropic";
 import { google } from "@ai-sdk/google";
 import { groq } from "@ai-sdk/groq";
 import { openai } from "@ai-sdk/openai";
-import { defaultEmbeddingSettingsMiddleware, wrapEmbeddingModel } from "ai";
+import { AsyncLocalStorage } from "node:async_hooks";
+
+import {
+  defaultEmbeddingSettingsMiddleware,
+  wrapEmbeddingModel,
+  wrapLanguageModel,
+  type LanguageModelMiddleware,
+} from "ai";
+
+/** The model type wrapLanguageModel works with (avoids a direct @ai-sdk/provider dependency). */
+type LanguageModelV4 = Parameters<typeof wrapLanguageModel>[0]["model"];
 
 export const PROVIDERS = ["openai", "anthropic", "google", "groq"] as const;
 export type Provider = (typeof PROVIDERS)[number];
@@ -38,9 +48,67 @@ export function hasKeyFor(id: string, env: Record<string, string | undefined> = 
   return Boolean(env[KEY_ENV[parseModelId(id).provider]]);
 }
 
-/** Resolve "provider:model" to a Vercel AI SDK language model. */
-export function getModel(id: string) {
-  const { provider, model } = parseModelId(id);
+// ---------------------------------------------------------------------------------------------
+// Usage metering. Every model from getModel() reports its token usage to the sink of the current
+// async context, if there is one. The API's withBudget() (Layer 2 arena) sets that sink, so every
+// LLM call made inside a budgeted job is charged -- including calls made by the agent, the judge
+// and @poi/arena, which only ever see model ids. Outside withUsageSink nothing happens.
+// ---------------------------------------------------------------------------------------------
+
+export interface ModelUsage {
+  modelId: string;
+  inputTokens: number;
+  outputTokens: number;
+}
+/** May throw (e.g. BudgetExceeded): the error propagates out of the LLM call that reported. */
+export type UsageSink = (u: ModelUsage) => void | Promise<void>;
+
+const usageContext = new AsyncLocalStorage<UsageSink>();
+
+/** Run `fn` with every metered model call inside it reporting to `sink`. */
+export function withUsageSink<T>(sink: UsageSink, fn: () => Promise<T>): Promise<T> {
+  return usageContext.run(sink, fn);
+}
+
+type Usage = { inputTokens: { total?: number }; outputTokens: { total?: number } };
+const toUsage = (modelId: string, u: Usage): ModelUsage => ({
+  modelId,
+  inputTokens: u.inputTokens.total ?? 0,
+  outputTokens: u.outputTokens.total ?? 0,
+});
+
+/** Wrap any language model so its calls report usage under `modelId`. */
+export function meterModel(model: LanguageModelV4, modelId: string): LanguageModelV4 {
+  const middleware: LanguageModelMiddleware = {
+    specificationVersion: "v4",
+    async wrapGenerate({ doGenerate }) {
+      const sink = usageContext.getStore();
+      const result = await doGenerate();
+      if (sink) await sink(toUsage(modelId, result.usage));
+      return result;
+    },
+    async wrapStream({ doStream }) {
+      // Capture the sink now: stream callbacks may run outside this async context.
+      const sink = usageContext.getStore();
+      const result = await doStream();
+      if (!sink) return result;
+      return {
+        ...result,
+        stream: result.stream.pipeThrough(
+          new TransformStream({
+            async transform(part, controller) {
+              if (part.type === "finish") await sink(toUsage(modelId, part.usage));
+              controller.enqueue(part);
+            },
+          }),
+        ),
+      };
+    },
+  };
+  return wrapLanguageModel({ model, middleware });
+}
+
+function providerModel(provider: Provider, model: string): LanguageModelV4 {
   switch (provider) {
     case "openai":
       return openai(model);
@@ -51,6 +119,12 @@ export function getModel(id: string) {
     case "groq":
       return groq(model);
   }
+}
+
+/** Resolve "provider:model" to a (usage-metered) Vercel AI SDK language model. */
+export function getModel(id: string): LanguageModelV4 {
+  const { provider, model } = parseModelId(id);
+  return meterModel(providerModel(provider, model), id);
 }
 
 /** Comma list from env (AGENT_MODELS) -> validated ids. */

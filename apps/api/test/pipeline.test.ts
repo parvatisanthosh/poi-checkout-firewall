@@ -289,7 +289,12 @@ describe.runIf(process.env.RUN_DB_TESTS === "1")("pipeline (real DB, fake PayPal
     });
     expect((await validateChain(db, key.publicKey)).chainValid).toBe(true);
     const original = JSON.stringify(target.payload);
-    await db.$executeRaw`UPDATE "EvidenceRecord" SET payload = jsonb_set(payload, '{verdict}', '"CAPTURE"') WHERE seq = ${target.seq}`;
+    // Flip the verdict to something it was not (other test files, e.g. the arena, append
+    // records concurrently, so the target may already say CAPTURE).
+    const flipped = JSON.stringify(
+      (target.payload as { verdict?: string }).verdict === "CAPTURE" ? "VOID" : "CAPTURE",
+    );
+    await db.$executeRaw`UPDATE "EvidenceRecord" SET payload = jsonb_set(payload, '{verdict}', ${flipped}::jsonb) WHERE seq = ${target.seq}`;
     try {
       const report = await validateChain(db, key.publicKey);
       expect(report).toMatchObject({ chainValid: false, brokenAt: target.seq });

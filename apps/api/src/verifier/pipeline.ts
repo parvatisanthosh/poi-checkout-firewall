@@ -42,6 +42,12 @@ export interface PipelineDeps {
   /** The agent's own model for the shadow run (undefined when its key is missing). */
   agentModel: (id: string) => LanguageModel | undefined;
   listingCard?: (sku: string) => Promise<ListingCard | undefined>;
+  /**
+   * Arena only: terms an order's merchant publishes outside the ingested TermsChunk table (an
+   * arena tenant's evolved termsExcerpt). Added to the retrieved chunks, never replacing them,
+   * and run through the same checks, so it can only add evidence.
+   */
+  extraTerms?: (orderId: string) => TermsChunk[];
 }
 
 const json = (v: unknown) => v as Prisma.InputJsonValue;
@@ -146,12 +152,13 @@ export async function runVerification(deps: PipelineDeps, verificationId: string
       const rag: Promise<TermsChunk[]> = config.terms
         ? (async () => {
             const s = performance.now();
-            const chunks = await retrieveTerms(db, n.merchantId, n, {
+            const retrieved = await retrieveTerms(db, n.merchantId, n, {
               embeddingModel: deps.embeddingModel,
             }).catch((err: unknown) => {
               deps.logger.warn({ err: (err as Error).message }, "terms retrieval failed");
               return [];
             });
+            const chunks = [...(deps.extraTerms?.(order.id) ?? []), ...retrieved];
             termsChecks(
               chunks,
               Math.round(performance.now() - s),

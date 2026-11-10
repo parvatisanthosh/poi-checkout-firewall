@@ -47,6 +47,16 @@ const Env = z.object({
     .enum(["true", "false"])
     .default("true")
     .transform((v) => v === "true"),
+
+  // --- Layer 2 (docs/CONTRACTS-L2.md 4.8) ---
+  ARENA_ATTACKER_MODEL: z.string().optional(),
+  ARENA_HELDOUT_ATTACKER_MODEL: z.string().optional(),
+  ARENA_AGENT_MODEL: z.string().optional(),
+  ARENA_CONCURRENCY: z.coerce.number().int().positive().default(4),
+  /** Hard ceiling per run; a run's own maxUsd can only be lower. */
+  ARENA_MAX_USD: z.coerce.number().positive().default(15),
+  /** Optional JSON price overrides: {"provider:model": {"in": usdPer1M, "out": usdPer1M}}. */
+  ARENA_PRICES: z.string().optional(),
 });
 
 export type Env = z.infer<typeof Env>;

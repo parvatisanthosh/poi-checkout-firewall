@@ -25,6 +25,14 @@ import { merchantsRouter } from "./routes/merchants";
 import { ordersRouter } from "./routes/orders";
 import { verificationsRouter } from "./routes/verifications";
 import { webhooksRouter, type RawBodyRequest } from "./routes/webhooks";
+import type { ArenaEngine, Scenario } from "@poi/shared";
+import { fakeEngine } from "./arena/engine";
+import { createInlineArenaQueue, type ArenaQueue } from "./arena/queue";
+import { arenaRouter } from "./arena/routes";
+import { fetchScenarios, httpArenaBazaar, type ArenaBazaar } from "./lib/bazaar";
+import { runShopper } from "@poi/agent";
+import type { ArenaTrialDeps } from "./arena/trial.job";
+import { noopArenaEmitter, type ArenaEmitter } from "./realtime/arena-emitter";
 import { markVerificationFailed, runVerification, type PipelineDeps } from "./verifier/pipeline";
 
 /** Everything the routes need from the outside world; tests swap in fakes. */
@@ -41,6 +49,17 @@ export interface AppDeps extends PipelineDeps {
   queue: VerifyQueue;
   /** PAYPAL_WEBHOOK_ID; webhooks answer 503 without it. */
   webhookId?: string;
+  // --- Layer 2 arena ---
+  /** The attacker engine (fake until @poi/arena lands). */
+  arenaEngine: ArenaEngine;
+  arenaEmitter: ArenaEmitter;
+  arenaScenarios: () => Promise<Scenario[]>;
+  /** Mutable like `queue`: server.ts swaps in BullMQ when Redis is set. */
+  arenaQueue: ArenaQueue;
+  arenaBazaar: ArenaBazaar;
+  arenaShop: ArenaTrialDeps["shop"];
+  /** immune.mint (task Q4); logs until then. */
+  enqueueMint: ArenaTrialDeps["enqueueMint"];
 }
 
 /**
@@ -67,6 +86,14 @@ export function buildDeps(overrides: Partial<AppDeps> = {}): AppDeps {
     emitter: noopEmitter,
     queue: undefined as unknown as VerifyQueue,
     webhookId: env.PAYPAL_WEBHOOK_ID,
+    arenaEngine: fakeEngine,
+    arenaEmitter: noopArenaEmitter,
+    arenaScenarios: () => fetchScenarios(),
+    arenaQueue: undefined as unknown as ArenaQueue,
+    arenaBazaar: httpArenaBazaar(),
+    arenaShop: runShopper,
+    enqueueMint: async (job) =>
+      defaultLogger.info(job, "immune.mint requested (minting lands in Q4)"),
     health: {
       db: async () => getPrisma().$queryRaw`SELECT 1`,
       redis: async () => {
@@ -79,6 +106,7 @@ export function buildDeps(overrides: Partial<AppDeps> = {}): AppDeps {
     },
     ...overrides,
   };
+  deps.arenaQueue ??= createInlineArenaQueue(arenaJobDeps(deps), env.ARENA_CONCURRENCY);
   deps.queue ??= createInlineQueue(
     (id) => runVerification(deps, id),
     (id, err) => markVerificationFailed(deps, id, err),
@@ -144,10 +172,37 @@ export function createApp(deps: AppDeps = buildDeps()) {
   app.use("/api", verificationsRouter(deps));
   app.use("/api", ledgerRouter(deps));
   app.use("/api", webhooksRouter(deps));
+  app.use("/api", arenaRouter(deps));
   app.use(jwksRouter(deps));
   app.use("/api", jwksRouter(deps));
 
   app.use("/api", notFoundHandler);
   app.use(errorHandler);
   return app;
+}
+
+/** The arena jobs' view of the deps. Getters, so a later swap (socket emitter) is picked up. */
+export function arenaJobDeps(deps: AppDeps) {
+  return {
+    prisma: deps.prisma,
+    get engine() {
+      return deps.arenaEngine;
+    },
+    get emitter() {
+      return deps.arenaEmitter;
+    },
+    logger: deps.logger,
+    scenarios: () => deps.arenaScenarios(),
+    // real trial (Q3)
+    pipeline: deps,
+    get bazaar() {
+      return deps.arenaBazaar;
+    },
+    bazaarUrl: env.BAZAAR_URL,
+    shop: (o: Parameters<ArenaTrialDeps["shop"]>[0]) => deps.arenaShop(o),
+    get compilerModel() {
+      return deps.compilerModel;
+    },
+    enqueueMint: (job: Parameters<ArenaTrialDeps["enqueueMint"]>[0]) => deps.enqueueMint(job),
+  };
 }

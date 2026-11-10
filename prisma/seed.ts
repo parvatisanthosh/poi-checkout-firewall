@@ -25,6 +25,18 @@ async function main() {
   );
   const verified = merchants.filter((m) => m.verified).length;
   console.log(`Seeded ${merchants.length} merchants (${verified} verified) from ${source}.`);
+
+  // Layer 2: the defender starts at version 0 (the migration inserts it too; this is a no-op then).
+  await prisma.defenderState.upsert({
+    where: { id: 1 },
+    create: { id: 1, version: 0 },
+    update: {},
+  });
+  await prisma.defenderVersionLog.upsert({
+    where: { version: 0 },
+    create: { version: 0, reason: "initial" },
+    update: {},
+  });
 }
 
 main()
