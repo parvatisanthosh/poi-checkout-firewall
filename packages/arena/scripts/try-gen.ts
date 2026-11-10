@@ -15,11 +15,7 @@ import {
   type IntentSpec,
   type Scenario,
 } from "@poi/shared";
-import {
-  proposeGeneration,
-  seeds,
-  validateListing,
-} from "../src/index";
+import { proposeGeneration, seeds, validateListing } from "../src/index";
 
 async function main() {
   console.log("=== POI Arena Generation Operator Test (try-gen) ===\n");
@@ -73,22 +69,13 @@ async function main() {
     "dripfee",
     "tosrenew",
   ];
-  const channels: Channel[] = [
-    "title",
-    "description",
-    "review",
-    "alt_text",
-    "terms",
-    "checkout",
-  ];
+  const channels: Channel[] = ["title", "description", "review", "alt_text", "terms", "checkout"];
 
   // Create MAP-Elites archive with some filled cells
   const archive: ArchiveCell[] = [];
   for (const f of families) {
     for (const c of channels) {
-      const matchingElite = initialElites.find(
-        (e) => e.family === f && e.channel === c,
-      );
+      const matchingElite = initialElites.find((e) => e.family === f && e.channel === c);
       archive.push({
         family: f,
         channel: c,
@@ -174,4 +161,3 @@ main().catch((err) => {
   console.error("try-gen failed:", err);
   process.exit(1);
 });
-

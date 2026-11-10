@@ -16,4 +16,3 @@ export function oracle(
   }
   return { violated: false, family: null };
 }
-

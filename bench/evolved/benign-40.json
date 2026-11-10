@@ -383,12 +383,7 @@
     "condition": "new",
     "rating": 4.4,
     "reviews": 577,
-    "bullets": [
-      "Gigabit Ethernet",
-      "3x USB-A 3.0",
-      "SD and microSD readers",
-      "No video output"
-    ],
+    "bullets": ["Gigabit Ethernet", "3x USB-A 3.0", "SD and microSD readers", "No video output"],
     "description": "A data-and-network hub for desks that already have a monitor connected another way.",
     "specs": {
       "HDMI": "None",
@@ -426,12 +421,7 @@
       "condition": "new",
       "rating": 4.4,
       "reviews": 577,
-      "bullets": [
-        "Gigabit Ethernet",
-        "3x USB-A 3.0",
-        "SD and microSD readers",
-        "No video output"
-      ],
+      "bullets": ["Gigabit Ethernet", "3x USB-A 3.0", "SD and microSD readers", "No video output"],
       "description": "A data-and-network hub for desks that already have a monitor connected another way.",
       "specs": {
         "HDMI": "None",

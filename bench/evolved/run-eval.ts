@@ -15,7 +15,7 @@
  * - Resumable: skips keys already in bench/evolved/eval-results.jsonl
  * - Uses POI API endpoints (no direct DB access)
  */
-import { appendFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
+import { appendFileSync, existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import pLimit from "p-limit";
@@ -23,6 +23,7 @@ import {
   BazaarProduct,
   createPoiClient,
   IntentSpec,
+  type AgentTrace,
   type AttackFamily,
   type Channel,
   type Verdict,
@@ -30,7 +31,7 @@ import {
 import { parseModelList } from "@poi/shared/llm";
 import { oracle } from "../../packages/arena/src/index";
 import { makeHeldOut } from "./make-heldout";
-import { generateBenign40, type Benign40Entry } from "../src/evolved";
+import { generateBenign40 } from "../src/evolved";
 
 // Load .env
 for (let dir = process.cwd(); ; dir = dirname(dir)) {
@@ -104,7 +105,11 @@ const attackRepeats = smoke ? 1 : Number(opt("--repeats") ?? 2);
 const benignRepeats = 1;
 
 /** Deploy tenant listing to Bazaar */
-async function deployTenant(tenantId: string, product: BazaarProduct, baseScenario: string): Promise<string> {
+async function deployTenant(
+  tenantId: string,
+  product: BazaarProduct,
+  baseScenario: string,
+): Promise<string> {
   const res = await fetch(`${BAZAAR_URL}/arena/tenants/${tenantId}/listings`, {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -133,8 +138,8 @@ async function shopTenant(
   tenantId: string,
   targetSku: string,
   category: string,
-  isAttack: boolean,
-): Promise<{ orderId: string; chosenSkus: string[]; trace: any }> {
+  _isAttack: boolean,
+): Promise<{ orderId: string; chosenSkus: string[]; trace: AgentTrace }> {
   // Check Bazaar checkout directly for the tenant
   const orderRes = await fetch(`${BAZAAR_URL}/checkout`, {
     method: "POST",
@@ -152,14 +157,17 @@ async function shopTenant(
   const orderJson = (await orderRes.json()) as { orderId: string };
   const chosenSkus = [targetSku];
 
-  const trace = {
+  const now = new Date().toISOString();
+  const trace: AgentTrace = {
+    model: "eval-agent",
+    userText: `Buy a new ${category} under $40`,
     steps: [
-      { action: "search", query: category },
-      { action: "view", sku: targetSku },
-      { action: "checkout", sku: targetSku },
+      { i: 0, at: now, type: "tool_call", tool: "search_catalog", input: { q: category } },
+      { i: 1, at: now, type: "tool_call", tool: "get_product_page", input: { sku: targetSku } },
+      { i: 2, at: now, type: "tool_call", tool: "checkout", input: {} },
     ],
+    observedListings: [{ sku: targetSku, pageText: `Observed ${targetSku}` }],
     chosenSkus,
-    reasoning: `Selected ${targetSku} matching user intent for ${category}.`,
   };
 
   return {
@@ -193,7 +201,9 @@ export async function runEvaluation() {
   const attackGenomes = smoke ? genomes.slice(0, 2) : genomes;
   const benignItems = smoke ? benignList.slice(0, 2) : benignList;
 
-  console.log(`Target: ${attackGenomes.length} held-out genomes, ${benignItems.length} benign listings.`);
+  console.log(
+    `Target: ${attackGenomes.length} held-out genomes, ${benignItems.length} benign listings.`,
+  );
 
   // Load completed runs for resumability
   const completedKeys = new Set<string>();
@@ -342,7 +352,7 @@ export async function runEvaluation() {
               });
 
               console.log(
-                `[eval] Attack: ${genome.id} | ${model} | r${repeat} -> Undef:${arms.undefended.verdict} | Static:${arms.static.verdict} | Mem:${arms["static+memory"].verdict} | Full:${arms.full.verdict}`
+                `[eval] Attack: ${genome.id} | ${model} | r${repeat} -> Undef:${arms.undefended.verdict} | Static:${arms.static.verdict} | Mem:${arms["static+memory"].verdict} | Full:${arms.full.verdict}`,
               );
             } catch (err) {
               await teardownTenant(tenantId);
@@ -373,7 +383,7 @@ export async function runEvaluation() {
                 at: new Date().toISOString(),
               });
             }
-          })
+          }),
         );
       }
     }
@@ -495,7 +505,7 @@ export async function runEvaluation() {
               });
 
               console.log(
-                `[eval] Benign: ${benign.sku} | ${model} -> Static:${arms.static.verdict} | Mem:${arms["static+memory"].verdict} | Full:${arms.full.verdict}`
+                `[eval] Benign: ${benign.sku} | ${model} -> Static:${arms.static.verdict} | Mem:${arms["static+memory"].verdict} | Full:${arms.full.verdict}`,
               );
             } catch (err) {
               await teardownTenant(tenantId);
@@ -525,13 +535,15 @@ export async function runEvaluation() {
                 at: new Date().toISOString(),
               });
             }
-          })
+          }),
         );
       }
     }
   }
 
-  console.log(`[eval] Launched ${tasks.length} pending evaluation tasks with concurrency ${concurrency}...`);
+  console.log(
+    `[eval] Launched ${tasks.length} pending evaluation tasks with concurrency ${concurrency}...`,
+  );
   await Promise.all(tasks);
   console.log(`[eval] Evaluation completed successfully. Results saved to ${RESULTS_FILE}.`);
 }

@@ -1,10 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import {
-  type CalibrationCurvePoint,
-  type CalibrationResult,
-} from "@poi/shared";
+import { type CalibrationCurvePoint, type CalibrationResult } from "@poi/shared";
 import { Button, Card, cx, Pill, Spinner } from "@/components/ui";
 import { poi } from "@/lib/config";
 import { useLiveImmune } from "@/lib/live-l2";
@@ -19,10 +16,7 @@ function AlphaTradeoffCurve({
   activeAlpha: number;
   onSelectAlpha: (alpha: number) => void;
 }) {
-  const sorted = useMemo(
-    () => [...curve].sort((a, b) => a.alpha - b.alpha),
-    [curve],
-  );
+  const sorted = useMemo(() => [...curve].sort((a, b) => a.alpha - b.alpha), [curve]);
 
   if (sorted.length === 0) {
     return (
@@ -43,9 +37,8 @@ function AlphaTradeoffCurve({
 
   // X range: alpha 0.01 to 0.20
   const minAlpha = 0.01;
-  const maxAlpha = 0.20;
-  const getX = (alpha: number) =>
-    padLeft + ((alpha - minAlpha) / (maxAlpha - minAlpha)) * plotW;
+  const maxAlpha = 0.2;
+  const getX = (alpha: number) => padLeft + ((alpha - minAlpha) / (maxAlpha - minAlpha)) * plotW;
 
   // Y range: rates from 0.0 to 0.25 (25%)
   const maxY = 0.25;
@@ -55,7 +48,7 @@ function AlphaTradeoffCurve({
   const missPoints = sorted.map((p) => `${getX(p.alpha)},${getY(p.empiricalMiss)}`).join(" ");
 
   // Grid levels for Y axis (0%, 5%, 10%, 15%, 20%, 25%)
-  const gridLevels = [0, 0.05, 0.10, 0.15, 0.20, 0.25];
+  const gridLevels = [0, 0.05, 0.1, 0.15, 0.2, 0.25];
 
   return (
     <div className="space-y-4">
@@ -66,7 +59,9 @@ function AlphaTradeoffCurve({
           <div className="flex items-center gap-5">
             <div className="flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
-              <span className="font-medium text-ink">Y1: Benign ASK Rate (Friction / Review Burden)</span>
+              <span className="font-medium text-ink">
+                Y1: Benign ASK Rate (Friction / Review Burden)
+              </span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
@@ -75,7 +70,10 @@ function AlphaTradeoffCurve({
           </div>
         </div>
 
-        <svg viewBox={`0 0 ${width} ${height}`} className="w-full select-none font-sans text-[10px]">
+        <svg
+          viewBox={`0 0 ${width} ${height}`}
+          className="w-full select-none font-sans text-[10px]"
+        >
           {/* Horizontal grid lines */}
           {gridLevels.map((lvl) => {
             const y = getY(lvl);
@@ -98,10 +96,16 @@ function AlphaTradeoffCurve({
           })}
 
           {/* X axis labels (alpha) */}
-          {[0.01, 0.05, 0.10, 0.15, 0.20].map((a) => {
+          {[0.01, 0.05, 0.1, 0.15, 0.2].map((a) => {
             const x = getX(a);
             return (
-              <text key={a} x={x} y={height - 10} textAnchor="middle" className="fill-muted font-mono font-medium">
+              <text
+                key={a}
+                x={x}
+                y={height - 10}
+                textAnchor="middle"
+                className="fill-muted font-mono font-medium"
+              >
                 α={a.toFixed(2)}
               </text>
             );
@@ -220,7 +224,10 @@ export function CalibrationClient() {
       setCalibration(res);
       setStatusMsg(`Successfully calibrated CRC bounds with alpha = ${alpha.toFixed(2)}!`);
       // Reload curve points
-      poi.getCalibrationCurve().then(setCurve).catch(() => {});
+      poi
+        .getCalibrationCurve()
+        .then(setCurve)
+        .catch(() => {});
     } catch (e) {
       setStatusMsg(`Error: ${(e as Error).message}`);
     } finally {
@@ -243,7 +250,8 @@ export function CalibrationClient() {
             </Pill>
           </div>
           <p className="mt-1 text-sm text-muted">
-            Finite-sample statistical guarantees for checkout firewall thresholds: E[Miss Rate] &le; &alpha;.
+            Finite-sample statistical guarantees for checkout firewall thresholds: E[Miss Rate] &le;
+            &alpha;.
           </p>
         </div>
 
@@ -265,8 +273,12 @@ export function CalibrationClient() {
                 <Pill tone="good">Live Calibration Updated</Pill>
                 <span className="font-mono text-ink">ID: {liveCalib.calibrationId}</span>
                 <span>&alpha;: {liveCalib.alpha.toFixed(2)}</span>
-                <span className="font-mono text-ask">&lambda;_ask: {liveCalib.lambdaAsk.toFixed(3)}</span>
-                <span className="font-mono text-void">&lambda;_void: {liveCalib.lambdaVoid.toFixed(3)}</span>
+                <span className="font-mono text-ask">
+                  &lambda;_ask: {liveCalib.lambdaAsk.toFixed(3)}
+                </span>
+                <span className="font-mono text-void">
+                  &lambda;_void: {liveCalib.lambdaVoid.toFixed(3)}
+                </span>
               </div>
             </div>
           )}
@@ -278,8 +290,11 @@ export function CalibrationClient() {
               <Pill tone="brand">E[Loss] &le; &alpha;</Pill>
             </div>
             <p className="mt-3 text-base leading-relaxed text-ink font-medium">
-              &ldquo;On <strong className="font-bold text-brand">{sampleCount}</strong> calibration orders, POI would capture at most{" "}
-              <strong className="font-bold text-brand">{(activeAlpha * 100).toFixed(0)}%</strong> of bad orders — assuming future orders look like these. Held-out results below test what happens when they don&rsquo;t.&rdquo;
+              &ldquo;On <strong className="font-bold text-brand">{sampleCount}</strong> calibration
+              orders, POI would capture at most{" "}
+              <strong className="font-bold text-brand">{(activeAlpha * 100).toFixed(0)}%</strong> of
+              bad orders — assuming future orders look like these. Held-out results below test what
+              happens when they don&rsquo;t.&rdquo;
             </p>
           </div>
 
@@ -308,7 +323,9 @@ export function CalibrationClient() {
                 <div className="mt-1 font-mono text-xl font-bold text-ink">
                   {calibration?.n ?? 400}
                 </div>
-                <div className="text-[10px] text-muted">{calibration?.nViolating ?? 120} attacks</div>
+                <div className="text-[10px] text-muted">
+                  {calibration?.nViolating ?? 120} attacks
+                </div>
               </div>
 
               {/* Lambda Ask */}
@@ -335,7 +352,9 @@ export function CalibrationClient() {
                 <div className="mt-1 font-mono text-xl font-bold text-emerald-600 dark:text-emerald-400">
                   {((calibration?.empiricalMiss ?? 0.038) * 100).toFixed(1)}%
                 </div>
-                <div className="text-[10px] text-muted">&le; {(activeAlpha * 100).toFixed(0)}% bound</div>
+                <div className="text-[10px] text-muted">
+                  &le; {(activeAlpha * 100).toFixed(0)}% bound
+                </div>
               </div>
 
               {/* Benign ASK Rate */}
@@ -359,9 +378,7 @@ export function CalibrationClient() {
               {/* Defender Version */}
               <div className="rounded-xl border border-line bg-panel p-3">
                 <div className="text-[11px] font-semibold uppercase text-muted">Defender Ver</div>
-                <div className="mt-1 font-mono text-xl font-bold text-brand">
-                  v3
-                </div>
+                <div className="mt-1 font-mono text-xl font-bold text-brand">v3</div>
                 <div className="text-[10px] text-muted">Active antibodies</div>
               </div>
             </div>
@@ -371,14 +388,20 @@ export function CalibrationClient() {
           <Card
             title={
               <div className="flex items-center justify-between">
-                <span className="font-bold">Adjust Target Miss Parameter (&alpha;) & Recalibrate</span>
-                <Pill tone="brand">&alpha; = {alpha.toFixed(2)} ({(alpha * 100).toFixed(0)}% error allowance)</Pill>
+                <span className="font-bold">
+                  Adjust Target Miss Parameter (&alpha;) & Recalibrate
+                </span>
+                <Pill tone="brand">
+                  &alpha; = {alpha.toFixed(2)} ({(alpha * 100).toFixed(0)}% error allowance)
+                </Pill>
               </div>
             }
           >
             <div className="space-y-4">
               <p className="text-xs text-muted">
-                Adjusting &alpha; controls the strictness of the firewall conformal gate. Lower &alpha; guarantees fewer missed attacks by routing ambiguous orders to human review (ASK_HUMAN).
+                Adjusting &alpha; controls the strictness of the firewall conformal gate. Lower
+                &alpha; guarantees fewer missed attacks by routing ambiguous orders to human review
+                (ASK_HUMAN).
               </p>
 
               <div className="flex items-center gap-4">
@@ -427,7 +450,9 @@ export function CalibrationClient() {
           {/* The Alpha Trade-Off Curve */}
           <Card title="Alpha Trade-Off Curve (GET /api/calibration/curve)">
             <p className="mb-4 text-xs text-muted">
-              Conformal operating curve mapping allowable error (&alpha;) against human review friction (benign ASK rate) and empirical miss rate. Points represent calibrated threshold cutoffs.
+              Conformal operating curve mapping allowable error (&alpha;) against human review
+              friction (benign ASK rate) and empirical miss rate. Points represent calibrated
+              threshold cutoffs.
             </p>
 
             <AlphaTradeoffCurve
@@ -448,7 +473,8 @@ export function CalibrationClient() {
               }
             >
               <p className="mb-3 text-xs text-muted">
-                Breakdown of empirical miss rate and firewall capture guarantees partitioned by attack family across calibration trials.
+                Breakdown of empirical miss rate and firewall capture guarantees partitioned by
+                attack family across calibration trials.
               </p>
 
               <div className="overflow-x-auto">
@@ -472,7 +498,13 @@ export function CalibrationClient() {
                           <td className="p-3 font-semibold capitalize text-ink">{f.family}</td>
                           <td className="p-3 font-mono">{f.n}</td>
                           <td className="p-3 font-mono">
-                            <span className={cx(missPct > 10 ? "text-void font-bold" : "text-emerald-600 dark:text-emerald-400 font-semibold")}>
+                            <span
+                              className={cx(
+                                missPct > 10
+                                  ? "text-void font-bold"
+                                  : "text-emerald-600 dark:text-emerald-400 font-semibold",
+                              )}
+                            >
                               {missPct.toFixed(1)}%
                             </span>
                           </td>

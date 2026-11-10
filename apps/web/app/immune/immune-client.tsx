@@ -5,7 +5,6 @@ import type { ColDef, ICellRendererParams, RowClickedEvent } from "ag-grid-commu
 import {
   ANTIBODY_FEATURES,
   type AntibodyDetail,
-  type AntibodyFeature,
   type AntibodyStatus,
   type AntibodySummary,
   type DefenderInfo,
@@ -43,7 +42,8 @@ function AntibodyDetailDrawer({
 
   useEffect(() => {
     setLoading(true);
-    poi.getAntibody(antibodyId)
+    poi
+      .getAntibody(antibodyId)
       .then((res) => {
         setDetail(res);
         setLoading(false);
@@ -104,11 +104,7 @@ function AntibodyDetailDrawer({
             </div>
           )}
 
-          {error && (
-            <div className="rounded-xl bg-void/10 p-4 text-sm text-void">
-              {error}
-            </div>
-          )}
+          {error && <div className="rounded-xl bg-void/10 p-4 text-sm text-void">{error}</div>}
 
           {detail && (
             <>
@@ -116,8 +112,12 @@ function AntibodyDetailDrawer({
               <Card>
                 <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line pb-3">
                   <div>
-                    <span className="font-mono text-sm font-bold text-brand">{detail.antibody.id}</span>
-                    <span className="ml-2 font-semibold capitalize text-ink">({detail.antibody.family})</span>
+                    <span className="font-mono text-sm font-bold text-brand">
+                      {detail.antibody.id}
+                    </span>
+                    <span className="ml-2 font-semibold capitalize text-ink">
+                      ({detail.antibody.family})
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Pill
@@ -147,7 +147,9 @@ function AntibodyDetailDrawer({
                 <div className="mt-3 grid grid-cols-2 gap-3 text-xs">
                   <div>
                     <span className="text-muted">Defender Version:</span>{" "}
-                    <span className="font-mono font-semibold">v{detail.antibody.defenderVersion}</span>
+                    <span className="font-mono font-semibold">
+                      v{detail.antibody.defenderVersion}
+                    </span>
                   </div>
                   <div>
                     <span className="text-muted">Hits / False Hits:</span>{" "}
@@ -160,7 +162,9 @@ function AntibodyDetailDrawer({
                   </div>
                   <div className="col-span-2">
                     <span className="text-muted">Created:</span>{" "}
-                    <span className="text-ink">{new Date(detail.antibody.createdAt).toLocaleString()}</span>
+                    <span className="text-ink">
+                      {new Date(detail.antibody.createdAt).toLocaleString()}
+                    </span>
                   </div>
                 </div>
               </Card>
@@ -177,7 +181,8 @@ function AntibodyDetailDrawer({
                   <Pill tone="good">Signed</Pill>
                 </div>
                 <p className="mt-1 text-[11px] text-muted">
-                  Signed over canonical JSON features and MinHash fingerprint by POI Verifier Authority.
+                  Signed over canonical JSON features and MinHash fingerprint by POI Verifier
+                  Authority.
                 </p>
                 <div className="mt-2 rounded bg-black/5 dark:bg-black/30 p-2 font-mono text-[10px] text-muted truncate">
                   Sig: {detail.antibody.signature}
@@ -187,7 +192,8 @@ function AntibodyDetailDrawer({
               {/* Matched Structural Features */}
               <Card title="Structural Attack Flags & Fingerprint">
                 <p className="mb-3 text-xs text-muted">
-                  Hard structural indicators extracted from the attacking merchant order and checkout terms.
+                  Hard structural indicators extracted from the attacking merchant order and
+                  checkout terms.
                 </p>
                 <div className="flex flex-wrap gap-1.5">
                   {ANTIBODY_FEATURES.map((flag) => {
@@ -223,21 +229,30 @@ function AntibodyDetailDrawer({
                   <div className="space-y-2 text-xs">
                     <div className="flex items-center justify-between border-b border-line pb-2">
                       <span className="text-muted">Order ID:</span>
-                      <span className="font-mono font-bold text-brand">{detail.sourceOrder.orderId}</span>
+                      <span className="font-mono font-bold text-brand">
+                        {detail.sourceOrder.orderId}
+                      </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-muted">Merchant:</span>
-                      <span className="font-semibold text-ink">{detail.sourceOrder.merchantDisplayName}</span>
+                      <span className="font-semibold text-ink">
+                        {detail.sourceOrder.merchantDisplayName}
+                      </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-muted">Total Paid:</span>
-                      <span className="font-mono font-bold text-ink">${detail.sourceOrder.total.value} USD</span>
+                      <span className="font-mono font-bold text-ink">
+                        ${detail.sourceOrder.total.value} USD
+                      </span>
                     </div>
                     <div>
                       <span className="text-muted">Order Line Items:</span>
                       <div className="mt-1 flex flex-wrap gap-1">
                         {detail.sourceOrder.lineNames.map((name, i) => (
-                          <span key={i} className="rounded bg-panel px-2 py-0.5 font-mono text-[11px] border border-line">
+                          <span
+                            key={i}
+                            className="rounded bg-panel px-2 py-0.5 font-mono text-[11px] border border-line"
+                          >
                             {name}
                           </span>
                         ))}
@@ -393,9 +408,7 @@ export function ImmuneClient() {
   }, []);
 
   const handleRetireSuccess = (id: string) => {
-    setAntibodies((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, status: "retired" } : a)),
-    );
+    setAntibodies((prev) => prev.map((a) => (a.id === id ? { ...a, status: "retired" } : a)));
   };
 
   const handleSubmitReport = async (e: React.FormEvent) => {
@@ -462,15 +475,7 @@ export function ImmuneClient() {
         headerName: "State",
         width: 120,
         cellRenderer: (p: ICellRendererParams<AntibodySummary>) => (
-          <Pill
-            tone={
-              p.value === "active"
-                ? "good"
-                : p.value === "candidate"
-                  ? "warn"
-                  : "neutral"
-            }
-          >
+          <Pill tone={p.value === "active" ? "good" : p.value === "candidate" ? "warn" : "neutral"}>
             {p.value}
           </Pill>
         ),
@@ -559,7 +564,8 @@ export function ImmuneClient() {
             </Pill>
           </div>
           <p className="mt-1 text-sm text-muted">
-            Learned structural antibody ledger, MinHash LSH matching, and merchant repeat-offender risk registry.
+            Learned structural antibody ledger, MinHash LSH matching, and merchant repeat-offender
+            risk registry.
           </p>
         </div>
 
@@ -579,13 +585,19 @@ export function ImmuneClient() {
           {/* Defender Summary Strip */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <Card>
-              <div className="text-xs font-semibold uppercase tracking-wide text-muted">Defender Version</div>
-              <div className="mt-1 font-mono text-3xl font-black text-brand">v{defender?.version ?? 0}</div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted">
+                Defender Version
+              </div>
+              <div className="mt-1 font-mono text-3xl font-black text-brand">
+                v{defender?.version ?? 0}
+              </div>
               <div className="mt-2 text-[11px] text-muted">Incremented on antibody promotion</div>
             </Card>
 
             <Card>
-              <div className="text-xs font-semibold uppercase tracking-wide text-muted">Active Antibodies</div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted">
+                Active Antibodies
+              </div>
               <div className="mt-1 flex items-baseline gap-2">
                 <span className="text-3xl font-black text-emerald-600 dark:text-emerald-400">
                   {defender?.activeAntibodies ?? 0}
@@ -596,11 +608,15 @@ export function ImmuneClient() {
             </Card>
 
             <Card>
-              <div className="text-xs font-semibold uppercase tracking-wide text-muted">Active Conformal Calibration</div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted">
+                Active Conformal Calibration
+              </div>
               <div className="mt-1 font-mono text-sm font-bold text-brand truncate">
                 {defender?.activeCalibrationId ?? "CRC-Active"}
               </div>
-              <div className="mt-2 text-[11px] text-muted">Statistical guarantees active on live checkouts</div>
+              <div className="mt-2 text-[11px] text-muted">
+                Statistical guarantees active on live checkouts
+              </div>
             </Card>
           </div>
 
@@ -644,7 +660,8 @@ export function ImmuneClient() {
             }
           >
             <p className="mb-3 text-xs text-muted">
-              Click any row to open the antibody detail drawer with source order context, structural features, and cryptographic signature verification.
+              Click any row to open the antibody detail drawer with source order context, structural
+              features, and cryptographic signature verification.
             </p>
 
             <Grid
@@ -668,7 +685,8 @@ export function ImmuneClient() {
             }
           >
             <p className="mb-4 text-xs text-muted">
-              Bayesian risk update: <code>risk = (voids + reports + 1) / (orders + 5)</code>. Merchants with risk score above 0.35 trigger automated human review escalation.
+              Bayesian risk update: <code>risk = (voids + reports + 1) / (orders + 5)</code>.
+              Merchants with risk score above 0.35 trigger automated human review escalation.
             </p>
 
             <div className="overflow-x-auto">
@@ -693,7 +711,8 @@ export function ImmuneClient() {
                         key={m.merchantId}
                         className={cx(
                           "transition hover:bg-panel/40",
-                          isHigh && "bg-rose-500/10 dark:bg-rose-950/20 font-semibold border-l-4 border-rose-500",
+                          isHigh &&
+                            "bg-rose-500/10 dark:bg-rose-950/20 font-semibold border-l-4 border-rose-500",
                         )}
                       >
                         <td className="p-3">
@@ -714,7 +733,9 @@ export function ImmuneClient() {
                             <span
                               className={cx(
                                 "font-mono font-bold w-12 text-right",
-                                isHigh ? "text-rose-600 dark:text-rose-400" : "text-emerald-600 dark:text-emerald-400",
+                                isHigh
+                                  ? "text-rose-600 dark:text-rose-400"
+                                  : "text-emerald-600 dark:text-emerald-400",
                               )}
                             >
                               {(m.risk * 100).toFixed(1)}%
@@ -745,7 +766,8 @@ export function ImmuneClient() {
           <Card title="User Dissatisfaction Report Simulator">
             <form onSubmit={handleSubmitReport} className="space-y-4">
               <p className="text-xs text-muted">
-                Simulates the &ldquo;This wasn&rsquo;t what I asked for&rdquo; user report button. Captures and voids file reports that trigger antibody candidate minting.
+                Simulates the &ldquo;This wasn&rsquo;t what I asked for&rdquo; user report button.
+                Captures and voids file reports that trigger antibody candidate minting.
               </p>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
@@ -776,7 +798,9 @@ export function ImmuneClient() {
                 <Button type="submit" disabled={reporting}>
                   {reporting ? <Spinner /> : "Submit Report"}
                 </Button>
-                {reportStatus && <span className="text-xs font-semibold text-brand">{reportStatus}</span>}
+                {reportStatus && (
+                  <span className="text-xs font-semibold text-brand">{reportStatus}</span>
+                )}
               </div>
             </form>
           </Card>

@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { io, type Socket } from "socket.io-client";
 import {
   LIVE_NAMESPACE,
-  L2_EVENTS,
   type ArenaGenerationEvent,
   type ArenaRunEvent,
   type ArenaTrialEvent,
@@ -100,4 +99,3 @@ export function useLiveImmune() {
 
   return { connected, minted, promoted, rejected, calibration };
 }
-

@@ -52,6 +52,8 @@ function fakeBazaar() {
         merchantId: "voltra-official",
       });
     }
+    if (url.pathname.startsWith("/merchants/"))
+      return new Response("# Terms\nStandard return policy.", { status: 200 });
     if (url.pathname === "/checkout")
       return json({
         orderId: "ORDER-1",
@@ -145,5 +147,34 @@ describe("runShopper (F3)", () => {
       maxSteps: 3,
     });
     expect(r.trace.steps.filter((s) => s.type === "tool_call")).toHaveLength(3);
+  });
+
+  it("propagates tenant option to catalog, product page, terms and checkout", async () => {
+    const bz = fakeBazaar();
+    const model = new MockLanguageModelV4({
+      doGenerate: [
+        call("search_catalog", { q: "usb-c hub" }, "1"),
+        call("get_product_page", { sku: "HUB-BEST" }, "2"),
+        call("get_merchant_terms", { merchantId: "voltra-official" }, "3"),
+        call("add_to_cart", { sku: "HUB-BEST", qty: 1 }, "4"),
+        call("checkout", {}, "5"),
+        say("Purchased with tenant."),
+      ],
+    });
+    const r = await runShopper({
+      userText: "USB-C hub",
+      model: "openai:gpt-4o-mini",
+      bazaarUrl: "http://bazaar",
+      tenant: "t-arena-123",
+      languageModel: model,
+      fetch: bz.impl,
+    });
+    expect(r.checkout?.orderId).toBe("ORDER-1");
+    expect(bz.requests).toContainEqual(
+      expect.stringContaining("GET /catalog?q=usb-c%20hub&tenant=t-arena-123"),
+    );
+    expect(bz.requests).toContainEqual("GET /products/HUB-BEST?tenant=t-arena-123");
+    expect(bz.requests).toContainEqual("GET /merchants/voltra-official/terms?tenant=t-arena-123");
+    expect(bz.requests).toContainEqual("POST /checkout?tenant=t-arena-123");
   });
 });

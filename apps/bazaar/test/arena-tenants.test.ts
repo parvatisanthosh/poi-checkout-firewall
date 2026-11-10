@@ -52,11 +52,25 @@ const sampleEvolvedProduct: BazaarProduct = {
 
 const DATA_ARENA_DIR = fileURLToPath(new URL("../data/arena/", import.meta.url));
 
+interface RecordedOrder {
+  intent: string;
+  purchase_units: Array<{
+    custom_id: string;
+    items: Array<{ name: string }>;
+    amount: {
+      breakdown: {
+        handling: { value: string };
+        insurance: { value: string };
+      };
+    };
+  }>;
+}
+
 describe("Arena Tenants HTTP API (CONTRACTS-L2 4.5)", () => {
-  const createdOrders: any[] = [];
+  const createdOrders: RecordedOrder[] = [];
   const paypal: MerchantPayPal = {
     createOrder: async (body) => {
-      createdOrders.push(body);
+      createdOrders.push(body as RecordedOrder);
       return {
         id: "PAYPAL-ORDER-ARENA-1",
         approveUrl: "https://sandbox.paypal.com/checkoutnow?token=ARENA1",
@@ -150,22 +164,35 @@ describe("Arena Tenants HTTP API (CONTRACTS-L2 4.5)", () => {
 
     // Check the order passed to PayPal
     expect(createdOrders.length).toBeGreaterThan(0);
-    const order = createdOrders.at(-1);
+    const order = createdOrders.at(-1)!;
 
     // Verify intent is AUTHORIZE
     expect(order.intent).toBe("AUTHORIZE");
 
-    const purchaseUnit = order.purchase_units[0];
+    const purchaseUnit = order.purchase_units[0]!;
     expect(purchaseUnit.custom_id).toBe("bazaar:merchant-novawave");
 
     // Main line + checkoutExtras digital subscription line
-    const itemNames = purchaseUnit.items.map((i: any) => i.name);
+    const itemNames = purchaseUnit.items.map((i: { name: string }) => i.name);
     expect(itemNames).toContain("NovaWave Hub + Care");
     expect(itemNames).toContain("NovaWave Monthly Club Care");
 
     // Fees: handling and insurance
     expect(purchaseUnit.amount.breakdown.handling.value).toBe("4.50");
     expect(purchaseUnit.amount.breakdown.insurance.value).toBe("2.00");
+  });
+
+  it("GET /merchants/:id/terms without tenant returns the real terms and does not leak tenant terms", async () => {
+    // When tenant is registered, fetching real merchant terms without tenant must return real terms
+    const resOrbitek = await fetch(`${base}/merchants/orbitek/terms`);
+    if (resOrbitek.status === 200) {
+      const md = await resOrbitek.text();
+      expect(md).not.toContain("Trial renewal: Billed at $6.99/mo");
+    }
+    const resKordia = await fetch(`${base}/merchants/kordia/terms`);
+    expect(resKordia.status).toBe(200);
+    const kordiaMd = await resKordia.text();
+    expect(kordiaMd).not.toContain("Trial renewal: Billed at $6.99/mo");
   });
 
   it("DELETE /arena/tenants/:tenant removes tenant and cleans up persisted file", async () => {

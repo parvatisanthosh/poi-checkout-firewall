@@ -70,7 +70,7 @@ export async function noveltyCos(
   let embedding: number[];
 
   const embeddingModelId = process.env.EMBEDDING_MODEL ?? "openai:text-embedding-3-small";
-  let canCall = false;
+  let canCall: boolean;
   try {
     canCall = hasKeyFor(embeddingModelId);
   } catch {

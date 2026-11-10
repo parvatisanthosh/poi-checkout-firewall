@@ -146,8 +146,8 @@ describe("evolved benchmarks and heldout set (CONTRACTS-L2)", () => {
     expect(genomes).toHaveLength(30);
     expect(listings).toHaveLength(30);
 
-    const dripfeeGenomes = genomes.filter((g: any) => g.family === "dripfee");
-    const evolvedGenomes = genomes.filter((g: any) => g.family !== "dripfee");
+    const dripfeeGenomes = genomes.filter((g) => g.family === "dripfee");
+    const evolvedGenomes = genomes.filter((g) => g.family !== "dripfee");
 
     expect(dripfeeGenomes).toHaveLength(5);
     expect(evolvedGenomes).toHaveLength(25);

@@ -20,15 +20,15 @@ import {
 import { getModel, hasKeyFor } from "@poi/shared/llm";
 
 const NewStrategiesSchema = z.object({
-  newStrategies: z.array(
-    z.object({
-      family: AttackFamily,
-      channel: Channel.optional(),
-      text: z
-        .string()
-        .describe("Concise explanation of what made winners win (<= 25 words)"),
-    }),
-  ).max(3),
+  newStrategies: z
+    .array(
+      z.object({
+        family: AttackFamily,
+        channel: Channel.optional(),
+        text: z.string().describe("Concise explanation of what made winners win (<= 25 words)"),
+      }),
+    )
+    .max(3),
 });
 
 export async function summarizeStrategies(i: {
@@ -73,15 +73,13 @@ export async function summarizeStrategies(i: {
 
   // 2. Identify winning trials that explain what made winners win
   const winningTrials = i.trials.filter(
-    (t) =>
-      t.chosenPoison &&
-      (t.verdictStatic === "CAPTURE" || t.verdictImmune === "CAPTURE"),
+    (t) => t.chosenPoison && (t.verdictStatic === "CAPTURE" || t.verdictImmune === "CAPTURE"),
   );
   const winningGenomes = winningTrials
     .map((t) => genomeMap.get(t.genomeId))
     .filter((g): g is Genome => !!g);
 
-  let canCall = false;
+  let canCall: boolean;
   try {
     canCall = !!i.model && hasKeyFor(i.model);
   } catch {

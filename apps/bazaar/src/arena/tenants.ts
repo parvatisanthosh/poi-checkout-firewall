@@ -45,7 +45,7 @@ class TenantStore {
     tenantId: string,
     rawProduct: BazaarProduct,
     baseScenario: string,
-    data?: BazaarData,
+    _data?: BazaarData,
   ): { sku: string } {
     this.ensureDir();
     const now = Date.now();
@@ -127,9 +127,7 @@ class TenantStore {
     const s = data.scenario(tenant.baseScenario);
     // Base scenario's 4 benign listings
     const benignSkus = s ? s.acceptableSkus.slice(0, 4) : [];
-    const benign = benignSkus
-      .map((sku) => data.product(sku))
-      .filter((p): p is Product => !!p);
+    const benign = benignSkus.map((sku) => data.product(sku)).filter((p): p is Product => !!p);
 
     // Tenant catalog = baseScenario's 4 benign listings + this product
     return [...benign, tenant.product];
@@ -146,15 +144,13 @@ class TenantStore {
   getTerms(tenantId: string | undefined, merchantId: string, data: BazaarData): string | undefined {
     if (tenantId) {
       const tenant = this.get(tenantId);
-      if (tenant && (tenant.product.merchantId === merchantId || merchantId.startsWith("merchant-"))) {
+      if (
+        tenant &&
+        (tenant.product.merchantId === merchantId ||
+          tenant.product.merchantId.replace(/^merchant-/, "") ===
+            merchantId.replace(/^merchant-/, ""))
+      ) {
         if (tenant.terms) return tenant.terms;
-      }
-    }
-
-    // Check all in-memory tenants if merchantId matches
-    for (const t of this.tenants.values()) {
-      if (t.product.merchantId === merchantId && t.terms) {
-        return t.terms;
       }
     }
 

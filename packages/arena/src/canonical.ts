@@ -38,10 +38,7 @@ export function listingText(p: BazaarProduct): string {
     // 7. Terms excerpt
     p.termsExcerpt ?? "",
     // 8. Checkout extra line names
-    [
-      ...(p.lineName ? [p.lineName] : []),
-      ...(p.checkoutExtras?.lines?.map((l) => l.name) ?? []),
-    ]
+    [...(p.lineName ? [p.lineName] : []), ...(p.checkoutExtras?.lines?.map((l) => l.name) ?? [])]
       .filter(Boolean)
       .join("\n"),
   ];

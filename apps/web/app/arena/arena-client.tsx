@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ColDef, ColGroupDef, ICellRendererParams, RowClickedEvent } from "ag-grid-community";
 import { diffWords } from "diff";
 import {
@@ -14,7 +14,6 @@ import {
   type ArenaRunSummary,
   type ArenaTrialEvent,
   type BazaarProduct,
-  type Genome,
   type GenomeLineage,
   type GenomeRow,
 } from "@poi/shared";
@@ -140,7 +139,9 @@ function AsrChart({ generations }: { generations: ArenaGenerationStats[] }) {
       <div className="overflow-x-auto rounded-xl border border-line bg-panel/40 p-4">
         {/* Legend */}
         <div className="mb-2 flex flex-wrap items-center justify-between gap-4 text-xs">
-          <span className="font-semibold text-muted">Attack Success Rate (% Firewall Bypassed)</span>
+          <span className="font-semibold text-muted">
+            Attack Success Rate (% Firewall Bypassed)
+          </span>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full bg-rose-500" />
@@ -157,7 +158,10 @@ function AsrChart({ generations }: { generations: ArenaGenerationStats[] }) {
           </div>
         </div>
 
-        <svg viewBox={`0 0 ${width} ${height}`} className="w-full select-none font-sans text-[10px]">
+        <svg
+          viewBox={`0 0 ${width} ${height}`}
+          className="w-full select-none font-sans text-[10px]"
+        >
           {/* Horizontal grid lines */}
           {gridLevels.map((lvl) => {
             const y = getY(lvl);
@@ -183,7 +187,13 @@ function AsrChart({ generations }: { generations: ArenaGenerationStats[] }) {
           {sorted.map((g, i) => {
             const x = getX(i);
             return (
-              <text key={g.generation} x={x} y={height - 10} textAnchor="middle" className="fill-muted font-medium">
+              <text
+                key={g.generation}
+                x={x}
+                y={height - 10}
+                textAnchor="middle"
+                className="fill-muted font-medium"
+              >
                 Gen {g.generation}
               </text>
             );
@@ -237,14 +247,7 @@ function AsrChart({ generations }: { generations: ArenaGenerationStats[] }) {
 
             return (
               <g key={`immune-${g.generation}`}>
-                <circle
-                  cx={x}
-                  cy={y}
-                  r="4.5"
-                  fill="#10b981"
-                  stroke="white"
-                  strokeWidth="1.5"
-                >
+                <circle cx={x} cy={y} r="4.5" fill="#10b981" stroke="white" strokeWidth="1.5">
                   <title>{`Gen ${g.generation} Immune ASR: ${Math.round(g.asrImmune * 100)}%`}</title>
                 </circle>
 
@@ -306,7 +309,9 @@ function AsrChart({ generations }: { generations: ArenaGenerationStats[] }) {
                     </span>
                   </td>
                   <td className="p-2 font-mono">
-                    <span className={cx(immunePct < staticPct ? "font-bold text-capture" : "text-ink")}>
+                    <span
+                      className={cx(immunePct < staticPct ? "font-bold text-capture" : "text-ink")}
+                    >
                       {immunePct}%
                     </span>
                   </td>
@@ -331,20 +336,15 @@ function AsrChart({ generations }: { generations: ArenaGenerationStats[] }) {
 }
 
 /** Slide-out Drawer for Lineage and Word-Level Payload Diff. */
-function LineageDrawer({
-  genomeId,
-  onClose,
-}: {
-  genomeId: string;
-  onClose: () => void;
-}) {
+function LineageDrawer({ genomeId, onClose }: { genomeId: string; onClose: () => void }) {
   const [lineage, setLineage] = useState<GenomeLineage | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setLoading(true);
-    poi.getGenome(genomeId)
+    poi
+      .getGenome(genomeId)
       .then((data) => {
         setLineage(data);
         setLoading(false);
@@ -388,11 +388,7 @@ function LineageDrawer({
             </div>
           )}
 
-          {error && (
-            <div className="rounded-xl bg-void/10 p-4 text-sm text-void">
-              {error}
-            </div>
-          )}
+          {error && <div className="rounded-xl bg-void/10 p-4 text-sm text-void">{error}</div>}
 
           {lineage && (
             <>
@@ -419,7 +415,9 @@ function LineageDrawer({
                   </div>
                   <div>
                     <span className="text-muted">Price:</span>{" "}
-                    <span className="font-mono font-semibold">${lineage.genome.listing.priceUsd.toFixed(2)}</span>
+                    <span className="font-mono font-semibold">
+                      ${lineage.genome.listing.priceUsd.toFixed(2)}
+                    </span>
                   </div>
                   <div className="rounded-lg bg-panel p-2.5">
                     <span className="font-semibold text-muted">Applied Strategy:</span>
@@ -430,13 +428,16 @@ function LineageDrawer({
 
               {/* Parent Chain & Word-Level Payload Diff */}
               <div className="space-y-4">
-                <h3 className="text-sm font-bold tracking-tight">Parent Lineage & Attack Payload Diff</h3>
+                <h3 className="text-sm font-bold tracking-tight">
+                  Parent Lineage & Attack Payload Diff
+                </h3>
 
                 {lineage.parents.length === 0 ? (
                   <div className="rounded-xl border border-line bg-panel/30 p-4 text-xs text-muted">
                     <div className="font-semibold text-ink">Root Seed Genome (Generation 0)</div>
                     <p className="mt-1">
-                      This genome was seeded directly from Layer 1 attack patterns with no parent mutation.
+                      This genome was seeded directly from Layer 1 attack patterns with no parent
+                      mutation.
                     </p>
                     <div className="mt-3 rounded-lg border border-line bg-panel p-3 font-mono text-[11px] whitespace-pre-wrap">
                       {extractPayload(lineage.genome.listing, lineage.genome.channel)}
@@ -445,7 +446,10 @@ function LineageDrawer({
                 ) : (
                   lineage.parents.map((parent) => {
                     const parentPayload = extractPayload(parent.listing, parent.channel);
-                    const childPayload = extractPayload(lineage.genome.listing, lineage.genome.channel);
+                    const childPayload = extractPayload(
+                      lineage.genome.listing,
+                      lineage.genome.channel,
+                    );
                     const diffParts = diffWords(parentPayload, childPayload);
 
                     return (
@@ -467,7 +471,9 @@ function LineageDrawer({
                         {/* Word-level diff display */}
                         <div>
                           <div className="mb-1.5 flex items-center justify-between text-[11px] text-muted">
-                            <span>Word-level diff ({parent.channel} → {lineage.genome.channel}):</span>
+                            <span>
+                              Word-level diff ({parent.channel} → {lineage.genome.channel}):
+                            </span>
                             <div className="flex items-center gap-3">
                               <span className="flex items-center gap-1">
                                 <span className="h-2 w-2 rounded-full bg-emerald-500" />
@@ -514,7 +520,9 @@ function LineageDrawer({
 
               {/* Trials Record */}
               <div className="space-y-3">
-                <h3 className="text-sm font-bold tracking-tight">Validation & Sandbox Trials ({lineage.trials.length})</h3>
+                <h3 className="text-sm font-bold tracking-tight">
+                  Validation & Sandbox Trials ({lineage.trials.length})
+                </h3>
                 {lineage.trials.map((t) => (
                   <div
                     key={t.trialId}
@@ -587,7 +595,12 @@ export function ArenaClient() {
   const [formImmuneLearning, setFormImmuneLearning] = useState<boolean>(true);
 
   // Live socket subscription to arena:{runId}
-  const { connected, runEvent, trials: liveTrials, generations: liveGens } = useLiveArena(activeRunId);
+  const {
+    connected,
+    runEvent,
+    trials: liveTrials,
+    generations: liveGens,
+  } = useLiveArena(activeRunId);
 
   // Load runs list
   const refreshRuns = async () => {
@@ -630,7 +643,6 @@ export function ArenaClient() {
   }, [activeRunId]);
 
   // Handle live trial events and animate heat-map updates
-  const lastProcessedTrialRef = useRef<number>(0);
   useEffect(() => {
     if (liveTrials.length === 0) return;
     const latest = liveTrials[0];
@@ -663,7 +675,8 @@ export function ArenaClient() {
       };
 
       const attempts = existing.attempts + 1;
-      const wins = existing.wins + (latest.chosenPoison && latest.verdictStatic === "CAPTURE" ? 1 : 0);
+      const wins =
+        existing.wins + (latest.chosenPoison && latest.verdictStatic === "CAPTURE" ? 1 : 0);
       const eliteFitness = latest.replacedElite ? latest.fitness : existing.eliteFitness;
       const eliteGenomeId = latest.replacedElite ? latest.genomeId : existing.eliteGenomeId;
 
@@ -704,7 +717,9 @@ export function ArenaClient() {
 
     try {
       const res = await poi.startArenaRun(config);
-      setLaunchSuccess(`Run ${res.runId} successfully launched! Subscribing to arena:${res.runId}...`);
+      setLaunchSuccess(
+        `Run ${res.runId} successfully launched! Subscribing to arena:${res.runId}...`,
+      );
       await refreshRuns();
       setActiveRunId(res.runId);
       setTimeout(() => setShowLauncher(false), 2000);
@@ -736,7 +751,8 @@ export function ArenaClient() {
     return live ? { ...g, ...live } : g;
   });
 
-  const curGen = displayGenerations.length > 0 ? Math.max(...displayGenerations.map((g) => g.generation)) : 0;
+  const curGen =
+    displayGenerations.length > 0 ? Math.max(...displayGenerations.map((g) => g.generation)) : 0;
   const maxGen = runDetail?.config.generations ?? 6;
   const bestFitness = Math.max(0, ...cells.map((c) => c.eliteFitness ?? 0));
   const currentCost = runEvent?.costUsd ?? runDetail?.costUsd ?? 0;
@@ -819,24 +835,24 @@ export function ArenaClient() {
             field: "bestTrial.verdictStatic",
             headerName: "POI-Static",
             width: 125,
-            cellRenderer: (p: ICellRendererParams<GenomeRow>) => (
-              <VerdictBadge verdict={p.value} />
-            ),
+            cellRenderer: (p: ICellRendererParams<GenomeRow>) => <VerdictBadge verdict={p.value} />,
           },
           {
             field: "bestTrial.verdictImmune",
             headerName: "POI+Immune",
             width: 130,
-            cellRenderer: (p: ICellRendererParams<GenomeRow>) => (
-              <VerdictBadge verdict={p.value} />
-            ),
+            cellRenderer: (p: ICellRendererParams<GenomeRow>) => <VerdictBadge verdict={p.value} />,
           },
           {
             field: "bestTrial.reported",
             headerName: "Reported",
             width: 105,
             cellRenderer: (p: ICellRendererParams<GenomeRow>) =>
-              p.value ? <Pill tone="bad">Reported</Pill> : <span className="text-muted/60">--</span>,
+              p.value ? (
+                <Pill tone="bad">Reported</Pill>
+              ) : (
+                <span className="text-muted/60">--</span>
+              ),
           },
         ],
       },
@@ -888,7 +904,8 @@ export function ArenaClient() {
             {activeRunId && <Pill tone="brand">arena:{activeRunId}</Pill>}
           </div>
           <p className="mt-1 text-sm text-muted">
-            MAP-Elites quality-diversity search discovering and red-teaming checkout vulnerabilities against ProofOfIntent.
+            MAP-Elites quality-diversity search discovering and red-teaming checkout vulnerabilities
+            against ProofOfIntent.
           </p>
         </div>
 
@@ -965,7 +982,9 @@ export function ArenaClient() {
                   onChange={(e) => setFormGenerations(Number(e.target.value))}
                   className="mt-2 w-full accent-brand"
                 />
-                <span className="text-[11px] text-muted">Iterative rounds of MAP-Elites search (1 - 20)</span>
+                <span className="text-[11px] text-muted">
+                  Iterative rounds of MAP-Elites search (1 - 20)
+                </span>
               </div>
 
               {/* Population Size */}
@@ -985,7 +1004,9 @@ export function ArenaClient() {
                   onChange={(e) => setFormPopulation(Number(e.target.value))}
                   className="mt-2 w-full accent-brand"
                 />
-                <span className="text-[11px] text-muted">Genomes proposed per generation (4 - 24)</span>
+                <span className="text-[11px] text-muted">
+                  Genomes proposed per generation (4 - 24)
+                </span>
               </div>
 
               {/* Attacker Model */}
@@ -1132,7 +1153,8 @@ export function ArenaClient() {
                   Defender Immune Learning
                 </label>
                 <p className="mt-0.5 text-xs text-muted">
-                  Mint new structural antibodies and bump defender version from reported trial violations:
+                  Mint new structural antibodies and bump defender version from reported trial
+                  violations:
                 </p>
                 <label className="mt-2 flex cursor-pointer items-center gap-3 rounded-xl border border-line bg-panel p-2.5">
                   <input
@@ -1143,7 +1165,9 @@ export function ArenaClient() {
                   />
                   <div>
                     <div className="text-xs font-semibold">
-                      {formImmuneLearning ? "Immune Learning Active (Adaptive)" : "Learning Disabled (Frozen)"}
+                      {formImmuneLearning
+                        ? "Immune Learning Active (Adaptive)"
+                        : "Learning Disabled (Frozen)"}
                     </div>
                     <div className="text-[11px] text-muted">
                       {formImmuneLearning
@@ -1193,7 +1217,9 @@ export function ArenaClient() {
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             {/* Generation Counter */}
             <Card>
-              <div className="text-xs font-semibold uppercase tracking-wide text-muted">Generation</div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted">
+                Generation
+              </div>
               <div className="mt-1 flex items-baseline gap-2">
                 <span className="text-3xl font-black text-brand">Gen {curGen}</span>
                 <span className="text-xs text-muted">/ {maxGen}</span>
@@ -1205,7 +1231,9 @@ export function ArenaClient() {
 
             {/* Coverage Counter */}
             <Card>
-              <div className="text-xs font-semibold uppercase tracking-wide text-muted">MAP-Elites Coverage</div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted">
+                MAP-Elites Coverage
+              </div>
               <div className="mt-1 flex items-baseline gap-2">
                 <span className="text-3xl font-black text-brand">{filledCount}</span>
                 <span className="text-xs text-muted">/ {ARCHIVE_CELL_COUNT} cells</span>
@@ -1217,7 +1245,9 @@ export function ArenaClient() {
 
             {/* Best Fitness Counter */}
             <Card>
-              <div className="text-xs font-semibold uppercase tracking-wide text-muted">Best Fitness</div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted">
+                Best Fitness
+              </div>
               <div className="mt-1 flex items-baseline gap-2">
                 <span
                   className={cx(
@@ -1232,13 +1262,17 @@ export function ArenaClient() {
                 </Pill>
               </div>
               <div className="mt-2 text-[11px] text-muted">
-                {bestFitness > 1.0 ? "Target firewall bypassed (CAPTURE)" : "Attacks currently contained"}
+                {bestFitness > 1.0
+                  ? "Target firewall bypassed (CAPTURE)"
+                  : "Attacks currently contained"}
               </div>
             </Card>
 
             {/* Live Cost vs Budget Counter */}
             <Card>
-              <div className="text-xs font-semibold uppercase tracking-wide text-muted">Live Cost vs Budget</div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted">
+                Live Cost vs Budget
+              </div>
               <div className="mt-1 flex items-baseline gap-2">
                 <span className="text-3xl font-black text-ink">${currentCost.toFixed(2)}</span>
                 <span className="text-xs text-muted">/ ${maxBudget.toFixed(2)}</span>
@@ -1276,14 +1310,18 @@ export function ArenaClient() {
                   </span>
                   <span className="flex items-center gap-1">
                     <span className="h-2.5 w-2.5 rounded bg-rose-300 dark:bg-rose-900" />
-                    <span className="font-semibold text-rose-600 dark:text-rose-400">&gt; 1.0 Red (Beats Verifier)</span>
+                    <span className="font-semibold text-rose-600 dark:text-rose-400">
+                      &gt; 1.0 Red (Beats Verifier)
+                    </span>
                   </span>
                 </div>
               </div>
             }
           >
             <p className="mb-4 text-xs text-muted">
-              Quality-diversity grid. Cell color indicates elite fitness. Cells flash when an operator replaces the niche elite. Click any occupied cell to inspect its evolved lineage and word-level diff.
+              Quality-diversity grid. Cell color indicates elite fitness. Cells flash when an
+              operator replaces the niche elite. Click any occupied cell to inspect its evolved
+              lineage and word-level diff.
             </p>
 
             <div className="overflow-x-auto">
@@ -1292,7 +1330,10 @@ export function ArenaClient() {
                   <tr className="border-b border-line bg-panel/50">
                     <th className="p-2.5 font-semibold">Family \ Channel</th>
                     {Channel.options.map((ch) => (
-                      <th key={ch} className="p-2.5 font-semibold uppercase tracking-wider text-muted">
+                      <th
+                        key={ch}
+                        className="p-2.5 font-semibold uppercase tracking-wider text-muted"
+                      >
                         {ch.replace("_", " ")}
                       </th>
                     ))}
@@ -1305,7 +1346,8 @@ export function ArenaClient() {
                       {Channel.options.map((ch) => {
                         const cellKey = `${fam}|${ch}`;
                         const cell = cellStateMap.get(cellKey);
-                        const hasElite = cell && cell.eliteGenomeId !== null && cell.eliteFitness !== null;
+                        const hasElite =
+                          cell && cell.eliteGenomeId !== null && cell.eliteFitness !== null;
                         const fitness = cell?.eliteFitness ?? 0;
                         const isFlashing = flashingCells.has(cellKey);
 
@@ -1339,8 +1381,10 @@ export function ArenaClient() {
                             className={cx(
                               "border p-2.5 transition-all duration-200",
                               colorClass,
-                              hasElite && "cursor-pointer hover:brightness-95 dark:hover:brightness-110",
-                              isFlashing && "scale-105 animate-pulse ring-4 ring-amber-400 shadow-lg z-10 duration-700",
+                              hasElite &&
+                                "cursor-pointer hover:brightness-95 dark:hover:brightness-110",
+                              isFlashing &&
+                                "scale-105 animate-pulse ring-4 ring-amber-400 shadow-lg z-10 duration-700",
                             )}
                           >
                             {hasElite ? (
@@ -1348,7 +1392,9 @@ export function ArenaClient() {
                                 <div className="flex items-center justify-between">
                                   <span className="font-bold">Fit: {fitness.toFixed(2)}</span>
                                   {fitness > 1.0 && (
-                                    <span className="text-[10px] text-rose-600 dark:text-rose-400">★</span>
+                                    <span className="text-[10px] text-rose-600 dark:text-rose-400">
+                                      ★
+                                    </span>
                                   )}
                                 </div>
                                 <div className="mt-0.5 text-[10px] opacity-80">
@@ -1374,13 +1420,17 @@ export function ArenaClient() {
           <Card
             title={
               <div className="flex w-full items-center justify-between">
-                <span className="font-bold">ASR Progression per Generation (POI-static vs POI+Immune)</span>
+                <span className="font-bold">
+                  ASR Progression per Generation (POI-static vs POI+Immune)
+                </span>
                 <Pill tone="brand">{displayGenerations.length} Generations Recorded</Pill>
               </div>
             }
           >
             <p className="mb-4 text-xs text-muted">
-              Attack Success Rate (ASR) tracking: POI-static (frozen baseline) versus POI+Immune (continuous antibody synthesis). Markers on the immune curve highlight defender version increments.
+              Attack Success Rate (ASR) tracking: POI-static (frozen baseline) versus POI+Immune
+              (continuous antibody synthesis). Markers on the immune curve highlight defender
+              version increments.
             </p>
 
             <AsrChart generations={displayGenerations} />
@@ -1418,7 +1468,8 @@ export function ArenaClient() {
             }
           >
             <p className="mb-3 text-xs text-muted">
-              Click any genome row to open the lineage drawer with word-level payload diff against its parent.
+              Click any genome row to open the lineage drawer with word-level payload diff against
+              its parent.
             </p>
 
             <Grid
@@ -1451,9 +1502,12 @@ export function ArenaClient() {
             {displayedTrials.length === 0 ? (
               <div className="flex flex-col items-center justify-center p-8 text-center">
                 <div className="h-3 w-3 animate-ping rounded-full bg-brand" />
-                <p className="mt-3 text-sm font-medium">Listening for live trial events on room arena:{activeRunId}...</p>
+                <p className="mt-3 text-sm font-medium">
+                  Listening for live trial events on room arena:{activeRunId}...
+                </p>
                 <p className="mt-1 text-xs text-muted">
-                  Trials appear here in real-time as workers test attack variants in Bazaar sandboxes.
+                  Trials appear here in real-time as workers test attack variants in Bazaar
+                  sandboxes.
                 </p>
               </div>
             ) : (
@@ -1482,10 +1536,7 @@ export function ArenaClient() {
                     {/* Right: Poison status, Verdict Badges, Fitness */}
                     <div className="flex items-center gap-4">
                       <span
-                        className={cx(
-                          "font-medium",
-                          t.chosenPoison ? "text-void" : "text-muted",
-                        )}
+                        className={cx("font-medium", t.chosenPoison ? "text-void" : "text-muted")}
                       >
                         {t.chosenPoison ? "Poison Chosen" : "Honest/Avoided"}
                       </span>
@@ -1516,10 +1567,7 @@ export function ArenaClient() {
 
       {/* Lineage Drawer */}
       {selectedGenomeId && (
-        <LineageDrawer
-          genomeId={selectedGenomeId}
-          onClose={() => setSelectedGenomeId(null)}
-        />
+        <LineageDrawer genomeId={selectedGenomeId} onClose={() => setSelectedGenomeId(null)} />
       )}
     </div>
   );

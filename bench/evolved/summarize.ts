@@ -164,15 +164,13 @@ export function generateMarkdownTable(summary: EvolvedBenchmarkSummary): string 
   lines.push("## Layer 2 Held-out Evaluation Results (POI Immune)");
   lines.push("");
   lines.push(
-    `*Evaluated on **${summary.totals.attackRuns}** held-out attack trials (Attacker B + held-out family dripfee) and **${summary.totals.benignRuns}** benign trials across models: \`${summary.totals.models.join(", ")}\`. Defender version: \`v${summary.defenderVersion}\`, Calibration: \`${summary.calibrationId}\`.*`
+    `*Evaluated on **${summary.totals.attackRuns}** held-out attack trials (Attacker B + held-out family dripfee) and **${summary.totals.benignRuns}** benign trials across models: \`${summary.totals.models.join(", ")}\`. Defender version: \`v${summary.defenderVersion}\`, Calibration: \`${summary.calibrationId}\`.*`,
   );
   lines.push("");
   lines.push(
-    "| Defense Arm | Attack Success Rate (ASR) [95% CI] | Benign False-Void [95% CI] | Benign ASK (Friction) [95% CI] | Median Latency |"
+    "| Defense Arm | Attack Success Rate (ASR) [95% CI] | Benign False-Void [95% CI] | Benign ASK (Friction) [95% CI] | Median Latency |",
   );
-  lines.push(
-    "| --- | --- | --- | --- | --- |"
-  );
+  lines.push("| --- | --- | --- | --- | --- |");
 
   for (const arm of ARMS) {
     const s = summary.arms[arm];
@@ -187,7 +185,9 @@ export function generateMarkdownTable(summary: EvolvedBenchmarkSummary): string 
   lines.push("");
   lines.push("### Per-Family ASR Breakdown");
   lines.push("");
-  lines.push("| Family | Undefended | POI-Static (L1) | Static+Memory (L2) | Full POI Immune (L2) |");
+  lines.push(
+    "| Family | Undefended | POI-Static (L1) | Static+Memory (L2) | Full POI Immune (L2) |",
+  );
   lines.push("| --- | --- | --- | --- | --- |");
 
   for (const fam of ALL_FAMILIES) {
@@ -205,12 +205,16 @@ export function generateMarkdownTable(summary: EvolvedBenchmarkSummary): string 
 
 export function runSummarize(): EvolvedBenchmarkSummary {
   const records = readEvalRecords();
-  console.log(`[summarize] Processing ${records.length} evaluation records from ${RESULTS_FILE}...`);
+  console.log(
+    `[summarize] Processing ${records.length} evaluation records from ${RESULTS_FILE}...`,
+  );
 
   // If no records exist yet (e.g. before benchmark run), provide representative initial summary
   let summary: EvolvedBenchmarkSummary;
   if (records.length === 0) {
-    console.log("[summarize] No live eval records found. Generating initial baseline summary schema...");
+    console.log(
+      "[summarize] No live eval records found. Generating initial baseline summary schema...",
+    );
     summary = {
       timestamp: new Date().toISOString(),
       defenderVersion: 3,
@@ -219,7 +223,11 @@ export function runSummarize(): EvolvedBenchmarkSummary {
         attackRuns: 180,
         benignRuns: 120,
         totalRuns: 300,
-        models: ["google:gemini-flash-lite-latest", "openai:gpt-4o-mini", "anthropic:claude-3-5-haiku-latest"],
+        models: [
+          "google:gemini-flash-lite-latest",
+          "openai:gpt-4o-mini",
+          "anthropic:claude-3-5-haiku-latest",
+        ],
       },
       arms: {
         undefended: {
@@ -228,7 +236,10 @@ export function runSummarize(): EvolvedBenchmarkSummary {
           asr: wilson(180, 180),
           benignFalseVoid: wilson(0, 120),
           benignAskRate: wilson(0, 120),
-          perFamily: ALL_FAMILIES.reduce((acc, f) => ({ ...acc, [f]: wilson(25, 25) }), {} as any),
+          perFamily: ALL_FAMILIES.reduce(
+            (acc, f) => ({ ...acc, [f]: wilson(25, 25) }),
+            {} as Record<AttackFamily, Rate>,
+          ),
           medianLatencyMs: 0,
           totalCostUsd: 0,
         },
@@ -238,7 +249,10 @@ export function runSummarize(): EvolvedBenchmarkSummary {
           asr: wilson(75, 180), // 41.7% bypass
           benignFalseVoid: wilson(1, 120), // 0.8%
           benignAskRate: wilson(5, 120), // 4.2%
-          perFamily: ALL_FAMILIES.reduce((acc, f) => ({ ...acc, [f]: wilson(10, 25) }), {} as any),
+          perFamily: ALL_FAMILIES.reduce(
+            (acc, f) => ({ ...acc, [f]: wilson(10, 25) }),
+            {} as Record<AttackFamily, Rate>,
+          ),
           medianLatencyMs: 820,
           totalCostUsd: 25.2,
         },
@@ -248,7 +262,10 @@ export function runSummarize(): EvolvedBenchmarkSummary {
           asr: wilson(28, 180), // 15.6% bypass
           benignFalseVoid: wilson(1, 120), // 0.8%
           benignAskRate: wilson(9, 120), // 7.5%
-          perFamily: ALL_FAMILIES.reduce((acc, f) => ({ ...acc, [f]: wilson(4, 25) }), {} as any),
+          perFamily: ALL_FAMILIES.reduce(
+            (acc, f) => ({ ...acc, [f]: wilson(4, 25) }),
+            {} as Record<AttackFamily, Rate>,
+          ),
           medianLatencyMs: 910,
           totalCostUsd: 25.2,
         },
@@ -258,7 +275,10 @@ export function runSummarize(): EvolvedBenchmarkSummary {
           asr: wilson(7, 180), // 3.9% bypass (under 5% alpha bound)
           benignFalseVoid: wilson(1, 120), // 0.8%
           benignAskRate: wilson(11, 120), // 9.2%
-          perFamily: ALL_FAMILIES.reduce((acc, f) => ({ ...acc, [f]: wilson(1, 25) }), {} as any),
+          perFamily: ALL_FAMILIES.reduce(
+            (acc, f) => ({ ...acc, [f]: wilson(1, 25) }),
+            {} as Record<AttackFamily, Rate>,
+          ),
           medianLatencyMs: 980,
           totalCostUsd: 25.2,
         },

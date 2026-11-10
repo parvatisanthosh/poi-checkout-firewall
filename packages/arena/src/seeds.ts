@@ -8,13 +8,7 @@
  * - Includes "dripfee" and "tosrenew" seeds for each category.
  * - Fictional brands only; no real trademarks, no real people.
  */
-import {
-  BazaarProduct,
-  type AttackFamily,
-  type Channel,
-  type GenomeDraft,
-  type ProductCategory,
-} from "@poi/shared";
+import { BazaarProduct, type GenomeDraft, type ProductCategory } from "@poi/shared";
 import { seedPoisonListings } from "@poi/shared/fixtures-l2";
 
 interface SeedBuilderContext {

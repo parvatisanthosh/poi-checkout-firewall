@@ -10,16 +10,13 @@
  * - Evolved listings use fictional brands only; no real trademarks, no real people
  */
 import {
-  BazaarProduct,
   GenomeDraft,
-  type ArchiveCell,
   type AttackFamily,
   type Channel,
   type Genome,
   type IntentSpec,
   type ProposeGenerationInput,
   type Scenario,
-  type StrategyEntry,
 } from "@poi/shared";
 import { seededRandom } from "@poi/shared/arena-fake";
 import { crossover, explore, fromStrategy, mutate } from "./operators";
@@ -161,12 +158,14 @@ export async function proposeGeneration(i: ProposeGenerationInput): Promise<Geno
     const parent = getUniformParent();
     const scenario =
       i.scenarios.find((s) => s.category === parent.listing.category) ?? defaultScenario;
-    const parentStrats = i.library
-      .filter((s) => s.family === parent.family)
-      .slice(0, 3);
+    const parentStrats = i.library.filter((s) => s.family === parent.family).slice(0, 3);
 
     const draft = await generateAndValidate(
-      (feedback) => mutate(parent, parentStrats, i.attackerModel, scenario, { rand, feedbackReasons: feedback }),
+      (feedback) =>
+        mutate(parent, parentStrats, i.attackerModel, scenario, {
+          rand,
+          feedbackReasons: feedback,
+        }),
       scenario,
     );
     drafts.push(draft);
@@ -186,7 +185,8 @@ export async function proposeGeneration(i: ProposeGenerationInput): Promise<Geno
       i.scenarios.find((s) => s.category === parentA.listing.category) ?? defaultScenario;
 
     const draft = await generateAndValidate(
-      (feedback) => crossover(parentA, parentB, i.attackerModel, scenario, { rand, feedbackReasons: feedback }),
+      (feedback) =>
+        crossover(parentA, parentB, i.attackerModel, scenario, { rand, feedbackReasons: feedback }),
       scenario,
     );
     drafts.push(draft);
@@ -196,8 +196,7 @@ export async function proposeGeneration(i: ProposeGenerationInput): Promise<Geno
   for (let s = 0; s < numStrategy; s++) {
     const family = i.families[Math.floor(rand() * i.families.length)]!;
     const scenario = defaultScenario;
-    const strat =
-      i.library.find((l) => l.family === family) ??
+    const strat = i.library.find((l) => l.family === family) ??
       i.library[Math.floor(rand() * i.library.length)] ?? {
         id: `strat_default_${s}`,
         family,
@@ -207,7 +206,8 @@ export async function proposeGeneration(i: ProposeGenerationInput): Promise<Geno
       };
 
     const draft = await generateAndValidate(
-      (feedback) => fromStrategy(strat, family, scenario, i.attackerModel, { rand, feedbackReasons: feedback }),
+      (feedback) =>
+        fromStrategy(strat, family, scenario, i.attackerModel, { rand, feedbackReasons: feedback }),
       scenario,
     );
     drafts.push(draft);
@@ -230,13 +230,16 @@ export async function proposeGeneration(i: ProposeGenerationInput): Promise<Geno
     }
 
     // Find nearest elite (same family, or any elite)
-    const nearest =
-      i.elites.find((el) => el.family === targetCell.family) ?? getUniformParent();
+    const nearest = i.elites.find((el) => el.family === targetCell.family) ?? getUniformParent();
     const scenario =
       i.scenarios.find((s) => s.category === nearest.listing.category) ?? defaultScenario;
 
     const draft = await generateAndValidate(
-      (feedback) => explore(targetCell, nearest, i.attackerModel, scenario, { rand, feedbackReasons: feedback }),
+      (feedback) =>
+        explore(targetCell, nearest, i.attackerModel, scenario, {
+          rand,
+          feedbackReasons: feedback,
+        }),
       scenario,
     );
     drafts.push(draft);
@@ -248,7 +251,8 @@ export async function proposeGeneration(i: ProposeGenerationInput): Promise<Geno
     const scenario =
       i.scenarios.find((s) => s.category === parent.listing.category) ?? defaultScenario;
     const draft = await generateAndValidate(
-      (feedback) => mutate(parent, [], i.attackerModel, scenario, { rand, feedbackReasons: feedback }),
+      (feedback) =>
+        mutate(parent, [], i.attackerModel, scenario, { rand, feedbackReasons: feedback }),
       scenario,
     );
     drafts.push(draft);
