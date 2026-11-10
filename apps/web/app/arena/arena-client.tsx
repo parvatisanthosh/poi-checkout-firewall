@@ -18,7 +18,8 @@ import {
   type GenomeRow,
 } from "@poi/shared";
 import { Grid } from "@/components/grid";
-import { Button, Card, cx, Pill, Spinner, VerdictBadge } from "@/components/ui";
+import { Button, Card, cx, PageHeader, Pill, Spinner, VerdictBadge } from "@/components/ui";
+import { setStage } from "@/components/stage/store";
 import { poi } from "@/lib/config";
 import { useLiveArena } from "@/lib/live-l2";
 
@@ -891,25 +892,39 @@ export function ArenaClient() {
 
   const displayedTrials = liveTrials.length > 0 ? liveTrials : fallbackTrials;
 
+  // the swarm behind the page: the latest generation's success against each arm
+  const latestGen = [...(runDetail?.generations ?? []), ...liveGens].sort(
+    (a, b) => b.generation - a.generation,
+  )[0];
+  useEffect(() => {
+    setStage({
+      swarm: {
+        count: Math.max(genomes.length, 24),
+        fooledStatic: latestGen?.asrStatic ?? 0.35,
+        fooledImmune: latestGen?.asrImmune ?? 0.1,
+      },
+    });
+  }, [genomes.length, latestGen?.asrStatic, latestGen?.asrImmune]);
+
   return (
     <div className="space-y-8">
-      {/* Top Banner & Run Controls */}
+      <PageHeader
+        eyebrow="Layer 2 · Adversarial arena"
+        title="Attacks evolve."
+        accent="POI adapts."
+        lead="An attacker model breeds new checkout tricks with MAP-Elites -- 7 families × 6 channels -- and fires them at a real shopping agent. Red shards fooled POI-immune, amber only POI-static; ice ones were caught."
+        className="min-h-[58vh]"
+      />
+      {/* Run Controls */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line pb-6">
-        <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold tracking-tight">Adversarial Evolution Arena</h1>
-            <Pill tone={connected ? "good" : "neutral"}>
-              {connected ? "● Live /live" : "Offline"}
-            </Pill>
-            {activeRunId && <Pill tone="brand">arena:{activeRunId}</Pill>}
-          </div>
-          <p className="mt-1 text-sm text-muted">
-            MAP-Elites quality-diversity search discovering and red-teaming checkout vulnerabilities
-            against ProofOfIntent.
-          </p>
+        <div className="flex flex-wrap items-center gap-2">
+          <Pill tone={connected ? "good" : "neutral"}>
+            {connected ? "● live /live" : "offline"}
+          </Pill>
+          {activeRunId && <Pill tone="brand">arena:{activeRunId}</Pill>}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <Button
             variant={showLauncher ? "ghost" : "primary"}
             onClick={() => setShowLauncher(!showLauncher)}
@@ -1095,7 +1110,7 @@ export function ArenaClient() {
                       className={cx(
                         "rounded-xl border px-3 py-1.5 text-xs font-semibold capitalize transition",
                         isChecked
-                          ? "border-brand bg-brand text-white shadow-sm"
+                          ? "border-brand bg-brand text-canvas shadow-sm"
                           : "border-line bg-panel text-muted hover:border-brand/40 hover:text-ink",
                       )}
                     >

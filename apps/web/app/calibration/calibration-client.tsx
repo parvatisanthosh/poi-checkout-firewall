@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { type CalibrationCurvePoint, type CalibrationResult } from "@poi/shared";
-import { Button, Card, cx, Pill, Spinner } from "@/components/ui";
+import { Button, Card, cx, PageHeader, Pill, Spinner } from "@/components/ui";
 import { poi } from "@/lib/config";
 import { useLiveImmune } from "@/lib/live-l2";
 
@@ -240,20 +240,20 @@ export function CalibrationClient() {
 
   return (
     <div className="space-y-8">
-      {/* Header Banner */}
+      <PageHeader
+        eyebrow="Layer 2 · Conformal gate"
+        title="Thresholds"
+        accent="with a bound."
+        lead={
+          <>
+            Every stage fuses into one score. The cut-offs come from labeled arena orders by
+            Conformal Risk Control, so the expected share of attacks that slip through stays at or
+            below &alpha; -- and the cost in honest orders asked about is shown right next to it.
+          </>
+        }
+      />
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line pb-6">
-        <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold tracking-tight">Conformal Risk Control (CRC)</h1>
-            <Pill tone={connected ? "good" : "neutral"}>
-              {connected ? "● Live /live" : "Offline"}
-            </Pill>
-          </div>
-          <p className="mt-1 text-sm text-muted">
-            Finite-sample statistical guarantees for checkout firewall thresholds: E[Miss Rate] &le;
-            &alpha;.
-          </p>
-        </div>
+        <Pill tone={connected ? "good" : "neutral"}>{connected ? "● live /live" : "offline"}</Pill>
 
         <Button variant="ghost" onClick={loadData}>
           Refresh

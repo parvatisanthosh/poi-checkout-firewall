@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui";
+import { Card, PageHeader } from "@/components/ui";
 import { readBenchSummary } from "@/lib/server";
 import { Scorecard } from "./scorecard";
 
@@ -9,21 +9,22 @@ export default function BenchPage() {
   const summary = readBenchSummary();
   return (
     <>
-      <h1 className="text-2xl font-semibold tracking-tight">Attack scorecard</h1>
-      <p className="mb-6 mt-1 max-w-3xl text-sm text-muted">
-        IntentBench-mini: real shopping agents on the adversarial Bazaar, each purchase verified
-        under every POI configuration. Ground truth comes from scenario labels, never from POI.
-        Every rate shows its counts; hover for the 95% interval.
-      </p>
+      <PageHeader
+        eyebrow="IntentBench-mini · scorecard"
+        title="Measured,"
+        accent="not claimed."
+        lead="Real shopping agents on the adversarial Bazaar, each purchase verified under every POI configuration. Ground truth comes from scenario labels, never from POI. Every rate shows its counts; hover for the 95% interval."
+      />
       {summary ? (
         <Scorecard summary={summary} />
       ) : (
-        <Card title="No benchmark results yet">
+        <Card title="No benchmark results yet" corners>
           <p className="text-sm text-muted">
-            Run <code className="font-mono">pnpm bench:smoke</code> (or{" "}
-            <code className="font-mono">pnpm bench</code>) with the API, Bazaar and agent model keys
-            configured, then <code className="font-mono">pnpm bench:summarize</code>. The scorecard
-            reads <code className="font-mono">bench/results/summary.json</code>.
+            Run <code className="font-mono text-ice">pnpm bench:smoke</code> (or{" "}
+            <code className="font-mono text-ice">pnpm bench</code>) with the API, Bazaar and agent
+            model keys configured, then{" "}
+            <code className="font-mono text-ice">pnpm bench:summarize</code>. The scorecard reads{" "}
+            <code className="font-mono text-ice">bench/results/summary.json</code>.
           </p>
         </Card>
       )}

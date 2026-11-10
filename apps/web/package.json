@@ -13,20 +13,28 @@
     "@paypal/react-paypal-js": "^10.6.1",
     "@poi/agent": "workspace:*",
     "@poi/shared": "workspace:*",
+    "@react-three/drei": "9.122.0",
+    "@react-three/fiber": "8.18.0",
+    "@react-three/postprocessing": "2.19.1",
     "@types/diff": "^8.0.0",
     "ag-grid-community": "^36.3.0",
     "ag-grid-react": "^36.3.0",
     "diff": "^9.0.0",
+    "framer-motion": "11.18.2",
+    "lucide-react": "0.359.0",
     "next": "^14.2.35",
+    "postprocessing": "6.39.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "socket.io-client": "^4.8.4",
+    "three": "0.170.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.5",
     "@types/react": "^18.3.31",
     "@types/react-dom": "^18.3.7",
+    "@types/three": "0.170.0",
     "postcss": "^8.5.32",
     "tailwindcss": "^4.3.5"
   }

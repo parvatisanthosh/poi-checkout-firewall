@@ -75,9 +75,7 @@ export function CheckList({
         if (!items.length) return null;
         return (
           <div key={stage}>
-            <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">
-              {stage}
-            </h3>
+            <h3 className="eyebrow mb-2 !text-[10px]">{stage}</h3>
             <ul>
               {items.map((c, i) => (
                 <CheckRow key={`${c.check}-${i}`} check={c} />
@@ -189,15 +187,23 @@ export function VerdictCard({
   children?: React.ReactNode;
 }) {
   const tone = verdictTone(verdict);
-  const color = tone === "good" ? "text-capture" : tone === "bad" ? "text-void" : "text-ask";
-  const ring =
-    tone === "good" ? "border-capture/40" : tone === "bad" ? "border-void/40" : "border-ask/50";
+  const text = tone === "good" ? "mint-text" : tone === "bad" ? "danger-text" : "amber-text";
+  const dataTone = tone === "good" ? "capture" : tone === "bad" ? "void" : "ask";
   return (
-    <div className={cx("rise-in rounded-2xl border-2 bg-white p-6 dark:bg-zinc-900", ring)}>
-      <p className={cx("text-4xl font-black tracking-tight", color)}>{verdict.replace("_", " ")}</p>
-      <p className="mt-2 text-base">{summary}</p>
+    <div
+      data-tone={dataTone}
+      className="vault-panel hud-corners rise-in relative overflow-hidden rounded-2xl p-6 sm:p-7"
+    >
+      <div className="scanline" />
+      <p className="eyebrow">POI verdict</p>
+      <p className={cx("display mt-3 text-5xl uppercase sm:text-6xl", text)}>
+        {verdict === "CAPTURE" ? "Captured" : verdict === "VOID" ? "Voided" : "Ask you"}
+      </p>
+      <p className="mt-4 text-base leading-relaxed text-ink">{summary}</p>
       {settlement && (
-        <p className="mt-3 text-sm font-medium text-muted">{SETTLEMENT_TEXT[settlement]}</p>
+        <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-muted">
+          {SETTLEMENT_TEXT[settlement]}
+        </p>
       )}
       {children}
     </div>

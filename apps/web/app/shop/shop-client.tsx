@@ -28,6 +28,7 @@ import { Button, Card, cx, ErrorNote, Pill, Spinner } from "@/components/ui";
 import { CheckList, OrderLines, VerdictCard } from "@/components/verification";
 import { PAYPAL_CLIENT_ID, poi } from "@/lib/config";
 import { useLiveOrder } from "@/lib/live";
+import { useStageVerdict } from "@/components/stage/hooks";
 import { previewToOrder } from "@/lib/preview";
 import { shortHash, specSentences } from "@/lib/spec";
 
@@ -64,16 +65,26 @@ function Step({
   children: React.ReactNode;
 }) {
   return (
-    <div className={cx("relative pl-10", !active && !done && "opacity-50")}>
+    <div
+      className={cx(
+        "vault-panel relative rounded-2xl p-5 pl-16 transition-opacity sm:p-6 sm:pl-[4.5rem]",
+        !active && !done && "opacity-45",
+      )}
+      data-tone={done ? "capture" : undefined}
+    >
       <span
         className={cx(
-          "absolute left-0 top-0 grid h-7 w-7 place-items-center rounded-full text-xs font-bold",
-          done ? "bg-capture text-white" : active ? "bg-brand text-white" : "bg-line text-muted",
+          "absolute left-5 top-5 grid h-8 w-8 place-items-center rounded-full border font-mono text-xs font-semibold sm:left-6 sm:top-6",
+          done
+            ? "border-capture/60 bg-capture/15 text-capture shadow-[0_0_18px_-4px_#7ce8c9]"
+            : active
+              ? "border-ice/70 bg-ice/10 text-white shadow-[0_0_18px_-4px_#9be7ff]"
+              : "border-ice/15 text-faint",
         )}
       >
-        {done ? "✓" : n}
+        {done ? "✓" : String(n).padStart(2, "0")}
       </span>
-      <h2 className="mb-3 text-lg font-semibold tracking-tight">{title}</h2>
+      <h2 className="mb-4 mt-1 text-lg font-semibold tracking-tight text-white">{title}</h2>
       {(active || done) && children}
     </div>
   );
@@ -386,6 +397,15 @@ export function ShopClient() {
   const summary = live.verdict?.summary ?? verification?.summary ?? "";
   const settlement = live.settled?.action ?? verification?.settlement?.action ?? null;
   const intentSigned = !!signed;
+  // the firewall behind the page: the order comes forward when POI decides
+  useStageVerdict(
+    checkout
+      ? { id: checkout.orderId, label: order?.merchantDisplayName ?? checkout.orderId }
+      : null,
+    verdict,
+    checks,
+    "gate",
+  );
 
   const run = async <T,>(label: string, fn: () => Promise<T>) => {
     setBusy(label);

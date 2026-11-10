@@ -151,10 +151,17 @@ export function BazaarClient() {
           <button
             key={c.sku}
             onClick={() => void view(c.sku)}
-            className="group rounded-2xl border border-line bg-white p-4 text-left shadow-sm transition hover:shadow-md dark:bg-zinc-900"
+            className="vault-panel group rounded-2xl p-4 text-left transition duration-300 hover:-translate-y-1 hover:border-ice/40 hover:shadow-[0_30px_80px_-40px_rgba(155,231,255,0.45)]"
           >
-            <div className="mb-3 h-28 rounded-xl bg-gradient-to-br from-line to-brand-soft" />
-            <p className="line-clamp-2 text-sm font-medium group-hover:text-brand">{c.title}</p>
+            <div className="relative mb-4 h-32 overflow-hidden rounded-xl border border-ice/10 bg-[radial-gradient(60%_80%_at_30%_30%,rgba(155,231,255,0.18),transparent_70%),linear-gradient(135deg,#0c1622,#070d16)]">
+              <div className="absolute inset-x-6 bottom-0 h-px bg-gradient-to-r from-transparent via-ice/50 to-transparent" />
+              <span className="absolute right-3 top-3 font-mono text-[10px] tracking-[0.2em] text-faint">
+                {c.sku}
+              </span>
+            </div>
+            <p className="line-clamp-2 text-sm font-medium text-white group-hover:text-ice">
+              {c.title}
+            </p>
             <p className="mt-1 text-xs text-muted">{c.merchantName}</p>
             <p className="mt-1 text-xs text-ask">
               {stars(c.rating)} <span className="text-muted">{c.rating}</span>
@@ -170,8 +177,8 @@ export function BazaarClient() {
       <button
         onClick={() => setAgentEye(!agentEye)}
         className={cx(
-          "fixed bottom-6 right-6 z-30 rounded-full px-5 py-3 text-sm font-semibold shadow-lg",
-          agentEye ? "bg-void text-white" : "bg-ink text-panel",
+          "pill-cta fixed bottom-24 right-4 z-30 sm:right-6",
+          agentEye ? "pill-halt" : "pill-primary",
         )}
       >
         {agentEye ? "Agent's-eye view: ON" : "Agent's-eye view"}

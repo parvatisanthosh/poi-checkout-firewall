@@ -1,8 +1,13 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { Dock } from "@/components/shell/Dock";
+import { MonitorStrip } from "@/components/shell/MonitorStrip";
+import { MotionRoot } from "@/components/shell/Motion";
+import { Stage } from "@/components/stage/Stage";
 import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 
 export const metadata: Metadata = {
   title: "ProofOfIntent -- Semantic Checkout Firewall",
@@ -10,48 +15,33 @@ export const metadata: Metadata = {
     "Signed mandates prove you said yes. ProofOfIntent proves the agent bought what you meant.",
 };
 
-const NAV = [
-  ["/shop", "Live demo"],
-  ["/bazaar", "Bazaar"],
-  ["/arena", "Arena"],
-  ["/immune", "Immune"],
-  ["/calibration", "Calibration"],
-  ["/bench", "Scorecard"],
-  ["/ledger", "Ledger"],
-] as const;
+export const viewport: Viewport = { themeColor: "#03050a" };
 
-// Runs before paint so there's no light/dark flash.
-const THEME_SCRIPT = `try{var t=localStorage.getItem("poi-theme");if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.classList.add("dark")}catch(e){}`;
-
+/**
+ * The firewall behind everything (it lives here, so it keeps running across page changes), a status strip on
+ * top, a floating dock at the bottom, and the page scrolling on the window so the scene can follow it.
+ * `isolate` makes this the stacking context, so the scene (negative z) paints above the body background.
+ */
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
-      </head>
-      <body className="min-h-screen font-sans antialiased">
-        <header className="sticky top-0 z-20 border-b border-line bg-panel/85 backdrop-blur">
-          <nav className="mx-auto flex max-w-6xl items-center gap-6 px-4 py-3">
-            <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight">
-              <span className="grid h-7 w-7 place-items-center rounded-lg bg-brand text-xs font-bold text-white">
-                PoI
-              </span>
-              ProofOfIntent
-            </Link>
-            <div className="flex flex-1 items-center gap-4 overflow-x-auto text-sm text-muted">
-              {NAV.map(([href, label]) => (
-                <Link key={href} href={href} className="whitespace-nowrap hover:text-ink">
-                  {label}
-                </Link>
-              ))}
-            </div>
-            <ThemeToggle />
-          </nav>
-        </header>
-        <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
-        <footer className="mx-auto max-w-6xl px-4 pb-10 text-xs text-muted">
-          PayPal sandbox only. The Bazaar is synthetic and its attacks were written by the team.
-        </footer>
+    <html lang="en" className={`dark ${inter.variable}`}>
+      <body className="min-h-screen font-sans text-ink antialiased">
+        <MotionRoot>
+          <div className="relative isolate min-h-screen w-full">
+            <Stage />
+            <MonitorStrip />
+            <main className="mx-auto w-full max-w-[1400px] px-4 pb-36 pt-6 sm:px-8">
+              {children}
+            </main>
+            <footer
+              data-print="hidden"
+              className="mx-auto max-w-[1400px] px-4 pb-28 font-mono text-[11px] tracking-[0.14em] text-faint sm:px-8"
+            >
+              PAYPAL SANDBOX ONLY · THE BAZAAR IS SYNTHETIC AND ITS ATTACKS WERE WRITTEN BY THE TEAM
+            </footer>
+            <Dock />
+          </div>
+        </MotionRoot>
       </body>
     </html>
   );

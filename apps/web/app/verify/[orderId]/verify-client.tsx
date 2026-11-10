@@ -6,6 +6,7 @@ import { Button, Card, ErrorNote, Pill, Spinner } from "@/components/ui";
 import { CheckList, OrderLines, VerdictCard } from "@/components/verification";
 import { POI_API_URL, poi } from "@/lib/config";
 import { shortHash, specSentences } from "@/lib/spec";
+import { useStageVerdict } from "@/components/stage/hooks";
 
 export function VerifyClient({ orderId }: { orderId: string }) {
   const [rec, setRec] = useState<VerifyRecordResponse | null>(null);
@@ -26,6 +27,18 @@ export function VerifyClient({ orderId }: { orderId: string }) {
 
   if (error) return <ErrorNote error={error} />;
   if (!rec) return <Spinner />;
+  return <Record rec={rec} orderId={orderId} />;
+}
+
+function Record({ rec, orderId }: { rec: VerifyRecordResponse; orderId: string }) {
+  const v = rec.verification;
+  // the order on stage: forward, split by what failed; a VOID replays the shock
+  useStageVerdict(
+    { id: orderId, label: rec.order?.merchantDisplayName ?? orderId },
+    v?.verdict,
+    v?.checks ?? [],
+    "focus",
+  );
 
   const download = () => {
     const blob = new Blob([JSON.stringify(rec, null, 2)], { type: "application/json" });
@@ -35,7 +48,6 @@ export function VerifyClient({ orderId }: { orderId: string }) {
     a.click();
     URL.revokeObjectURL(a.href);
   };
-  const v = rec.verification;
   const ev = rec.evidence;
 
   return (

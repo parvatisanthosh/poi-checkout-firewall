@@ -11,7 +11,8 @@ import {
   type MerchantRiskRow,
 } from "@poi/shared";
 import { Grid } from "@/components/grid";
-import { Button, Card, cx, Pill, Spinner } from "@/components/ui";
+import { Button, Card, cx, PageHeader, Pill, Spinner } from "@/components/ui";
+import { setStage } from "@/components/stage/store";
 import { poi } from "@/lib/config";
 import { useLiveImmune } from "@/lib/live-l2";
 
@@ -204,7 +205,7 @@ function AntibodyDetailDrawer({
                         className={cx(
                           "rounded-lg px-2.5 py-1 text-xs font-medium transition",
                           isMatched
-                            ? "bg-brand text-white shadow-xs font-semibold"
+                            ? "bg-brand text-canvas shadow-xs font-semibold"
                             : "bg-line/40 text-muted/50 border border-line/40",
                         )}
                       >
@@ -324,6 +325,17 @@ export function ImmuneClient() {
 
   // Live Toast Notifications
   const [toasts, setToasts] = useState<LiveToast[]>([]);
+
+  // one crystal per antibody around the gate behind the page
+  const counts = {
+    active: antibodies.filter((a) => a.status === "active").length,
+    candidate: antibodies.filter((a) => a.status === "candidate").length,
+    retired: antibodies.filter((a) => a.status === "retired").length,
+  };
+  useEffect(() => {
+    setStage({ crystals: { ...counts } });
+    // counts is derived from antibodies; compare its numbers, not its identity
+  }, [counts.active, counts.candidate, counts.retired]);
 
   // User Report Form state
   const [reportOrderId, setReportOrderId] = useState("");
@@ -554,20 +566,15 @@ export function ImmuneClient() {
         ))}
       </div>
 
-      {/* Header Banner */}
+      <PageHeader
+        eyebrow="Layer 2 · Immune memory"
+        title="It remembers"
+        accent="every trick."
+        lead="Each trick that got through becomes a signed antibody -- a MinHash fingerprint, structural flags, the seller's skeleton -- and only goes live after matching none of 40 honest listings. Each crystal orbiting the gate is one of them."
+        className="min-h-[58vh]"
+      />
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line pb-6">
-        <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold tracking-tight">Immune System & Memory</h1>
-            <Pill tone={connected ? "good" : "neutral"}>
-              {connected ? "● Live /live" : "Offline"}
-            </Pill>
-          </div>
-          <p className="mt-1 text-sm text-muted">
-            Learned structural antibody ledger, MinHash LSH matching, and merchant repeat-offender
-            risk registry.
-          </p>
-        </div>
+        <Pill tone={connected ? "good" : "neutral"}>{connected ? "● live /live" : "offline"}</Pill>
 
         <div className="flex items-center gap-3">
           <Button variant="ghost" onClick={loadData}>
@@ -639,7 +646,7 @@ export function ImmuneClient() {
                         className={cx(
                           "rounded-lg px-2.5 py-1 font-medium capitalize transition",
                           statusFilter === s
-                            ? "bg-brand text-white shadow-xs"
+                            ? "bg-brand text-canvas shadow-xs"
                             : "text-muted hover:text-ink",
                         )}
                       >

@@ -15,6 +15,8 @@ import {
 import { Grid } from "@/components/grid";
 import { Button, ErrorNote, Pill, VerdictBadge } from "@/components/ui";
 import { POI_API_URL, poi } from "@/lib/config";
+import { slabFor } from "@/components/stage/hooks";
+import { setStage } from "@/components/stage/store";
 
 const SETTLEMENT_TONE = {
   CAPTURED: "good",
@@ -50,6 +52,15 @@ export function LedgerClient() {
   );
 
   useEffect(() => void load(), [load]);
+
+  // the newest orders stand in the firewall above the table
+  useEffect(() => {
+    setStage({
+      slabs: rows
+        .slice(0, 7)
+        .map((r) => slabFor(r.orderId, r.merchantDisplayName || r.orderId, r.verdict)),
+    });
+  }, [rows]);
 
   // Live updates: watch every unsettled row's room; refresh when one settles.
   useEffect(() => {
@@ -143,6 +154,8 @@ export function LedgerClient() {
           e.data && router.push(`/verify/${encodeURIComponent(e.data.orderId)}`)
         }
         rowClass="cursor-pointer"
+        onCellMouseOver={(e) => setStage({ hover: e.data?.orderId ?? null })}
+        onCellMouseOut={() => setStage({ hover: null })}
         tooltipShowDelay={300}
         height={600}
       />

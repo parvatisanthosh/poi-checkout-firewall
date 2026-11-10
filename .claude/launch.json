@@ -1,0 +1,24 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "poi-mock-api",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["mock:api"],
+      "port": 4000
+    },
+    {
+      "name": "poi-bazaar",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@poi/bazaar", "dev"],
+      "env": { "WEB_ORIGIN": "http://localhost:3000,http://localhost:3200" },
+      "port": 4100
+    },
+    {
+      "name": "poi-web",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@poi/web", "exec", "next", "dev", "-p", "3200"],
+      "port": 3200
+    }
+  ]
+}
