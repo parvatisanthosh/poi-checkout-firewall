@@ -88,7 +88,32 @@ export function stagesFor(config: VerifierConfig): string[] {
   ];
 }
 
-export async function runVerification(deps: PipelineDeps, verificationId: string): Promise<void> {
+export interface RunOptions {
+  /**
+   * Reuse the Layer 1 checks of this finished verification of the same order instead of re-reading
+   * PayPal and re-running every stage (the arena's immune arm: both arms then judge the same Layer 1
+   * result, so the immune verdict can only be the static one or stricter, and the LLM work is done once).
+   */
+  layer1From?: string;
+}
+
+/** The Layer 1 checks of a finished verification of the same order (Layer 2 checks left out). */
+async function sharedLayer1(
+  db: PrismaClient,
+  fromId: string,
+  orderId: string,
+): Promise<CheckResult[]> {
+  const from = await db.verification.findUnique({ where: { id: fromId } });
+  if (!from || from.orderId !== orderId || from.status !== "DONE")
+    throw new Error(`layer1From ${fromId}: not a finished verification of order ${orderId}`);
+  return parseChecks(from.checks).filter((c) => c.check !== "immune" && c.check !== "risk");
+}
+
+export async function runVerification(
+  deps: PipelineDeps,
+  verificationId: string,
+  opts: RunOptions = {},
+): Promise<void> {
   const db = deps.prisma();
   const v = await db.verification.findUnique({
     where: { id: verificationId },
@@ -135,107 +160,118 @@ export async function runVerification(deps: PipelineDeps, verificationId: string
       deps.emitter.check({ ...base, check: c });
     };
 
-    if (!deps.paypal)
-      throw new Error("PayPal is not configured (PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET)");
-    const paypalOrder = await deps.paypal.getOrder(order.id);
-    rawOrder = paypalOrder;
     const registry = await db.merchant.findMany();
+    const shared = opts.layer1From ? await sharedLayer1(db, opts.layer1From, order.id) : null;
+    if (shared) {
+      // Same order, judged moments ago: its snapshot is already on the order row.
+      shared.forEach(emit);
+    } else {
+      if (!deps.paypal)
+        throw new Error("PayPal is not configured (PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET)");
+      const paypalOrder = await deps.paypal.getOrder(order.id);
+      rawOrder = paypalOrder;
 
-    try {
-      normalized = normalizeOrder(paypalOrder);
-    } catch (err) {
-      if (!(err instanceof NormalizeError)) throw err;
-      normalized = null;
-      emit({
-        check: "amount",
-        stage: "deterministic",
-        outcome: "fail",
-        severity: "high",
-        reason: `POI can't verify this order: ${err.message}.`,
-        latencyMs: 0,
-      });
-    }
-    await db.orderRecord.update({
-      where: { id: order.id },
-      data: {
-        rawOrder: json(paypalOrder),
-        ...(normalized ? { normalized: json(normalized), merchantId: normalized.merchantId } : {}),
-        paypalStatus: paypalOrder.status,
-      },
-    });
-
-    if (normalized) {
-      const n = normalized;
-      if (config.deterministic) runDeterministic(spec, n, registry).forEach(emit);
-
-      const rag: Promise<TermsChunk[]> = config.terms
-        ? (async () => {
-            const s = performance.now();
-            const retrieved = await retrieveTerms(db, n.merchantId, n, {
-              embeddingModel: deps.embeddingModel,
-            }).catch((err: unknown) => {
-              deps.logger.warn({ err: (err as Error).message }, "terms retrieval failed");
-              return [];
-            });
-            const chunks = [...(deps.extraTerms?.(order.id) ?? []), ...retrieved];
-            termsChecks(
-              chunks,
-              Math.round(performance.now() - s),
-              n,
-              n.merchantDisplayName,
-            ).forEach(emit);
-            return chunks;
-          })()
-        : Promise.resolve([]);
-
-      const semantic = config.semantic
-        ? rag.then(async (terms) => {
-            (await judgeOrder(spec, n, { model: deps.judgeModel, registry, terms })).forEach(emit);
-          })
-        : Promise.resolve();
-
-      const shadow = config.shadow
-        ? (async () => {
-            const cards = new Map<string, ListingCard>();
-            if (deps.listingCard) {
-              await Promise.all(
-                trace.observedListings.map(async (l) => {
-                  const card = await deps.listingCard!(l.sku);
-                  if (card) cards.set(l.sku, card);
-                }),
-              );
-            }
-            const chosenPages = trace.observedListings.filter((l) =>
-              trace.chosenSkus.includes(l.sku),
-            );
-            const [s, inj] = await Promise.all([
-              runShadow(spec, trace, { model: deps.agentModel(trace.model), cards, registry }),
-              checkInjection(chosenPages, { model: deps.injectionModel }),
-            ]);
-            emit(s);
-            inj.forEach(emit);
-          })()
-        : Promise.resolve();
-
-      await Promise.all([rag, semantic, shadow]);
-
-      // Layer 2: immune memory, merchant risk, conformal gate. Only adds checks / raises.
-      if (config.immune || config.conformal) {
-        const out = await runLayer2(db, {
-          config,
-          order: n,
-          trace,
-          mode: v.mode,
-          ...(extraTermsText ? { termsText: extraTermsText } : {}),
-          registry,
-          checks,
-          emit,
-          thresholds: deps.l2Thresholds ?? defaultL2Thresholds(),
-          embeddingModel: deps.embeddingModel,
+      try {
+        normalized = normalizeOrder(paypalOrder);
+      } catch (err) {
+        if (!(err instanceof NormalizeError)) throw err;
+        normalized = null;
+        emit({
+          check: "amount",
+          stage: "deterministic",
+          outcome: "fail",
+          severity: "high",
+          reason: `POI can't verify this order: ${err.message}.`,
+          latencyMs: 0,
         });
-        l2 = out.record;
-        l2Matches = out.matches;
       }
+      await db.orderRecord.update({
+        where: { id: order.id },
+        data: {
+          rawOrder: json(paypalOrder),
+          ...(normalized
+            ? { normalized: json(normalized), merchantId: normalized.merchantId }
+            : {}),
+          paypalStatus: paypalOrder.status,
+        },
+      });
+
+      if (normalized) {
+        const n = normalized;
+        if (config.deterministic) runDeterministic(spec, n, registry).forEach(emit);
+
+        const rag: Promise<TermsChunk[]> = config.terms
+          ? (async () => {
+              const s = performance.now();
+              const retrieved = await retrieveTerms(db, n.merchantId, n, {
+                embeddingModel: deps.embeddingModel,
+              }).catch((err: unknown) => {
+                deps.logger.warn({ err: (err as Error).message }, "terms retrieval failed");
+                return [];
+              });
+              const chunks = [...(deps.extraTerms?.(order.id) ?? []), ...retrieved];
+              termsChecks(
+                chunks,
+                Math.round(performance.now() - s),
+                n,
+                n.merchantDisplayName,
+              ).forEach(emit);
+              return chunks;
+            })()
+          : Promise.resolve([]);
+
+        const semantic = config.semantic
+          ? rag.then(async (terms) => {
+              (await judgeOrder(spec, n, { model: deps.judgeModel, registry, terms })).forEach(
+                emit,
+              );
+            })
+          : Promise.resolve();
+
+        const shadow = config.shadow
+          ? (async () => {
+              const cards = new Map<string, ListingCard>();
+              if (deps.listingCard) {
+                await Promise.all(
+                  trace.observedListings.map(async (l) => {
+                    const card = await deps.listingCard!(l.sku);
+                    if (card) cards.set(l.sku, card);
+                  }),
+                );
+              }
+              const chosenPages = trace.observedListings.filter((l) =>
+                trace.chosenSkus.includes(l.sku),
+              );
+              const [s, inj] = await Promise.all([
+                runShadow(spec, trace, { model: deps.agentModel(trace.model), cards, registry }),
+                checkInjection(chosenPages, { model: deps.injectionModel }),
+              ]);
+              emit(s);
+              inj.forEach(emit);
+            })()
+          : Promise.resolve();
+
+        await Promise.all([rag, semantic, shadow]);
+      }
+    }
+
+    // Layer 2: immune memory, merchant risk, conformal gate. Only adds checks / raises.
+    if (normalized && (config.immune || config.conformal)) {
+      const out = await runLayer2(db, {
+        config,
+        order: normalized,
+        trace,
+        mode: v.mode,
+        ...(extraTermsText ? { termsText: extraTermsText } : {}),
+        registry,
+        checks,
+        emit,
+        thresholds: deps.l2Thresholds ?? defaultL2Thresholds(),
+        embeddingModel: deps.embeddingModel,
+      });
+      l2 = out.record;
+      l2Matches = out.matches;
+      if (shared) l2.layer1From = opts.layer1From;
     }
 
     const checksVerdict = decideVerdict(checks);

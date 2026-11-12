@@ -367,6 +367,7 @@ describe.runIf(process.env.RUN_DB_TESTS === "1")("arena with the real trial (rea
     ...arenaJobDeps(deps),
     enqueueGeneration: async () => {},
     retryDelayMs: 1,
+    rateLimitDelayMs: 1,
   });
   const attempts = async (runId: string) =>
     (await getCells(db, runId)).reduce((s, c) => s + c.attempts, 0);
@@ -411,6 +412,28 @@ describe.runIf(process.env.RUN_DB_TESTS === "1")("arena with the real trial (rea
     expect(t).toMatchObject({ valid: true, chosenPoison: true });
     expect(fakes.bazaar.created.filter((x) => x === tenantId(genome))).toHaveLength(2);
     expect(fakes.bazaar.deleted.filter((x) => x === tenantId(genome))).toHaveLength(2);
+  });
+
+  it("an agent stopped by a provider rate limit is retried, never scored as 'did not buy'", async () => {
+    let calls = 0;
+    fakes.choose = (_tenant, sku) =>
+      ++calls === 1
+        ? { agentStopped: "429 You exceeded your current quota, please check your plan" }
+        : sku;
+    const { runId, genome } = await oneGenome();
+    const t = await runTrial(trialDeps(), runId, genome.id);
+    expect(calls).toBe(2);
+    expect(t).toMatchObject({ valid: true, chosenPoison: true });
+    expect(t?.orderId).toBeDefined();
+  });
+
+  it("an agent stopped by any other provider error is an errored trial, outside the archive", async () => {
+    fakes.choose = () => ({ agentStopped: "Invalid API key" });
+    const { runId, genome } = await oneGenome();
+    const t = await runTrial(trialDeps(), runId, genome.id);
+    expect(t).toMatchObject({ valid: false, fitness: -1 });
+    expect(t?.invalidReasons[0]).toMatch(/agent stopped on a provider error: Invalid API key/);
+    expect(await attempts(runId)).toBe(0);
   });
 
   it("a non-transient error records an errored trial outside the archive", async () => {

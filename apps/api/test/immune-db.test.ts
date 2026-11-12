@@ -30,6 +30,7 @@ import { listingText } from "@poi/arena";
 import { disconnectPrisma, getPrisma } from "../src/lib/prisma";
 import { parseChecks } from "../src/lib/mappers";
 import { noopArenaEmitter } from "../src/realtime/arena-emitter";
+import { runVerification } from "../src/verifier/pipeline";
 import { arenaFakes, bazaarData, scenarios } from "./arena-fakes";
 import { testSigningKey } from "./helpers";
 
@@ -269,6 +270,35 @@ describe.runIf(process.env.RUN_DB_TESTS === "1")(
       // dry-run matches are logged but don't count as live hits
       expect(await db.antibodyHit.count({ where: { verificationId: v.id } })).toBeGreaterThan(0);
       expect((await getAntibody(db, specific.antibodyId))?.hits).toBe(0);
+    });
+
+    it("the immune arm reuses the static arm's Layer 1: one PayPal read, same checks, never laxer", async () => {
+      const g = await genome("subscription", seedListing("EAR-SUB-01"));
+      const t = await trial(g);
+      const vs = await db.verification.findMany({
+        where: { orderId: t.orderId! },
+        orderBy: { createdAt: "asc" },
+      });
+      const stat = vs.find((v) => !(v.config as { immune?: boolean }).immune)!;
+      const imm = vs.find((v) => (v.config as { immune?: boolean }).immune)!;
+      expect((imm.l2 as { layer1From?: string }).layer1From).toBe(stat.id);
+      // PayPal was read once for the order, by the static arm only
+      expect(fakes.orderReads.filter((id) => id === t.orderId)).toHaveLength(1);
+      // the immune arm's Layer 1 checks are exactly the static arm's
+      const layer1 = (checks: unknown) =>
+        parseChecks(checks)
+          .filter((c) => c.check !== "immune" && c.check !== "risk")
+          .map((c) => `${c.check}:${c.outcome}:${c.severity}:${c.reason}`);
+      expect(layer1(imm.checks)).toEqual(layer1(stat.checks));
+      const RANK = { CAPTURE: 0, ASK_HUMAN: 1, VOID: 2 } as const;
+      expect(RANK[imm.verdict!]).toBeGreaterThanOrEqual(RANK[stat.verdict!]);
+      // and reusing another order's verification is refused
+      const other = await db.verification.create({
+        data: { orderId: specific.orderId, mode: "DRY_RUN", config: { immune: true } },
+      });
+      await expect(runVerification(deps, other.id, { layer1From: stat.id })).rejects.toThrow(
+        /not a finished verification of order/,
+      );
     });
 
     it("Q9: /verify carries the Layer 2 fields, and the signed evidence covers them", async () => {

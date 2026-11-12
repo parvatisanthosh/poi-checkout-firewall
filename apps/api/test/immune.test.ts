@@ -122,7 +122,8 @@ describe("fingerprints (Q4)", () => {
       if (a.some((h, i) => h === b[i])) hits++;
     }
     expect(hits / 100).toBeGreaterThanOrEqual(0.85);
-  });
+    // 200 signatures x 300 shingles x 128 BigInt hashes: CPU-bound, slow on a busy machine
+  }, 60_000);
 
   it("containment estimate: a short text inside a long one is mostly contained", () => {
     const long = fingerprint(`${SUB_PAGE} ${OTHER_PAGE}`);

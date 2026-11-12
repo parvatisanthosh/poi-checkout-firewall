@@ -33,6 +33,8 @@ export type L2Record = VerifyRecordL2Fields & {
   layer1Verdict: Verdict;
   /** The gate's input and output, when it ran. */
   gate?: { s: number; verdict: Verdict };
+  /** The verification whose Layer 1 checks this one reused (the arena's immune arm). */
+  layer1From?: string;
 };
 
 export interface L2Thresholds {

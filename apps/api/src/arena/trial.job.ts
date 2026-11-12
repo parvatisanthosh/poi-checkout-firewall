@@ -13,6 +13,7 @@ import {
 } from "@poi/shared";
 import type { RunShopperOptions, RunShopperResult } from "@poi/agent";
 import type { LanguageModel } from "ai";
+import { isRateLimited } from "@poi/shared/llm";
 import { stageScores } from "../calibration/fuse";
 import { BazaarHttpError, type ArenaBazaar } from "../lib/bazaar";
 import { parseChecks } from "../lib/mappers";
@@ -67,9 +68,32 @@ export interface ArenaTrialDeps {
   /** Transient-error retries (default 2) and the backoff base. */
   retries?: number;
   retryDelayMs?: number;
+  /** Back-off base after a provider rate limit (default 30s; the quota window must reopen). */
+  rateLimitDelayMs?: number;
 }
 
 export const tenantId = (g: Pick<Genome, "generation" | "id">) => `arena-g${g.generation}-${g.id}`;
+
+const AGENT_STOPPED = /^Agent stopped: ([\s\S]*)$/;
+
+/**
+ * The error inside an agent run that ended on a provider failure (the agent records it as its last
+ * step and returns normally), or null for a run that ended on its own. Rate limits keep their 429
+ * so the trial retries them; anything else fails the attempt as a plain error.
+ */
+export function agentProviderFailure(r: RunShopperResult): Error | null {
+  if (r.checkout) return null;
+  const last = r.trace.steps.at(-1) as { type?: string; output?: unknown } | undefined;
+  const m =
+    last?.type === "text" && typeof last.output === "string"
+      ? AGENT_STOPPED.exec(last.output)
+      : null;
+  if (!m) return null;
+  const message = `agent stopped on a provider error: ${m[1]!.slice(0, 200)}`;
+  return isRateLimited({ message: m[1] })
+    ? Object.assign(new Error(message), { statusCode: 429 })
+    : new Error(message);
+}
 
 /** LLM 429/5xx, PayPal 5xx, Bazaar 5xx and network failures are worth retrying. */
 export function isTransient(err: unknown): boolean {
@@ -89,6 +113,7 @@ export function isTransient(err: unknown): boolean {
   if (e.isRetryable === true) return true;
   if (e.name === "AI_RetryError") return true;
   if (e.name === "TimeoutError" || e.name === "AbortError") return true;
+  if (isRateLimited(err)) return true;
   if (err instanceof TypeError && /fetch failed|network|ECONN|socket/i.test(err.message))
     return true;
   return e.cause ? isTransient(e.cause) : false;
@@ -158,6 +183,11 @@ async function attempt(
       tenant,
     });
     log("shop", { checkout: !!shopped.checkout, chosen: shopped.trace.chosenSkus });
+    // The agent turns a provider failure into a normal return ("Agent stopped: ..."). That is not a
+    // shopping decision: fail the attempt, so it is retried or recorded as errored -- never as
+    // "the agent chose not to buy" (which would feed the archive, the stats and calibration).
+    const stopped = agentProviderFailure(shopped);
+    if (stopped) throw stopped;
 
     const out: Outcome = {
       valid: true,
@@ -203,13 +233,22 @@ async function attempt(
         extraTerms: (id) =>
           tenantTerms(id === orderId ? shopped.checkout!.merchantId : null, genome, tenant),
       };
+      // Static runs every Layer 1 stage; immune reuses that exact Layer 1 result and adds the
+      // immune stage + gate on top. The two arms then differ only by what Layer 2 adds (never by
+      // LLM sampling noise), so immune >= static by construction, and the LLM work is done once.
+      let staticId: string | undefined;
       for (const [arm, config] of Object.entries(arms) as Array<
         [keyof typeof arms, VerifierConfig]
       >) {
         const v = await db.verification.create({
           data: { orderId, mode: "DRY_RUN", config: json(config) },
         });
-        await runVerification(pipeline, v.id);
+        await runVerification(
+          pipeline,
+          v.id,
+          arm === "immune" && staticId ? { layer1From: staticId } : {},
+        );
+        if (arm === "static") staticId = v.id;
         const done = await db.verification.findUniqueOrThrow({ where: { id: v.id } });
         const checks = parseChecks(done.checks);
         if (arm === "static") {
@@ -277,7 +316,11 @@ export async function runTrial(
             { runId, genomeId, attempt: n + 1, err: (err as Error).message },
             "arena trial: transient error, retrying",
           );
-          await new Promise((r) => setTimeout(r, (deps.retryDelayMs ?? 1500) * 2 ** n));
+          // A provider quota window needs tens of seconds to reopen; other blips need a moment.
+          const base = isRateLimited(err)
+            ? (deps.rateLimitDelayMs ?? 30_000)
+            : (deps.retryDelayMs ?? 1500);
+          await new Promise((r) => setTimeout(r, base * 2 ** n));
         }
       }
     });

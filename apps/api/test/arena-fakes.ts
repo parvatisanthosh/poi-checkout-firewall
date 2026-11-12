@@ -18,9 +18,15 @@ export interface ArenaFakes {
   shop: (o: ArenaShopOptions) => Promise<RunShopperResult>;
   paypal: PayPal;
   /** What the shopper does in a tenant. Default: buy the evolved listing. */
-  choose: (tenant: string, evolvedSku: string, scenario: Scenario) => string | null | Error;
+  choose: (
+    tenant: string,
+    evolvedSku: string,
+    scenario: Scenario,
+  ) => string | null | Error | { agentStopped: string };
   /** Sellers the Bazaar data doesn't have (evolved listings may name their own). */
   merchants: Map<string, MerchantRecord>;
+  /** Every PayPal order read, in order (to prove what was and wasn't re-read). */
+  orderReads: string[];
 }
 
 export function arenaFakes(): ArenaFakes {
@@ -43,6 +49,7 @@ export function arenaFakes(): ArenaFakes {
   const fakes: ArenaFakes = {
     choose: (_tenant, evolvedSku) => evolvedSku,
     merchants,
+    orderReads: [],
     bazaar: {
       created,
       deleted,
@@ -63,8 +70,28 @@ export function arenaFakes(): ArenaFakes {
       const tenant = o.tenant;
       const t = tenants.get(tenant);
       if (!t) throw new Error(`shopper: no tenant ${tenant}`);
-      const choice = fakes.choose(tenant, t.product.sku, t.scenario);
-      if (choice instanceof Error) throw choice;
+      const pick = fakes.choose(tenant, t.product.sku, t.scenario);
+      if (pick instanceof Error) throw pick;
+      if (pick && typeof pick === "object") {
+        // like the real agent: a provider failure ends the run with a note, not an exception
+        return {
+          trace: {
+            model: o.model,
+            userText: o.userText,
+            steps: [
+              {
+                i: 0,
+                type: "text" as const,
+                output: `Agent stopped: ${pick.agentStopped}`,
+                at: new Date().toISOString(),
+              },
+            ],
+            observedListings: [],
+            chosenSkus: [],
+          },
+        };
+      }
+      const choice = pick;
       const observed = [...t.scenario.catalog.slice(0, 2), t.product.sku].map((sku) => ({
         sku,
         pageText: pageText(
@@ -89,6 +116,7 @@ export function arenaFakes(): ArenaFakes {
     paypal: {
       tokens: { getToken: async () => "tok", invalidate() {} },
       async getOrder(id: string) {
+        fakes.orderReads.push(id);
         const o = orders.get(id);
         if (!o) throw new PayPalError(404, "RESOURCE_NOT_FOUND", "no such order");
         const { body } = buildOrderRequest(tenantData(o.tenant), [{ sku: o.sku, qty: 1 }], {

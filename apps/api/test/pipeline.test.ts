@@ -315,7 +315,8 @@ describe.runIf(process.env.RUN_DB_TESTS === "1")("pipeline (real DB, fake PayPal
       await db.$executeRaw`UPDATE "EvidenceRecord" SET payload = ${original}::jsonb WHERE seq = ${target.seq}`;
     }
     expect((await validateChain(db, key.publicKey)).chainValid).toBe(true);
-  });
+    // Three full-chain validations: a dev database's append-only chain grows with every run.
+  }, 60_000);
 
   it("webhooks: verified, once-only, forward-only", async () => {
     const orderId = await attach("protection-plan", "live");

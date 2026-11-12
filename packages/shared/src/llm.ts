@@ -77,19 +77,92 @@ const toUsage = (modelId: string, u: Usage): ModelUsage => ({
   outputTokens: u.outputTokens.total ?? 0,
 });
 
-/** Wrap any language model so its calls report usage under `modelId`. */
+// ---------------------------------------------------------------------------------------------
+// Request pacing for free-tier keys. LLM_RPM_<PROVIDER> (e.g. LLM_RPM_GOOGLE=12) caps requests per
+// minute for that provider across the whole process -- agent, judge, shadow, compiler, attacker --
+// with a 60-second sliding window. When a cap is set, a 429 from that provider is waited out (its
+// suggested retry delay, up to 3 times) instead of failing the call. Unset = no pacing, no waiting.
+// ---------------------------------------------------------------------------------------------
+
+const rpmFor = (p: string, env: Record<string, string | undefined> = process.env) =>
+  Math.max(0, Number(env[`LLM_RPM_${p.toUpperCase()}`] ?? 0) || 0);
+
+const recent = new Map<string, number[]>();
+
+function sleep(ms: number, signal?: AbortSignal): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (signal?.aborted) return reject(signal.reason);
+    const t = setTimeout(resolve, ms);
+    signal?.addEventListener(
+      "abort",
+      () => {
+        clearTimeout(t);
+        reject(signal.reason);
+      },
+      { once: true },
+    );
+  });
+}
+
+/** Wait until `provider` has room under its per-minute cap, then take a slot. */
+export async function pace(provider: string, signal?: AbortSignal): Promise<void> {
+  const rpm = rpmFor(provider);
+  if (!rpm) return;
+  const q = recent.get(provider) ?? [];
+  recent.set(provider, q);
+  for (;;) {
+    const now = Date.now();
+    while (q.length && now - q[0]! >= 60_000) q.shift();
+    if (q.length < rpm) {
+      q.push(now); // check and take happen in one synchronous step: no race between callers
+      return;
+    }
+    await sleep(60_000 - (now - q[0]!) + 50, signal);
+  }
+}
+
+/** A provider's "slow down" answer: HTTP 429 or a quota / rate-limit message. */
+export function isRateLimited(err: unknown): boolean {
+  const e = err as { statusCode?: number; message?: string } | null;
+  if (!e) return false;
+  return (
+    e.statusCode === 429 || /\b429\b|quota|rate.?limit|RESOURCE_EXHAUSTED/i.test(e.message ?? "")
+  );
+}
+
+/** The provider's suggested wait ("retryDelay": "23s"), else 20s, capped at 65s. */
+function retryAfterMs(err: unknown): number {
+  const body = String((err as { responseBody?: string } | null)?.responseBody ?? "");
+  const s = /"retryDelay":\s*"(\d+(?:\.\d+)?)s"/.exec(body)?.[1];
+  return Math.min(65_000, (s ? Number(s) : 20) * 1000 + 500);
+}
+
+/** Wrap any language model so its calls report usage under `modelId` (and are paced, if capped). */
 export function meterModel(model: LanguageModelV4, modelId: string): LanguageModelV4 {
+  const provider = modelId.split(":")[0] ?? "";
   const middleware: LanguageModelMiddleware = {
     specificationVersion: "v4",
-    async wrapGenerate({ doGenerate }) {
+    async wrapGenerate({ doGenerate, params }) {
       const sink = usageContext.getStore();
-      const result = await doGenerate();
+      const signal = params.abortSignal;
+      let result: Awaited<ReturnType<typeof doGenerate>> | undefined;
+      for (let attempt = 0; ; attempt++) {
+        await pace(provider, signal);
+        try {
+          result = await doGenerate();
+          break;
+        } catch (err) {
+          if (!rpmFor(provider) || !isRateLimited(err) || attempt >= 3) throw err;
+          await sleep(retryAfterMs(err), signal);
+        }
+      }
       if (sink) await sink(toUsage(modelId, result.usage));
       return result;
     },
-    async wrapStream({ doStream }) {
+    async wrapStream({ doStream, params }) {
       // Capture the sink now: stream callbacks may run outside this async context.
       const sink = usageContext.getStore();
+      await pace(provider, params.abortSignal);
       const result = await doStream();
       if (!sink) return result;
       return {

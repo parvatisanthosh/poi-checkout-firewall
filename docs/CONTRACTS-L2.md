@@ -224,6 +224,7 @@ Clients join rooms with `arena:subscribe { runId }` (room `arena:{runId}`) and `
 | Variable | Default (free-tier) | Note |
 | --- | --- | --- |
 | `ARENA_ENGINE` | `real` | `real` = `@poi/arena`; `fake` = the no-LLM stand-in in `apps/api/src/arena/engine.ts` (demos, offline, tests) |
+| `LLM_RPM_<PROVIDER>` | unset | e.g. `LLM_RPM_GOOGLE=10`: per-minute cap on that provider's LLM calls across the process (`getModel()` paces them); with a cap set, a 429 is waited out (the provider's retry delay, up to 3 times) instead of failing. Free-tier keys need it for arena runs |
 | `LIVE_LAYER2` | `false` | live authorizations (and so MCP `capture_if_verified`) run with `{ immune: true, conformal: true }`; off = Layer 1 only |
 | `ARENA_WORKERS_INLINE` | `true` | with `WORKER_INLINE`, the API also runs the arena + immune workers; `false` when `poi-arena-worker` (`dist/arena-worker.js`) is deployed |
 | `ARENA_ATTACKER_MODEL` | `groq:openai/gpt-oss-120b` | attacker A (train) |
@@ -301,6 +302,12 @@ skeleton, action }`.
 line price for an extra line) x 12, non-primary lines and handling/insurance as one-offs, and a
 renewal clause in the tenant terms. Any recurring charge without a readable amount makes the total
 `null`.
+
+**Arena trial integrity.** The immune arm reuses the static arm's Layer 1 checks
+(`runVerification(..., { layer1From })`): one PayPal read and one pass of LLM stages per trial, and the
+two arms differ only by what Layer 2 adds. An agent run that ended on a provider error ("Agent
+stopped: ...") is not a shopping decision: a rate limit retries the trial after a 30 s back-off,
+anything else records an errored trial (outside the archive, the stats and calibration).
 
 **Feedback.** A human approving a verification gives a false hit to each antibody that escalated it;
 retirement at 2+ false hits and false/hits > 0.2 (version +1). A human rejecting an ASK_HUMAN, and a
